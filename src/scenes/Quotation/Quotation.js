@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import ProductsList from './components/ProductList/ProductList';
 import QuoteSystem from './components/QuoteSystem/QuoteSystem';
 
@@ -12,10 +13,10 @@ class Quotation extends Component {
     console.log(this.state.test);
 
     return (
-      <React.Fragment>
+      <QuotationGrid>
         <QuoteSystem update={this.props.updateCart} />
         <ProductsList update={this.props.updateProducts} products={this.props.products} />
-      </React.Fragment>
+      </QuotationGrid>
     );
   }
 }
@@ -27,3 +28,9 @@ Quotation.propTypes = {
   updateProducts: PropTypes.func.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+const QuotationGrid = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+`;

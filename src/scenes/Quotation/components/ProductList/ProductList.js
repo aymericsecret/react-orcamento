@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import Product from './components/Product';
 
 class ProductList extends Component {
@@ -38,9 +39,9 @@ class ProductList extends Component {
 
   render() {
     return (
-      <div>
+      <ProductsBlock>
         {this.props.products.map(product => (<Product product={product} key={product.id} />))}
-      </div>
+      </ProductsBlock>
     );
   }
 }
@@ -51,3 +52,7 @@ ProductList.propTypes = {
   update: PropTypes.func.isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+const ProductsBlock = styled.div`
+  width: 50%;
+  height: 100%;
+`;

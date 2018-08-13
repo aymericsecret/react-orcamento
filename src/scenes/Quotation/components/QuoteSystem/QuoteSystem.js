@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 // import PropTypes from 'prop-types';
+import Header from '../../../../components/Header';
 // import Product from './Product';
 
 class QuoteSystem extends Component {
@@ -9,9 +11,10 @@ class QuoteSystem extends Component {
 
     render() {
       return (
-        <div>
+        <QuoteBlock>
+          <Header />
           Hello
-        </div>
+        </QuoteBlock>
       );
     }
 }
@@ -21,3 +24,9 @@ export default QuoteSystem;
 // QuoteSystem.propTypes = {
 //   update: PropTypes.func.isRequired,
 // };
+
+const QuoteBlock = styled.div`
+  width: 50%;
+  height: 100%;
+  background: #EDEDED;
+`;
