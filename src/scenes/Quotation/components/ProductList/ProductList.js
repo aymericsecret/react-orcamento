@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import Product from './components/Product';
 import Category from './components/Category';
-import LinkCustom from "../../../../components/LinkCustom";
+import LinkCustom from '../../../../components/LinkCustom';
+import VisibleProduct from './components/VisibleProduct';
 
 class ProductList extends Component {
   constructor(props) {
@@ -17,12 +17,11 @@ class ProductList extends Component {
   }
 
   componentDidMount = () => {
+    const { getProducts, isLoaded, productsLoadedAt } = this.props;
+    const oneHour = 60 * 60 * 1000;
+    console.log(new Date() - new Date(productsLoadedAt));
     if (this.props.products.length <= 0) {
       try {
-        // Products : http://cremme.com.br/wp-json/wp/v2/posts
-        // const resCats = await fetch('http://cremme.com.br/wp-json/wp/v2/categories');
-        // const categories = await resCats.json();
-
         // Get the ID of the main categories
         fetch('http://cremme.com.br/wp-json/wp/v2/categories?parent=0&exclude=48,33,14,11,12')
           .then(res => res.json())
@@ -39,41 +38,24 @@ class ProductList extends Component {
         // Get the object of the under categories
         console.log('avant this.state.witchCategorie : ');
         console.log(this.state.categories[0]);
-        fetch('http://cremme.com.br/wp-json/wp/v2/categories?parent=' + this.var)
+        fetch(`http://cremme.com.br/wp-json/wp/v2/categories?parent=${this.var}`)
           .then(res => res.json())
           .then((result) => {
             this.setState({ underCategories: result });
             console.log(this.state.underCategories);
             this.state.underCategories.map(categorie => (console.log(categorie.name)));
           });
-
-        // Get the product
-        fetch('http://cremme.com.br/wp-json/wp/v2/posts?categories=2')
-        // fetch('http://localhost/cremme/wp-json/wp/v2/categories')
-          .then(res => res.json())
-          .then((result) => {
-            const products = result;
-            // console.log(products);
-            this.props.update(products);
-          }, (error) => {
-            console.log(error);
-          });
-        // const products = await res.json();
-        // console.log(products);
-        // this.props.update(products);
-        // this.setState({
-        //   products,
-        // });
       } catch (e) {
         console.log(e);
       }
     }
     // }
+    if (!isLoaded || ((new Date() - new Date(productsLoadedAt)) > oneHour)) getProducts();
   }
 
   ChangewitchCategorie = (id) => {
     console.log('avant (ChangewitchCategorie) this.state.witchCategorie : ');
-    fetch('http://cremme.com.br/wp-json/wp/v2/categories?parent=' + id)
+    fetch(`http://cremme.com.br/wp-json/wp/v2/categories?parent=${id}`)
       .then(res => res.json())
       .then((result) => {
         this.setState({ underCategories: result });
@@ -87,18 +69,18 @@ class ProductList extends Component {
   }
 
   render() {
+    const { products, isLoaded } = this.props;
+    if (!isLoaded) return <h1>Not loaded</h1>;
     return (
       <ProductsBlock>
         <Categories>
           {this.state.categories.map(categorie => (
-            // <Categorie key={categorie.id}><button type="submit" value={categorie.id} onClick={() => this.ChangewitchCategorie(categorie.id)}> <h3>{categorie.name}</h3> </button></Categorie>
-            <LinkCustom eventClick={() => this.ChangewitchCategorie(categorie.id)}> {categorie.name} </LinkCustom>
+            <LinkCustom
+              eventClick={() => this.ChangewitchCategorie(categorie.id)}
+            > {categorie.name}
+            </LinkCustom>
           ))}
         </Categories>
-        {/* {this.state.underCategories.map(categorie => (<h2>{categorie.name}</h2>))} */}
-        {/* {<Product name={this.Souscategories.name} />} */}
-        {console.log(this.state.underCategories)}
-        {/* {this.Souscategories.map(categorie => (console.log(categorie.name)))} */}
         {this.state.underCategories.map(sousCategorie => (
           <Category
             name={sousCategorie.name}
@@ -107,15 +89,7 @@ class ProductList extends Component {
           />
         ))
         }
-        {/* {this.props.products.map(product => (
-          <Product
-            product={product}
-            key={product.id}
-          />
-        ))
-        } */}
-        {/* {this.props.products.map(product =>
-        (<Product product={product} key={product.id} />))} */}
+        {products.map(product => (<VisibleProduct product={product} key={product.id} />))}
       </ProductsBlock>
     );
   }
@@ -124,9 +98,17 @@ class ProductList extends Component {
 export default ProductList;
 
 ProductList.propTypes = {
-  update: PropTypes.func.isRequired,
-  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  products: PropTypes.arrayOf(PropTypes.object),
+  isLoaded: PropTypes.bool.isRequired,
+  getProducts: PropTypes.func.isRequired,
+  productsLoadedAt: PropTypes.string.isRequired,
 };
+
+// defaut
+ProductList.defaultProps = {
+  products: [],
+};
+
 const ProductsBlock = styled.div`
   width: 50%;
   height: 100%;

@@ -10,9 +10,9 @@ const Header = () => (
     <Link to="/">
       <img src={logo} className="App-logo" alt="logo" />
     </Link>
-    <Link to="/login">
-      <h6>Admin</h6>
-    </Link>
+    <StyledLink to="/login">
+      Admin
+    </StyledLink>
   </HeaderBox>
 );
 
@@ -20,7 +20,13 @@ const Header = () => (
 export default Header;
 
 const HeaderBox = styled.header`
-    height: 40px;
+    height: 80px;
     width: 50%;
     padding: 20px;
+    Link {
+      background: red;
+    }
+`;
+const StyledLink = styled(Link)`
+    margin-left: 20px;
 `;

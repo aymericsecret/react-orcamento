@@ -6,40 +6,40 @@ import {
   Switch,
 } from 'react-router-dom';
 import styled from 'styled-components';
-// import './App.css';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { applyMiddleware, createStore } from 'redux';
+import { save, load } from 'redux-localstorage-simple';
+import { Provider } from 'react-redux';
+
+import './App.css';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 import Quotation from './scenes/Quotation/Quotation';
 import Login from './scenes/Login/Login';
+import rootReducer from './rootReducer';
 
+const middleware = [logger, thunk];
+
+const store = createStore(
+  rootReducer,
+  load(),
+  composeWithDevTools(applyMiddleware(...middleware, save())), // middleware
+);
+
+// eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
-  state = {
-    products: [],
-    cart: [],
-  }
-
-  updateProducts = (products) => {
-    this.setState({
-      products,
-    });
-    console.log(this.state.products);
-  };
-
-  updateCart = (cart) => {
-    this.setState({
-      cart,
-    });
-    console.log(this.state.cart);
-  };
-
   render() {
     return (
-      <Router>
-        <AppLayout className="App">
-          <Switch>
-            <Route exact path="/" render={() => (<Quotation updateProducts={this.updateProducts} updateCart={this.updateCart} products={this.state.products} />)} />
-            <Route path="/login" component={Login} />
-          </Switch>
-        </AppLayout>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <AppLayout className="App">
+            <Switch>
+              <Route exact path="/" render={() => (<Quotation />)} />
+              <Route path="/login" component={Login} />
+            </Switch>
+          </AppLayout>
+        </Router>
+      </Provider>
     );
   }
 }
