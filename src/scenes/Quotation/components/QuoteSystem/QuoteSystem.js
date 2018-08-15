@@ -52,7 +52,7 @@ QuoteSystem.propTypes = {
 };
 
 const StyledHeader = styled.div`
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   padding: 0;
@@ -60,6 +60,7 @@ const StyledHeader = styled.div`
   width: 50%;
 `;
 const QuoteBlock = styled.div`
+  position: relative;
   width: 50%;
   height: 100%;
   background: #EDEDED;

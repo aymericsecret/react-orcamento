@@ -47,5 +47,8 @@ export default App;
 
 const AppLayout = styled.div`
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  background: #FFFFFF;
 `;
