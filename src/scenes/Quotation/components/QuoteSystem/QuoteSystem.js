@@ -1,32 +1,78 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-// import PropTypes from 'prop-types';
+import idGenerator from 'react-id-generator';
+import PropTypes from 'prop-types';
 import Header from '../../../../components/Header';
-// import Product from './Product';
+import VisibleQuoteElem from './components/QuoteElement/VisibleQuoteElem';
 
 class QuoteSystem extends Component {
-    state = {
-
+  componentWillMount() {
+    const { quotation, initQuotation } = this.props;
+    if (quotation.id === null) {
+      quotation.id = idGenerator();
+      initQuotation(quotation);
     }
+  }
 
-    render() {
-      return (
-        <QuoteBlock>
+  updateCart = (idProduct, newEntry) => {
+    console.log(idProduct, newEntry);
+  };
+
+  render() {
+    const { quotation } = this.props;
+    console.log(quotation);
+    return (
+      <QuoteBlock>
+        <StyledHeader>
           <Header />
-          Hello
-        </QuoteBlock>
-      );
-    }
+        </StyledHeader>
+        <QuoteElemsContainer>
+          {quotation.products.map((elem, index) => (
+            <VisibleQuoteElem
+              index={index}
+              quoteItem={elem}
+              // updateCart={this.updateCart}
+              key={idGenerator()}
+            />
+          ))}
+        </QuoteElemsContainer>
+      </QuoteBlock>
+    );
+  }
 }
 
 export default QuoteSystem;
 
-// QuoteSystem.propTypes = {
-//   update: PropTypes.func.isRequired,
-// };
+QuoteSystem.propTypes = {
+  quotation: PropTypes.shape({
+    id: PropTypes.string,
+    products: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  initQuotation: PropTypes.func.isRequired,
+};
 
+const StyledHeader = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0;
+  height: 80px;
+  width: 50%;
+`;
 const QuoteBlock = styled.div`
   width: 50%;
   height: 100%;
   background: #EDEDED;
+  overflow: scroll;
+  padding-top: 100px;
+`;
+const QuoteElemsContainer = styled.div`
+  padding: 0 20px 20px;
+
+  > div {
+    border-bottom: 1px solid #3c3c3c;
+    &:first-child {
+      border-top: 1px solid #3c3c3c;
+    }
+  }
 `;

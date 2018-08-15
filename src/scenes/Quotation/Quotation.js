@@ -1,33 +1,16 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import styled from 'styled-components';
-import ProductsList from './components/ProductList/ProductList';
-import QuoteSystem from './components/QuoteSystem/QuoteSystem';
+import VisibleProductsList from './components/ProductList/VisibleProductList';
+import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 
-class Quotation extends Component {
-  state = {
-    test: [],
-  }
-
-  render() {
-    console.log(this.state.test);
-
-    return (
-      <QuotationGrid>
-        <QuoteSystem update={this.props.updateCart} />
-        <ProductsList update={this.props.updateProducts} products={this.props.products} />
-      </QuotationGrid>
-    );
-  }
-}
+const Quotation = () => (
+  <QuotationGrid>
+    <VisibleQuoteSystem />
+    <VisibleProductsList />
+  </QuotationGrid>
+);
 
 export default Quotation;
-
-Quotation.propTypes = {
-  updateCart: PropTypes.func.isRequired,
-  updateProducts: PropTypes.func.isRequired,
-  products: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
 
 const QuotationGrid = styled.div`
   display: flex;
