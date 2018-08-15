@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Product = ({ product }) => (
-  <div data-id={product.id}>
+const Product = ({ name, product, id }) => (
+  <div data-id={id}>
     <h4>
-      {product.title.rendered}
+      {product !== undefined && product.title.rendered}
+      {name !== undefined && name}
     </h4>
-    <p>
-      {product.content.rendered}
-    </p>
+    <p>{product !== undefined && product.content.rendered}</p>
   </div>
 );
 
@@ -19,5 +18,12 @@ Product.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.object.isRequired,
     content: PropTypes.object,
-  }).isRequired,
+  }),
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string,
+};
+
+Product.defaultProps = {
+  product: undefined,
+  name: undefined,
 };
