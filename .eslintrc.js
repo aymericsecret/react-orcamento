@@ -27,5 +27,15 @@ module.exports = {
       "no-console": 0,
       "react/destructuring-assignment":  0,
       "react/jsx-one-expression-per-line": 0,
+      "max-len": [
+        2,
+        120, {
+            "ignoreComments": true,
+            "ignoreTrailingComments": true,
+            "ignoreUrls": true,
+            "ignoreStrings": true,
+            "ignoreTemplateLiterals": true
+        }
+    ]
     }
 };  

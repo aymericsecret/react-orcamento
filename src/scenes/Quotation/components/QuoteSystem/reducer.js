@@ -7,6 +7,9 @@ import {
   UPDATE_PRODUCT_PRICE,
   UPDATE_PRODUCT_NOTE,
   UPDATE_PRODUCT_SIZE,
+  UPDATE_PRODUCT_MATERIAL,
+  UPDATE_PRODUCT_SIZE_X,
+  UPDATE_PRODUCT_SIZE_Y,
 } from './actions';
 
 const initialState = {
@@ -18,13 +21,13 @@ const initialState = {
 
 const initialQuoteProduct = {
   id_product: null,
-  quantity: 1,
+  quantity: null,
   price: null,
   note: '',
   material: null,
   size: null,
-  size_x: 0,
-  size_y: 0,
+  size_x: null,
+  size_y: null,
 };
 
 export default function (state = initialState, action) {
@@ -118,6 +121,48 @@ export default function (state = initialState, action) {
       const productListUpdated = state.quotation.products;
 
       productListUpdated[productIndex].size = data.size;
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCT_MATERIAL: {
+      const productToUpdate = state.quotation.products.find(el => el.id === data.id);
+      const productIndex = state.quotation.products.indexOf(productToUpdate);
+      const productListUpdated = state.quotation.products;
+
+      productListUpdated[productIndex].material = data.material;
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCT_SIZE_X: {
+      const productToUpdate = state.quotation.products.find(el => el.id === data.id);
+      const productIndex = state.quotation.products.indexOf(productToUpdate);
+      const productListUpdated = state.quotation.products;
+
+      productListUpdated[productIndex].size_x = data.size_x;
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCT_SIZE_Y: {
+      const productToUpdate = state.quotation.products.find(el => el.id === data.id);
+      const productIndex = state.quotation.products.indexOf(productToUpdate);
+      const productListUpdated = state.quotation.products;
+
+      productListUpdated[productIndex].size_y = data.size_y;
       return {
         ...state,
         quotation: {

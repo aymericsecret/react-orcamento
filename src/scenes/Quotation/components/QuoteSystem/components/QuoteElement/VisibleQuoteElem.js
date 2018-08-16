@@ -7,6 +7,9 @@ import {
   updateProductPrice,
   updateProductNote,
   updateProductSize,
+  updateProductMaterial,
+  updateProductSizeX,
+  updateProductSizeY,
 } from '../../actions';
 
 const mapStateToProps = state => ({
@@ -21,6 +24,9 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   updatePrice: updateProductPrice,
   updateNote: updateProductNote,
   updateSize: updateProductSize,
+  updateMaterial: updateProductMaterial,
+  updateSizeX: updateProductSizeX,
+  updateSizeY: updateProductSizeY,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuoteElem);
