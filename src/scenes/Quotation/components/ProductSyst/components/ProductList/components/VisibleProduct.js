@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addProductToQuotation } from '../../QuoteSystem/actions';
+import { addProductToQuotation } from '../../../../QuoteSystem/actions';
 import Product from './Product';
 
 const mapStateToProps = state => ({
