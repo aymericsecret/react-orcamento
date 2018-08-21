@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg class="openingSearchMenu" width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.949999988">
+        <g id="fill" transform="translate(6.000000, 5.000000)" stroke="#FFFFFF" stroke-width="2">
+            <circle id="Oval-3" cx="8" cy="8" r="8"></circle>
+            <path d="M13.5,14.5 L18,19" id="Line-7" stroke-linecap="square"></path>
+        </g>
+    </g>
+</svg>
