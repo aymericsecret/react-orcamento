@@ -16,7 +16,7 @@ class QuoteElem extends Component {
     this.sizeXHasBeenChanged = false;
     this.sizeYHasBeenChanged = false;
     this.materialHasBeenChanged = false;
-    this.isPricePerMeterSquare = false;
+    this.isPricePerMetreSquare = false;
 
     this.materialList = [];
     this.sizeList = [];
@@ -29,8 +29,8 @@ class QuoteElem extends Component {
     price: 0,
     totalPrice: 0,
     note: '',
-    material: '',
     size: '',
+    material: '',
     size_x: 1,
     size_y: 1,
   }
@@ -45,14 +45,14 @@ class QuoteElem extends Component {
     // INITIAL QUANTITY
     const quantidadeInitialValue = this.props.quoteItem.quantity === null ? 1 : this.props.quoteItem.quantity;
 
-    // Price per meter square
-    this.isPricePerMeterSquare = product.acf.msquare !== undefined ? product.acf.msquare : false;
+    // Price per metre square
+    this.isPricePerMetreSquare = product.acf.msquare !== undefined ? product.acf.msquare : false;
 
     // INITIAL SIZES
     let sizeInitialValue = null;
     let sizeXInitialValue = null;
     let sizeYInitialValue = null;
-    if (!this.isPricePerMeterSquare) {
+    if (!this.isPricePerMetreSquare) {
       sizeInitialValue = product.acf.variations !== undefined
       && product.acf.variations.length > 0
         ? product.acf.variations[0].size.toLowerCase() : null;
@@ -103,14 +103,14 @@ class QuoteElem extends Component {
   getPriceFromCombination = () => {
     // Adding here new conditions for combinations
     let newPrice = this.product.acf.variations.find((el) => {
-      if (this.isPricePerMeterSquare) {
+      if (this.isPricePerMetreSquare) {
         return el.material.toLowerCase() === this.state.material;
       }
       return el.size.toLowerCase() === this.state.size
       && el.material.toLowerCase() === this.state.material;
     });
 
-    newPrice = this.isPricePerMeterSquare ? newPrice.price * this.state.size_x * this.state.size_y : newPrice.price;
+    newPrice = this.isPricePerMetreSquare ? newPrice.price * this.state.size_x * this.state.size_y : newPrice.price;
     const newTotalPrice = newPrice * this.state.quantity;
 
     if (newPrice !== undefined) {
@@ -142,6 +142,67 @@ class QuoteElem extends Component {
     }, 50);
   }
 
+  // updateQuantity = (e) => {
+  //   switch (e.type) {
+  //     case 'blur': {
+  //       let value = e.target.value === '' ? 1 : e.target.value;
+  //       value = parseInt(value, 10) === 0 ? 1 : value;
+  //       this.setState({
+  //         quantity: parseInt(value, 10),
+  //       });
+  //       this.debounce('quantityHasBeenChanged', () => {
+  //         if (this.state.quantity !== this.props.quoteItem.quantity) {
+  //           this.props.updateQuantity({
+  //             id: this.props.quoteItem.id,
+  //             quantity: parseInt(this.state.quantity, 10),
+  //           });
+  //         }
+  //       });
+  //       break;
+  //     }
+  //     case 'change': {
+  //       const newValue = e.target.value === '' ? e.target.value : parseInt(e.target.value, 10);
+  //       this.setState({
+  //         quantity: newValue,
+  //       });
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  // updateSizeX = (e) => {
+  //   switch (e.type) {
+  //     case 'blur': {
+  //       let value = e.target.value === '' ? 1 : e.target.value;
+  //       value = parseInt(value, 10) === 0 ? 1 : value;
+  //       this.setState({
+  //         size_x: parseInt(value, 10),
+  //       });
+  //       this.debounce('sizeXHasBeenChanged', () => {
+  //         if (this.state.size_x !== this.props.quoteItem.size_x) {
+  //           this.getPriceFromCombination();
+  //           this.props.updateSizeX({
+  //             id: this.props.quoteItem.id,
+  //             size_x: parseInt(this.state.size_x, 10),
+  //           });
+  //         }
+  //       });
+  //       break;
+  //     }
+  //     case 'change': {
+  //       const newValue = e.target.value === '' ? e.target.value : parseInt(e.target.value, 10);
+  //       this.setState({
+  //         size_x: newValue,
+  //       });
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  // }
+
   updateInput = (e) => {
     const { quantity } = this.state;
     switch (e.type) {
@@ -169,7 +230,6 @@ class QuoteElem extends Component {
             this.setState({
               quantity: parseInt(value, 10),
             });
-            // TODO: Try refactoring with setState Callback
             this.debounce('quantityHasBeenChanged', () => {
               if (this.state.quantity !== this.props.quoteItem.quantity) {
                 this.props.updateQuantity({
@@ -253,6 +313,69 @@ class QuoteElem extends Component {
         break;
     }
   }
+
+  // updateSizeY = (e) => {
+  //   switch (e.type) {
+  //     case 'blur': {
+  //       let value = e.target.value === '' ? 1 : e.target.value;
+  //       value = parseInt(value, 10) === 0 ? 1 : value;
+  //       this.setState({
+  //         size_y: parseInt(value, 10),
+  //       });
+  //       this.debounce('sizeXHasBeenChanged', () => {
+  //         if (this.state.size_y !== this.props.quoteItem.size_y) {
+  //           this.getPriceFromCombination();
+  //           this.props.updateSizeY({
+  //             id: this.props.quoteItem.id,
+  //             size_y: parseInt(this.state.size_y, 10),
+  //           });
+  //         }
+  //       });
+  //       break;
+  //     }
+  //     case 'change': {
+  //       const newValue = e.target.value === '' ? e.target.value : parseInt(e.target.value, 10);
+  //       this.setState({
+  //         size_y: newValue,
+  //       });
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  // }
+
+  // updatePrice = (e) => {
+  //   const { quantity } = this.state;
+  //   switch (e.type) {
+  //     case 'blur': {
+  //       const value = e.target.value === '' ? 1 : e.target.value;
+  //       this.setState({
+  //         price: parseInt(value, 10),
+  //         totalPrice: quantity * parseInt(value, 10),
+  //       });
+  //       // TODO: Refactor inside setState's callback function
+  //       this.debounce('priceHasBeenChanged', () => {
+  //         if (this.state.price !== this.props.quoteItem.price) {
+  //           this.props.updatePrice({
+  //             id: this.props.quoteItem.id,
+  //             price: parseInt(this.state.price, 10),
+  //           });
+  //         }
+  //       });
+  //       break;
+  //     }
+  //     case 'change': {
+  //       this.setState({
+  //         price: parseInt(e.target.value, 10),
+  //         totalPrice: quantity * parseInt(e.target.value, 10),
+  //       });
+  //       break;
+  //     }
+  //     default:
+  //       break;
+  //   }
+  // }
 
   updateNote = (e) => {
     switch (e.type) {
