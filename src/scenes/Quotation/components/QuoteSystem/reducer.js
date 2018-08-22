@@ -10,6 +10,7 @@ import {
   UPDATE_PRODUCT_MATERIAL,
   UPDATE_PRODUCT_SIZE_X,
   UPDATE_PRODUCT_SIZE_Y,
+  UPDATE_PRODUCTS,
 } from './actions';
 
 const initialState = {
@@ -168,6 +169,14 @@ export default function (state = initialState, action) {
         quotation: {
           ...state.quotation,
           products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCTS: {
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
         },
       };
     }

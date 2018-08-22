@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import idGenerator from 'react-id-generator';
 import PropTypes from 'prop-types';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
 import Header from '../../../../components/Header';
-import VisibleQuoteElem from './components/QuoteElement/VisibleQuoteElem';
+import QuoteElemDrag from './components/QuoteElement/QuoteElemDrag';
+// import VisibleQuoteElem from './components/QuoteElement/VisibleQuoteElem';
 
 class QuoteSystem extends Component {
   componentWillMount() {
@@ -18,9 +21,14 @@ class QuoteSystem extends Component {
     console.log(idProduct, newEntry);
   };
 
+  moveCard = (dragIndex, hoverIndex) => {
+    const { quotation, updateProductsOrder } = this.props;
+    quotation.products.splice(hoverIndex, 0, quotation.products.splice(dragIndex, 1)[0]);
+    updateProductsOrder();
+  }
+
   render() {
     const { quotation } = this.props;
-    console.log(quotation);
     return (
       <QuoteBlock>
         <StyledHeader>
@@ -28,11 +36,13 @@ class QuoteSystem extends Component {
         </StyledHeader>
         <QuoteElemsContainer>
           {quotation.products.map((elem, index) => (
-            <VisibleQuoteElem
+
+            <QuoteElemDrag
+              id={elem.id}
               index={index}
               quoteItem={elem}
-              // updateCart={this.updateCart}
-              key={idGenerator()}
+              idKey={idGenerator()}
+              moveCard={this.moveCard}
             />
           ))}
         </QuoteElemsContainer>
@@ -40,8 +50,9 @@ class QuoteSystem extends Component {
     );
   }
 }
+// export default QuoteSystem;
 
-export default QuoteSystem;
+export default DragDropContext(HTML5Backend)(QuoteSystem);
 
 QuoteSystem.propTypes = {
   quotation: PropTypes.shape({
@@ -49,6 +60,7 @@ QuoteSystem.propTypes = {
     products: PropTypes.arrayOf(PropTypes.object),
   }).isRequired,
   initQuotation: PropTypes.func.isRequired,
+  updateProductsOrder: PropTypes.func.isRequired,
 };
 
 const StyledHeader = styled.div`

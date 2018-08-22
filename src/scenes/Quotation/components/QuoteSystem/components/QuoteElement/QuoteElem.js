@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
-import iconClose from '../../../../../../assets/close.svg';
-
+import iconClose from '../../../../../../assets/close_2.svg';
 import Input from './components/Input';
 
 class QuoteElem extends Component {
@@ -316,11 +315,15 @@ class QuoteElem extends Component {
   }
 
   render() {
-    const { index, quoteItem, removeItem } = this.props;
+    const {
+      index, quoteItem, removeItem, children,
+    } = this.props;
+
     return (
       <QuoteBox>
         <QuoteBoxHeader>
           <h3>{index + 1}. {this.state.product.title.rendered}</h3>
+          { children }
           <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
@@ -372,6 +375,7 @@ export default QuoteElem;
 
 QuoteElem.propTypes = {
   index: PropTypes.number.isRequired,
+  children: PropTypes.shape().isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   quoteItem: PropTypes.shape({
     id: PropTypes.string,
