@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import Category from '../CategoryList/components/Category';
-// import LinkCustom from '../../../../../../components/LinkCustom';
 import VisibleProduct from './components/VisibleProduct';
 
 class ProductList extends Component {
@@ -14,19 +12,26 @@ class ProductList extends Component {
 
     const oneHour = 60 * 60 * 1000;
     console.log(new Date() - new Date(productsLoadedAt));
-    // }
+
     if ((!isLoaded || ((new Date() - new Date(productsLoadedAt)) > oneHour))) {
       getProducts(subCategory);
     }
   }
 
   render() {
-    const { products, isLoaded } = this.props;
+    const {
+      products, isLoaded, showSubCategory, subCategory,
+    } = this.props;
     if (!isLoaded) return <h1>Product not loaded</h1>;
+    console.log(`products : ${products}`);
+    const productToShow = products.filter(
+      product => product.categories.find(
+        category => category === subCategory) !== undefined);
+    console.log(`productToShow : ${productToShow}`);
     return (
       <ProductsBlock>
-        {products.map(product => (<VisibleProduct product={product} key={product.id} />))}
-        {/* {products.map(product => (<VisibleProduct product={product} key={product.id} />))} */}
+        {!showSubCategory
+          && productToShow.map(product => (<VisibleProduct product={product} key={product.id} />))}
       </ProductsBlock>
     );
   }
@@ -39,10 +44,10 @@ ProductList.propTypes = {
   isLoaded: PropTypes.bool.isRequired,
   getProducts: PropTypes.func.isRequired,
   productsLoadedAt: PropTypes.string.isRequired,
-  subCategory: PropTypes.func.isRequired,
+  subCategory: PropTypes.number.isRequired,
+  showSubCategory: PropTypes.bool.isRequired,
 };
 
-// defaut
 ProductList.defaultProps = {
   products: [],
 };
@@ -56,11 +61,3 @@ const ProductsBlock = styled.div`
   -moz-column-gap: 50px; /* Firefox */
   column-gap: 50px;
 `;
-// const Categories = styled.div`
-//   height: 40px;
-//   margin-top: 20px;
-//   margin-bottom: 20px;
-//   text-align: center;
-//   display: flex;
-//   justify-content: space-around;
-// `;
