@@ -4,19 +4,23 @@ import VisibleCategoryList from './components/CategoryList/VisibleCategoryList';
 import VisibleProductList from './components/ProductList/VisibleProductList';
 
 const ProductSyst = () => (
-  <ProductSysteme>
+  <ProductSystem>
     <VisibleCategoryList />
     <VisibleProductList />
-  </ProductSysteme>
+  </ProductSystem>
 );
 
 export default ProductSyst;
 
-const ProductSysteme = styled.div`
+const ProductSystem = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 50%;
   overflow: scroll;
-  padding: 40px 30px;
+  padding: 20px 0;
+  
+  width: 100%;
+  @media only screen and (min-width: 576px) {
+    width: 50%;
+  }
 `;

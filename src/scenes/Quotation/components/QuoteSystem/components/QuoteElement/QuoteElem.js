@@ -171,6 +171,7 @@ class QuoteElem extends Component {
             // TODO: Try refactoring with setState Callback
             this.debounce('quantityHasBeenChanged', () => {
               if (this.state.quantity !== this.props.quoteItem.quantity) {
+                this.getPriceFromCombination();
                 this.props.updateQuantity({
                   id: this.props.quoteItem.id,
                   quantity: parseInt(this.state.quantity, 10),
@@ -358,8 +359,8 @@ class QuoteElem extends Component {
                 <div>
                   <Input type="input" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
                   <div>
-                    <span>Preço total</span>
-                    <span>{this.state.totalPrice}</span>
+                    <div className="total_price">Preço total</div>
+                    <div>{this.state.totalPrice}</div>
                   </div>
                 </div>
               )}
@@ -378,7 +379,7 @@ QuoteElem.propTypes = {
   children: PropTypes.shape().isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   quoteItem: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     id_product: PropTypes.number,
     quantity: PropTypes.number,
     price: PropTypes.number,
@@ -420,24 +421,34 @@ const QuoteBoxHeader = styled.div`
   }
 `;
 
+const QuoteBoxContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media only screen and (min-width: 1024px) {
+    flex-direction: row;
+  }
+`;
+
 const RatioCustom = styled(Ratio)`
-  width: 50%;
-  padding-right: 10px;
+  width: 100%;
+  padding-right: 0;
+  padding-bottom: 20px;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-`;
-
-const QuoteBoxContent = styled.div`
-  display: flex;
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    padding-left: 10px;
+    padding-bottom: 0;
+  }
 `;
 
 const QuoteBoxContentForm = styled.div`
   display: flex;
-  width: 50%;
-  padding-left: 10px;
+  width: 100%;
+  padding-left: 0;
   > div {
     width: 50%;
     &:first-child {
@@ -446,7 +457,7 @@ const QuoteBoxContentForm = styled.div`
     &:last-child {
       padding-left: 5px;
     }
-    > label {
+    label {
       display: block;
       margin-bottom: 10px;
       span {
@@ -454,7 +465,8 @@ const QuoteBoxContentForm = styled.div`
         margin-bottom: 5px;
       }
       input {
-        max-width: 100px;
+        max-width: 140px;
+        width: 100%;
       }
       textarea {
         max-width: 100%;
@@ -463,5 +475,12 @@ const QuoteBoxContentForm = styled.div`
         height: 50px;
       }
     }
+    .total_price {
+      margin-bottom: 5px;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    padding-left: 10px;  
   }
 `;

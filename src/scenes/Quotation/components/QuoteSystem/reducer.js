@@ -1,4 +1,4 @@
-import idGenerator from 'react-id-generator';
+// import idGenerator from 'react-id-generator';
 import {
   INIT_QUOTATION,
   ADD_PRODUCT_TO_QUOTATION,
@@ -16,6 +16,7 @@ import {
 const initialState = {
   quotation: {
     id: null,
+    total_id: 0,
     products: [],
   },
 };
@@ -43,16 +44,20 @@ export default function (state = initialState, action) {
     }
     case ADD_PRODUCT_TO_QUOTATION: {
       console.log(data);
+      console.log(state.quotation.totalId);
+
+      const nextID = state.quotation.total_id + 1;
 
       return {
         ...state,
         quotation: {
           ...state.quotation,
+          total_id: nextID,
           products: [
             ...state.quotation.products,
             {
               ...initialQuoteProduct,
-              id: idGenerator(),
+              id: nextID,
               id_product: data.id,
             },
           ],

@@ -35,8 +35,8 @@ const quoteElemTarget = {
     // eslint-disable-next-line react/no-find-dom-node
     const hoverBoundingRect = (findDOMNode(component)).getBoundingClientRect();
 
-    // Get vertical middle
-    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 3;
+    // Get vertical middle -- divided in 4, in order to change the order after 1/4 of the height traveled
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 4;
 
     // Determine mouse position
     const clientOffset = monitor.getClientOffset();
@@ -52,8 +52,8 @@ const quoteElemTarget = {
       return false;
     }
 
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+    // Dragging upwards -- we add *3 to change the order after 1/4 of the height traveled
+    if (dragIndex > hoverIndex && hoverClientY > 3 * hoverMiddleY) {
       return false;
     }
 
@@ -85,6 +85,7 @@ class QuoteElemDrag extends Component {
     const opacity = {
       opacity: isDraggedElem ? 0.5 : 1,
     };
+    console.log(quoteItem);
 
     return (
 
@@ -94,7 +95,7 @@ class QuoteElemDrag extends Component {
             <VisibleQuoteElem
               index={index}
               quoteItem={quoteItem}
-              key={`key_${index}`}
+              key={quoteItem.id}
             >
               {connectDragSource(
                 <img src={iconDrag} alt="" className="drag" style={{ cursor: '-webkit-grab' }} />,
@@ -110,7 +111,7 @@ class QuoteElemDrag extends Component {
 QuoteElemDrag.propTypes = {
   index: PropTypes.number.isRequired,
   quoteItem: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     id_product: PropTypes.number,
     quantity: PropTypes.number,
     price: PropTypes.number,
@@ -124,7 +125,7 @@ QuoteElemDrag.propTypes = {
   connectDragPreview: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   draggedItem: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     index: PropTypes.number,
   }),
 };

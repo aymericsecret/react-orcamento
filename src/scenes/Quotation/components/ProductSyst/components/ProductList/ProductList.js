@@ -22,12 +22,13 @@ class ProductList extends Component {
     const {
       products, isLoaded, showSubCategory, subCategory,
     } = this.props;
-    if (!isLoaded) return <h1>Product not loaded</h1>;
+    if (!isLoaded) return (<h1>Product not loaded</h1>);
     console.log(`products : ${products}`);
     const productToShow = products.filter(
       product => product.categories.find(
         category => category === subCategory) !== undefined);
     console.log(`productToShow : ${productToShow}`);
+
     return (
       <ProductsBlock>
         {!showSubCategory
@@ -54,6 +55,7 @@ ProductList.defaultProps = {
 
 const ProductsBlock = styled.div`
   columns: 1;
+  padding: 0 20px;
   @media only screen and (min-width: 768px) {
     columns: 2;
   }

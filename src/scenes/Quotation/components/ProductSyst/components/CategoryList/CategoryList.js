@@ -127,6 +127,7 @@ CategoryList.defaultProps = {
 const ProductsBlock = styled.div`
   width: 100%;
   margin-bottom: 50px;
+  padding: 0 20px;
 `;
 const Categories = styled.div`
   display: flex;

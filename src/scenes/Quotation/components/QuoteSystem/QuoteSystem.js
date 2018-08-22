@@ -71,11 +71,15 @@ const StyledHeader = styled.div`
 `;
 const QuoteBlock = styled.div`
   position: relative;
-  width: 50%;
-  height: 100%;
+  
   background: #EDEDED;
   overflow: scroll;
   padding-top: 100px;
+  height: 100%;
+  width: 100%;
+  @media only screen and (min-width: 576px) {
+    width: 50%;
+  }
 `;
 const QuoteElemsContainer = styled.div`
   padding: 0 20px 20px;
