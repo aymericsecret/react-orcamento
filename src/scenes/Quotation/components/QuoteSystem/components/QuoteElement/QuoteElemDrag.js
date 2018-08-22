@@ -75,7 +75,6 @@ class QuoteElemDrag extends Component {
     const {
       index,
       quoteItem,
-      idKey,
       connectDropTarget,
       connectDragPreview,
       connectDragSource,
@@ -95,7 +94,7 @@ class QuoteElemDrag extends Component {
             <VisibleQuoteElem
               index={index}
               quoteItem={quoteItem}
-              key={idKey}
+              key={`key_${index}`}
             >
               {connectDragSource(
                 <img src={iconDrag} alt="" className="drag" style={{ cursor: '-webkit-grab' }} />,
@@ -110,7 +109,6 @@ class QuoteElemDrag extends Component {
 
 QuoteElemDrag.propTypes = {
   index: PropTypes.number.isRequired,
-  // products: PropTypes.arrayOf(PropTypes.object).isRequired,
   quoteItem: PropTypes.shape({
     id: PropTypes.string,
     id_product: PropTypes.number,
@@ -122,7 +120,6 @@ QuoteElemDrag.propTypes = {
     size_x: PropTypes.number,
     size_y: PropTypes.number,
   }).isRequired,
-  idKey: PropTypes.string.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDragPreview: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,

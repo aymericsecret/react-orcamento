@@ -17,11 +17,9 @@ class QuoteSystem extends Component {
     }
   }
 
-  updateCart = (idProduct, newEntry) => {
-    console.log(idProduct, newEntry);
-  };
+  moveElem = (dragIndex, hoverIndex) => {
+    console.log(dragIndex, hoverIndex);
 
-  moveCard = (dragIndex, hoverIndex) => {
     const { quotation, updateProductsOrder } = this.props;
     quotation.products.splice(hoverIndex, 0, quotation.products.splice(dragIndex, 1)[0]);
     updateProductsOrder();
@@ -36,14 +34,14 @@ class QuoteSystem extends Component {
         </StyledHeader>
         <QuoteElemsContainer>
           {quotation.products.map((elem, index) => (
-
             <QuoteElemDrag
               id={elem.id}
               index={index}
               quoteItem={elem}
-              idKey={idGenerator()}
-              moveCard={this.moveCard}
+              moveCard={this.moveElem}
+              key={`key_${elem.id}`}
             />
+
           ))}
         </QuoteElemsContainer>
       </QuoteBlock>

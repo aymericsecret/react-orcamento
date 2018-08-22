@@ -72,7 +72,8 @@ class CategoryList extends Component {
                   <LinkCustom
                     key={categorie.term_id}
                     eventClick={() => this.selectMainCategory(index)}
-                  > <h3 className="notActive">{categorie.name}</h3>
+                  >
+                    <h3 className="notActive">{categorie.name}</h3>
                   </LinkCustom>
                 )
             ))}
@@ -82,15 +83,9 @@ class CategoryList extends Component {
           ? (
             <SubCategories>
               {categoryList.children[mainCategory].children.map(sousCategorie => (
-                <SubCategory>
-                  <LinkCustom
-                    key={sousCategorie.term_id}
-                    eventClick={() => this.selectSubCategory(sousCategorie.term_id)}
-                  >
-                    <RatioCustom
-                      ratio={16 / 9}
-                      key={sousCategorie.term_id}
-                    >
+                <SubCategory key={sousCategorie.term_id}>
+                  <LinkCustom eventClick={() => this.selectSubCategory(sousCategorie.term_id)}>
+                    <RatioCustom ratio={16 / 9}>
                       <img
                         src={sousCategorie.cover.url}
                         className="photoCategory"
