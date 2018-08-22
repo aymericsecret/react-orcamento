@@ -10,7 +10,7 @@ class Quotation extends Component {
   }
 
   toggle = () => {
-    // console.log('click');
+    // TODO: Add toggle when a product has been added
     this.setState(prevState => ({
       showProducts: !prevState.showProducts,
     }));
