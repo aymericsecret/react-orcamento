@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
-// import Category from './components/Category';
 import LinkCustom from '../../../../../../components/LinkCustom';
-// import VisibleProduct from '../ProductList/components/VisibleProduct';
 import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
 
@@ -20,7 +17,9 @@ class CategoryList extends Component {
   }
 
   componentDidMount = () => {
-    const { getCategoryList, categoryIsLoaded, categoryLoadedAt } = this.props;
+    const {
+      getCategoryList, categoryIsLoaded, categoryLoadedAt,
+    } = this.props;
     const oneHour = 60 * 60 * 1000;
     console.log(new Date() - new Date(categoryLoadedAt));
     if (!categoryIsLoaded || new Date() - new Date(categoryLoadedAt) > oneHour) {
@@ -40,7 +39,14 @@ class CategoryList extends Component {
   }
 
   render() {
-    const { categoryList, categoryIsLoaded, mainCategory } = this.props;
+    const {
+      categoryList, categoryIsLoaded, mainCategory, showSubCategory, subCategory,
+    } = this.props;
+    let objetSubCategory = { name: 'Name not defined' };
+    if (categoryList.children !== undefined) {
+      objetSubCategory = categoryList.children[mainCategory].children.find(
+        children => children.term_id === subCategory);
+    }
     if (!categoryIsLoaded) return <h1>Category not loaded</h1>;
     return (
       <ProductsBlock>
@@ -60,7 +66,7 @@ class CategoryList extends Component {
                     key={categorie.term_id}
                     eventClick={() => this.selectMainCategory(index)}
                   >
-                    <h3 className="active">{categorie.name}</h3>
+                    <h3 className="active"><div className="categoryName">{categorie.name}</div></h3>
                   </LinkCustom>
                 ) : (
                   <LinkCustom
@@ -72,31 +78,34 @@ class CategoryList extends Component {
             ))}
           </Categories>
         </HeaderCategories>
-        <SubCategories>
-          {categoryList.children[mainCategory].children.map(sousCategorie => (
-            <SubCategory>
-              <LinkCustom
-                key={sousCategorie.term_id}
-                eventClick={() => this.selectSubCategory(sousCategorie.term_id)}
-              >
-                <RatioCustom
-                  ratio={16 / 9}
-                  key={sousCategorie.term_id}
-                >
-                  <img
-                    src={sousCategorie.cover.url}
-                    className="photoCategory"
-                    alt=""
-                  />
-                </RatioCustom>
-                <h4>
-                  {sousCategorie.name}
-                </h4>
-              </LinkCustom>
-            </SubCategory>
-          ))
-          }
-        </SubCategories>
+        {showSubCategory
+          ? (
+            <SubCategories>
+              {categoryList.children[mainCategory].children.map(sousCategorie => (
+                <SubCategory>
+                  <LinkCustom
+                    key={sousCategorie.term_id}
+                    eventClick={() => this.selectSubCategory(sousCategorie.term_id)}
+                  >
+                    <RatioCustom
+                      ratio={16 / 9}
+                      key={sousCategorie.term_id}
+                    >
+                      <img
+                        src={sousCategorie.cover.url}
+                        className="photoCategory"
+                        alt=""
+                      />
+                    </RatioCustom>
+                    <h4>
+                      {sousCategorie.name}
+                    </h4>
+                  </LinkCustom>
+                </SubCategory>
+              ))}
+            </SubCategories>)
+          : <h3>{objetSubCategory.name}</h3>
+        }
       </ProductsBlock>
     );
   }
@@ -106,15 +115,19 @@ export default CategoryList;
 
 CategoryList.propTypes = {
   mainCategory: PropTypes.number.isRequired,
-  categoryList: PropTypes.arrayOf(PropTypes.arrayOf),
+  categoryList: PropTypes.shape({
+    term_id: PropTypes.number,
+    children: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
   setMainCategory: PropTypes.func.isRequired,
   setSubCategory: PropTypes.func.isRequired,
   getCategoryList: PropTypes.func.isRequired,
   categoryIsLoaded: PropTypes.bool.isRequired,
   categoryLoadedAt: PropTypes.string.isRequired,
+  subCategory: PropTypes.number.isRequired,
+  showSubCategory: PropTypes.bool.isRequired,
 };
 CategoryList.defaultProps = {
-  categoryList: [],
 };
 const ProductsBlock = styled.div`
   width: 100%;
@@ -161,6 +174,9 @@ const Categories = styled.div`
   }
   h3.active {
     font-family: "OmnesMedium";
+  }
+  .categoryName{
+    
   }
 `;
 const IconSearchDiv = styled.div`

@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getCategoryList, setMainCategory, setSubCategory } from './actions';
 import CategoryList from './CategoryList';
-// import ProductSyst from '../../ProductSyst';
 
 const mapStateToProps = state => ({
   categoryList: state.categoryList.categoryList,
@@ -11,6 +10,7 @@ const mapStateToProps = state => ({
   mainCategory: state.categoryList.mainCategory,
   subCategory: state.categoryList.subCategory,
   isLoaded: state.products.productsLoaded,
+  showSubCategory: state.categoryList.showSubCategory,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

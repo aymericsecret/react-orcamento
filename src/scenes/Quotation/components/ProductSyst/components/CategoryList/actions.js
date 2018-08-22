@@ -1,6 +1,6 @@
 export const GET_CATEGORY_LIST = 'GET_CATEGORY_LIST';
-// export const GET_PRODUCT = 'GET_PRODUCT';
-// export const RESET_PRODUCT = 'RESET_PRODUCT';
+export const SET_MAIN_CATEGORY = 'SET_MAIN_CATEGORY';
+export const SET_SUB_CATEGORY = 'SET_SUB_CATEGORY';
 
 export function getCategoryList() {
   return (dispatch) => {
@@ -16,8 +16,6 @@ export function getCategoryList() {
   };
 }
 
-export const SET_MAIN_CATEGORY = 'SET_MAIN_CATEGORY';
-
 export function setMainCategory(index) {
   return (dispatch) => {
     console.log(`Set index main category : ${index}`);
@@ -27,8 +25,6 @@ export function setMainCategory(index) {
     });
   };
 }
-
-export const SET_SUB_CATEGORY = 'SET_SUB_CATEGORY';
 
 export function setSubCategory(index) {
   return (dispatch) => {
