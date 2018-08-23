@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import idGenerator from 'react-id-generator';
 import PropTypes from 'prop-types';
@@ -9,12 +10,26 @@ import QuoteElemDrag from './components/QuoteElement/QuoteElemDrag';
 // import VisibleQuoteElem from './components/QuoteElement/VisibleQuoteElem';
 
 class QuoteSystem extends Component {
+  constructor(props) {
+    super(props);
+    this.quoteElemsRef = React.createRef();
+  }
+
   componentWillMount() {
     const { quotation, initQuotation } = this.props;
     if (quotation.id === null) {
       quotation.id = idGenerator();
       initQuotation(quotation);
     }
+  }
+
+  componentDidUpdate() {
+    // We get the new height of the container after an element has been added
+    setTimeout(() => {
+      // eslint-disable-next-line react/no-find-dom-node
+      const node = ReactDOM.findDOMNode(this.quoteElemsRef.current);
+      this.props.updateElemNode(node);
+    });
   }
 
   moveElem = (dragIndex, hoverIndex) => {
@@ -32,7 +47,7 @@ class QuoteSystem extends Component {
         <StyledHeader>
           <Header />
         </StyledHeader>
-        <QuoteElemsContainer>
+        <QuoteElemsContainer ref={this.quoteElemsRef}>
           {quotation.products.map((elem, index) => (
             <QuoteElemDrag
               id={elem.id}
@@ -59,6 +74,7 @@ QuoteSystem.propTypes = {
   }).isRequired,
   initQuotation: PropTypes.func.isRequired,
   updateProductsOrder: PropTypes.func.isRequired,
+  updateElemNode: PropTypes.func.isRequired,
 };
 
 const StyledHeader = styled.div`
@@ -75,7 +91,7 @@ const QuoteBlock = styled.div`
   background: #EDEDED;
   overflow: scroll;
   padding-top: 100px;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   @media only screen and (min-width: 576px) {
     width: 50%;

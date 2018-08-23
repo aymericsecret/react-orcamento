@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import Toggle from './components/Toggle/Toggle';
 
 class Quotation extends Component {
+  constructor(props) {
+    super(props);
+    this.quoteSystemsRef = React.createRef();
+    this.shouldScroll = false;
+  }
+
   state = {
     showProducts: true,
   }
 
-  toggle = () => {
-    // TODO: Add toggle when a product has been added
+  updateElemNode = (node) => {
+    if (this.shouldScroll) {
+      this.shouldScroll = false;
+      // eslint-disable-next-line react/no-find-dom-node
+      const container = ReactDOM.findDOMNode(this.quoteSystemsRef.current);
+      container.scrollTo(0, node.scrollHeight);
+    }
+  }
+
+  toggle = (args) => {
     this.setState(prevState => ({
       showProducts: !prevState.showProducts,
     }));
+    if (args && args.type !== undefined) {
+      // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
+      this.shouldScroll = true;
+    }
   }
 
   render() {
@@ -21,8 +40,8 @@ class Quotation extends Component {
       <div>
         <Toggle toggle={this.toggle} />
         <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
-          <VisibleQuoteSystem />
-          <ProductSyst />
+          <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
+          <ProductSyst toggleSide={this.toggle} />
         </QuotationGrid>
       </div>
     );

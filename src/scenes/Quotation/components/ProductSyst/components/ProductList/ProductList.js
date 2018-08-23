@@ -20,7 +20,7 @@ class ProductList extends Component {
 
   render() {
     const {
-      products, isLoaded, showSubCategory, subCategory,
+      products, isLoaded, showSubCategory, subCategory, toggleSide,
     } = this.props;
     if (!isLoaded) return (<h1>Product not loaded</h1>);
     console.log(`products : ${products}`);
@@ -32,7 +32,10 @@ class ProductList extends Component {
     return (
       <ProductsBlock>
         {!showSubCategory
-          && productToShow.map(product => (<VisibleProduct product={product} key={product.id} />))}
+          && productToShow.map(product => (
+            <VisibleProduct product={product} key={product.id} toggleSide={toggleSide} />
+          ))
+        }
       </ProductsBlock>
     );
   }
@@ -47,6 +50,7 @@ ProductList.propTypes = {
   productsLoadedAt: PropTypes.string.isRequired,
   subCategory: PropTypes.number.isRequired,
   showSubCategory: PropTypes.bool.isRequired,
+  toggleSide: PropTypes.func.isRequired,
 };
 
 ProductList.defaultProps = {

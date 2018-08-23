@@ -3,9 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
 
-const Product = ({ product, addProductToQuotation }) => (
+const Product = ({ product, addProductToQuotation, toggleSide }) => (
   <TestDiv>
-    <button type="button" onClick={() => addProductToQuotation(product)}>
+    <button
+      type="button"
+      onClick={() => {
+        addProductToQuotation(product);
+        toggleSide({ type: 'add_product' });
+      }}
+    >
       {console.log(product.acf)}
       <RatioCustom ratio={16 / 9}>
         <img
@@ -28,6 +34,7 @@ Product.propTypes = {
     id: PropTypes.number,
   }).isRequired,
   addProductToQuotation: PropTypes.func.isRequired,
+  toggleSide: PropTypes.func.isRequired,
 };
 
 const TestDiv = styled.div`
