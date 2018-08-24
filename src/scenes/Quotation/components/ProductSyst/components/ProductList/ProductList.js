@@ -1,60 +1,40 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import VisibleProduct from './components/VisibleProduct';
 
-class ProductList extends Component {
-  componentDidMount = () => {
-    const {
-      getProducts, isLoaded, productsLoadedAt, subCategory,
-    } = this.props;
-    console.log(`getProduct :${getProducts} ${this.props.getProducts}`);
+const ProductList = (props) => {
+  const {
+    products, showSubCategory, subCategory, toggleSide,
+  } = props;
+  console.log(subCategory);
 
-    const oneHour = 60 * 60 * 1000;
-    console.log(new Date() - new Date(productsLoadedAt));
+  if (products.length === 0 && showSubCategory) return (<h1>Product not loaded</h1>);
 
-    if ((!isLoaded || ((new Date() - new Date(productsLoadedAt)) > oneHour))) {
-      getProducts(subCategory);
-    }
-  }
+  console.log(`products : ${products}`);
+  const productToShow = products.filter(
+    product => product.categories.find(
+      category => category === subCategory) !== undefined);
+  console.log(`productToShow : ${productToShow}`);
 
-  render() {
-    const {
-      products, isLoaded, showSubCategory, subCategory, toggleSide,
-    } = this.props;
-    if (!isLoaded) return (<h1>Product not loaded</h1>);
-    console.log(`products : ${products}`);
-    const productToShow = products.filter(
-      product => product.categories.find(
-        category => category === subCategory) !== undefined);
-    console.log(`productToShow : ${productToShow}`);
-
-    return (
-      <ProductsBlock>
-        {!showSubCategory
+  return (
+    <ProductsBlock>
+      {showSubCategory
           && productToShow.map(product => (
             <VisibleProduct product={product} key={product.id} toggleSide={toggleSide} />
           ))
         }
-      </ProductsBlock>
-    );
-  }
-}
+    </ProductsBlock>
+  );
+};
 
 export default ProductList;
 
 ProductList.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.object),
-  isLoaded: PropTypes.bool.isRequired,
-  getProducts: PropTypes.func.isRequired,
-  productsLoadedAt: PropTypes.string.isRequired,
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
   subCategory: PropTypes.number.isRequired,
   showSubCategory: PropTypes.bool.isRequired,
   toggleSide: PropTypes.func.isRequired,
-};
-
-ProductList.defaultProps = {
-  products: [],
 };
 
 const ProductsBlock = styled.div`

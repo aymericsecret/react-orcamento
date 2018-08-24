@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import products from './scenes/Quotation/components/ProductSyst/components/ProductList/reducer';
+import app from './scenes/Quotation/reducer';
 import quotation from './scenes/Quotation/components/QuoteSystem/reducer';
 import categoryList from './scenes/Quotation/components/ProductSyst/components/CategoryList/reducer';
 
 const rootReducer = combineReducers({
-  quotation,
-  products,
+  app,
   categoryList,
+  quotation,
 });
 
 export default rootReducer;

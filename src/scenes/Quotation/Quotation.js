@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import Toggle from './components/Toggle/Toggle';
@@ -14,6 +15,16 @@ class Quotation extends Component {
 
   state = {
     showProducts: true,
+  }
+
+
+  componentDidMount = () => {
+    const { initApp, appLoadedAt, appLoaded } = this.props;
+    const oneHour = 60 * 60 * 1000;
+    console.log(new Date() - new Date(appLoadedAt));
+    if (!appLoaded || new Date() - new Date(appLoadedAt) > oneHour) {
+      initApp();
+    }
   }
 
   updateElemNode = (node) => {
@@ -49,6 +60,15 @@ class Quotation extends Component {
 }
 
 export default Quotation;
+
+Quotation.propTypes = {
+  initApp: PropTypes.func.isRequired,
+  appLoadedAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.any,
+  ]).isRequired,
+  appLoaded: PropTypes.bool.isRequired,
+};
 
 const QuotationGrid = styled.div`
   position: relative;

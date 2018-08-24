@@ -36,18 +36,13 @@ export default function (state = initialState, action) {
   const { type, data } = action;
   switch (type) {
     case INIT_QUOTATION: {
-      console.log(data);
       return {
         ...state,
         quotation: data,
       };
     }
     case ADD_PRODUCT_TO_QUOTATION: {
-      console.log(data);
-      console.log(state.quotation.totalId);
-
       const nextID = state.quotation.total_id + 1;
-
       return {
         ...state,
         quotation: {
@@ -68,7 +63,6 @@ export default function (state = initialState, action) {
       const productToRemove = state.quotation.products.find(el => el.id === data);
       const productIndex = state.quotation.products.indexOf(productToRemove);
       state.quotation.products.splice(productIndex, 1);
-
       return {
         ...state,
         quotation: {
@@ -83,7 +77,6 @@ export default function (state = initialState, action) {
       const productToUpdate = state.quotation.products.find(el => el.id === data.id);
       const productIndex = state.quotation.products.indexOf(productToUpdate);
       const productListUpdated = state.quotation.products;
-
       productListUpdated[productIndex].quantity = data.quantity;
       return {
         ...state,
