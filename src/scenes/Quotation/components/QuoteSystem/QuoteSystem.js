@@ -89,7 +89,8 @@ const QuoteBlock = styled.div`
   position: relative;
   
   background: #EDEDED;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
   padding-top: 100px;
   height: 100vh;
   width: 100%;

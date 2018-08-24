@@ -11,10 +11,10 @@ export const UPDATE_PRODUCT_SIZE_Y = 'UPDATE_PRODUCT_SIZE_Y';
 export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';
 
 export function initQuotation(quotation) {
-  return (dispatch) => dispatch({
-      type: 'INIT_QUOTATION',
-      data: quotation,
-    });
+  return dispatch => dispatch({
+    type: 'INIT_QUOTATION',
+    data: quotation,
+  });
 }
 
 export function addProductToQuotation(product) {

@@ -1,0 +1,28 @@
+import { INIT_SESSION } from './actions';
+
+const initialState = {
+  login: '',
+  permission: 0,
+  isLoggedIn: false,
+  loggedAt: '',
+};
+
+
+export default function (state = initialState, action) {
+  const { type, data } = action;
+  console.log(data);
+
+  switch (type) {
+    case INIT_SESSION: {
+      return {
+        ...state,
+        login: data.login,
+        isLoggedIn: true,
+        loggedAt: new Date(),
+        permission: 1,
+      };
+    }
+    default:
+      return state;
+  }
+}

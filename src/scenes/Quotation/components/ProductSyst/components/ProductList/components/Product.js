@@ -15,9 +15,9 @@ const Product = ({ product, addProductToQuotation, toggleSide }) => (
       {console.log(product.acf)}
       <RatioCustom ratio={16 / 9}>
         <img
-          src={product.acf.header.cover.url}
+          src={product.acf.header.cover.sizes.thumbnail}
           className="photoProduct"
-          alt=""
+          alt={product.acf.header.cover.alt}
         />
       </RatioCustom>
       <h4 className="nameProduct">

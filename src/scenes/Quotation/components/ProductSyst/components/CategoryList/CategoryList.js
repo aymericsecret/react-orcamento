@@ -85,9 +85,9 @@ class CategoryList extends Component {
                     <LinkCustom eventClick={() => this.selectSubCategory(sousCategorie.term_id)}>
                       <RatioCustom ratio={16 / 9}>
                         <img
-                          src={sousCategorie.cover.url}
+                          src={sousCategorie.cover.sizes.thumbnail}
                           className="photoCategory"
-                          alt=""
+                          alt={sousCategorie.cover.alt}
                         />
                       </RatioCustom>
                       <h4>

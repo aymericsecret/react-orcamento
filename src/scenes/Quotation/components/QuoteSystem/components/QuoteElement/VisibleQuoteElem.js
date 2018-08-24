@@ -14,6 +14,7 @@ import {
 
 const mapStateToProps = state => ({
   products: state.app.products,
+  userPermission: state.session.permission,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

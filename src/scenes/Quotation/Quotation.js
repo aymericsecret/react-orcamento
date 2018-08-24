@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import Toggle from './components/Toggle/Toggle';
+import LoadingScreen from '../../components/LoadingScreen';
 
 class Quotation extends Component {
   constructor(props) {
@@ -47,13 +48,23 @@ class Quotation extends Component {
   }
 
   render() {
+    console.log(this.props.appLoaded);
+
     return (
       <div>
-        <Toggle toggle={this.toggle} />
-        <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
-          <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
-          <ProductSyst toggleSide={this.toggle} />
-        </QuotationGrid>
+        {this.props.appLoaded ? (
+          <div>
+            <Toggle toggle={this.toggle} />
+            <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
+              <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
+              <ProductSyst toggleSide={this.toggle} />
+            </QuotationGrid>
+          </div>
+        ) : (
+
+          <LoadingScreen />
+
+        )}
       </div>
     );
   }
@@ -75,7 +86,7 @@ const QuotationGrid = styled.div`
   display: flex;
   width: 200%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   transition: transform .3s ease-out;
   &.product-list {
     transform: translateX(-50%);

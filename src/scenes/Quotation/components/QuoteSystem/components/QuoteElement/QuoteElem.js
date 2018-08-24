@@ -6,8 +6,8 @@ import iconClose from '../../../../../../assets/close_2.svg';
 import Input from './components/Input';
 
 class QuoteElem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.quantityHasBeenChanged = false;
     this.priceHasBeenChanged = false;
     this.noteHasBeenChanged = false;
@@ -19,7 +19,7 @@ class QuoteElem extends Component {
 
     this.materialList = [];
     this.sizeList = [];
-    this.userPermission = 1;
+    this.userPermission = props.userPermission;
   }
 
   state = {
@@ -37,6 +37,7 @@ class QuoteElem extends Component {
   componentWillMount() {
     const product = this.props.products.find(el => el.id === this.props.quoteItem.id_product);
     this.product = product;
+    console.log(this.product);
     // TODO: Remove this verification later, as the back office should have that property always.
     // Or make it better
     // TODO: Case no variation
@@ -80,7 +81,7 @@ class QuoteElem extends Component {
     // INITIAL PRICE
     let priceInitialValue = product.acf.variations !== undefined
     && product.acf.variations.length > 0
-      ? product.acf.variations[0].price : null;
+      ? product.acf.variations[0].price : 0;
     priceInitialValue = this.props.quoteItem.price === null ? priceInitialValue : this.props.quoteItem.price;
 
     // INITIAL TOTAL PRICE
@@ -99,15 +100,24 @@ class QuoteElem extends Component {
     });
   }
 
-  getPriceFromCombination = () => {
+  getPriceFromCombination = (price = null) => {
     // Adding here new conditions for combinations
-    let newPrice = this.product.acf.variations.find((el) => {
-      if (this.isPricePerMeterSquare) {
-        return el.material.toLowerCase() === this.state.material;
-      }
-      return el.size.toLowerCase() === this.state.size
-      && el.material.toLowerCase() === this.state.material;
-    });
+    console.log(price);
+    console.log(this.product);
+    let newPrice;
+    if (price === null) {
+      newPrice = this.product.acf.variations.find((el) => {
+        if (this.isPricePerMeterSquare) {
+          return el.material.toLowerCase() === this.state.material;
+        }
+        return el.size.toLowerCase() === this.state.size
+        && el.material.toLowerCase() === this.state.material;
+      });
+    } else {
+      newPrice = {
+        price,
+      };
+    }
 
     newPrice = this.isPricePerMeterSquare ? newPrice.price * this.state.size_x * this.state.size_y : newPrice.price;
     const newTotalPrice = newPrice * this.state.quantity;
@@ -171,7 +181,8 @@ class QuoteElem extends Component {
             // TODO: Try refactoring with setState Callback
             this.debounce('quantityHasBeenChanged', () => {
               if (this.state.quantity !== this.props.quoteItem.quantity) {
-                this.getPriceFromCombination();
+                const price = this.props.quoteItem.price !== null ? this.props.quoteItem.price : 0;
+                this.getPriceFromCombination(price);
                 this.props.updateQuantity({
                   id: this.props.quoteItem.id,
                   quantity: parseInt(this.state.quantity, 10),
@@ -320,11 +331,12 @@ class QuoteElem extends Component {
       index, quoteItem, removeItem, children,
     } = this.props;
 
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     return (
       <QuoteBox>
         <QuoteBoxHeader>
           <h3>{index + 1}. {this.state.product.title.rendered}</h3>
-          { children }
+          { !isMobile && children }
           <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
@@ -375,6 +387,7 @@ class QuoteElem extends Component {
 export default QuoteElem;
 
 QuoteElem.propTypes = {
+  userPermission: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
   children: PropTypes.shape().isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,

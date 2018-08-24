@@ -20,7 +20,8 @@ ProductSyst.propTypes = {
 const ProductSystem = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
   padding: 20px 0;
   height: 100vh;
   width: 100%;

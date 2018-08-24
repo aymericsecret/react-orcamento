@@ -14,7 +14,6 @@ export default function (state = initialState, action) {
     case INIT_APP: {
       return {
         ...state,
-        appLoaded: true,
         appLoadedAt: new Date(),
       };
     }
@@ -22,6 +21,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         categories: data,
+        appLoaded: true,
       };
     }
     case INIT_APP_PRODUCTS: {
