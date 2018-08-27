@@ -11,13 +11,13 @@ import { save, load } from 'redux-localstorage-simple';
 import { Provider } from 'react-redux';
 
 import './App.css';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-import Quotation from './scenes/Quotation/Quotation';
+import VisibleQuotation from './scenes/Quotation/VisibleQuotation';
 import Login from './scenes/Login/Login';
 import rootReducer from './rootReducer';
 
-const middleware = [logger, thunk];
+const middleware = [thunk];
 
 const store = createStore(
   rootReducer,
@@ -33,7 +33,7 @@ class App extends Component {
         <Router>
           <AppLayout className="App">
             <Switch>
-              <Route exact path="/" render={() => (<Quotation />)} />
+              <Route exact path="/" render={() => (<VisibleQuotation />)} />
               <Route path="/login" component={Login} />
             </Switch>
           </AppLayout>
@@ -47,8 +47,9 @@ export default App;
 
 const AppLayout = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   max-width: 1200px;
   margin: auto;
   background: #FFFFFF;
+  overflow-x: hidden;
 `;

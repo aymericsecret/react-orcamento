@@ -24,7 +24,7 @@ const Input = props => (
 );
 
 Input.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   idType: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,

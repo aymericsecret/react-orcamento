@@ -1,20 +1,5 @@
-export const GET_CATEGORY_LIST = 'GET_CATEGORY_LIST';
 export const SET_MAIN_CATEGORY = 'SET_MAIN_CATEGORY';
 export const SET_SUB_CATEGORY = 'SET_SUB_CATEGORY';
-
-export function getCategoryList() {
-  return (dispatch) => {
-    fetch('http://cremme.com.br/wp-json/orcamento/v1/categories')
-      .then(res => res.json())
-      .then((categoryList) => {
-        console.log(`categoryList dans actoions.js : ${categoryList}`);
-        return dispatch({
-          type: 'GET_CATEGORY_LIST',
-          data: categoryList,
-        });
-      });
-  };
-}
 
 export function setMainCategory(index) {
   return (dispatch) => {

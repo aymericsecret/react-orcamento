@@ -1,4 +1,4 @@
-import idGenerator from 'react-id-generator';
+// import idGenerator from 'react-id-generator';
 import {
   INIT_QUOTATION,
   ADD_PRODUCT_TO_QUOTATION,
@@ -10,11 +10,13 @@ import {
   UPDATE_PRODUCT_MATERIAL,
   UPDATE_PRODUCT_SIZE_X,
   UPDATE_PRODUCT_SIZE_Y,
+  UPDATE_PRODUCTS,
 } from './actions';
 
 const initialState = {
   quotation: {
     id: null,
+    total_id: 0,
     products: [],
   },
 };
@@ -34,24 +36,23 @@ export default function (state = initialState, action) {
   const { type, data } = action;
   switch (type) {
     case INIT_QUOTATION: {
-      console.log(data);
       return {
         ...state,
         quotation: data,
       };
     }
     case ADD_PRODUCT_TO_QUOTATION: {
-      console.log(data);
-
+      const nextID = state.quotation.total_id + 1;
       return {
         ...state,
         quotation: {
           ...state.quotation,
+          total_id: nextID,
           products: [
             ...state.quotation.products,
             {
               ...initialQuoteProduct,
-              id: idGenerator(),
+              id: nextID,
               id_product: data.id,
             },
           ],
@@ -62,7 +63,6 @@ export default function (state = initialState, action) {
       const productToRemove = state.quotation.products.find(el => el.id === data);
       const productIndex = state.quotation.products.indexOf(productToRemove);
       state.quotation.products.splice(productIndex, 1);
-
       return {
         ...state,
         quotation: {
@@ -77,7 +77,6 @@ export default function (state = initialState, action) {
       const productToUpdate = state.quotation.products.find(el => el.id === data.id);
       const productIndex = state.quotation.products.indexOf(productToUpdate);
       const productListUpdated = state.quotation.products;
-
       productListUpdated[productIndex].quantity = data.quantity;
       return {
         ...state,
@@ -168,6 +167,14 @@ export default function (state = initialState, action) {
         quotation: {
           ...state.quotation,
           products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCTS: {
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
         },
       };
     }

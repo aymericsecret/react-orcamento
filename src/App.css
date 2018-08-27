@@ -19,3 +19,6 @@ body {
   color: #3c3c3c;
   /* background-color: #DFDFDF; */
 }
+* {
+  -webkit-overflow-scrolling: touch;
+}

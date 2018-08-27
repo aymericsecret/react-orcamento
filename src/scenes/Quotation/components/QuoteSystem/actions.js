@@ -8,15 +8,13 @@ export const UPDATE_PRODUCT_SIZE = 'UPDATE_PRODUCT_SIZE';
 export const UPDATE_PRODUCT_MATERIAL = 'UPDATE_PRODUCT_MATERIAL';
 export const UPDATE_PRODUCT_SIZE_X = 'UPDATE_PRODUCT_SIZE_X';
 export const UPDATE_PRODUCT_SIZE_Y = 'UPDATE_PRODUCT_SIZE_Y';
+export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';
 
 export function initQuotation(quotation) {
-  return (dispatch) => {
-    console.log(quotation);
-    return dispatch({
-      type: 'INIT_QUOTATION',
-      data: quotation,
-    });
-  };
+  return dispatch => dispatch({
+    type: 'INIT_QUOTATION',
+    data: quotation,
+  });
 }
 
 export function addProductToQuotation(product) {
@@ -79,5 +77,11 @@ export function updateProductSizeY(material) {
   return dispatch => dispatch({
     type: 'UPDATE_PRODUCT_SIZE_Y',
     data: material,
+  });
+}
+
+export function updateProductsOrder() {
+  return dispatch => dispatch({
+    type: 'UPDATE_PRODUCTS',
   });
 }

@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
-import iconClose from '../../../../../../assets/close.svg';
-
+import iconClose from '../../../../../../assets/close_2.svg';
 import Input from './components/Input';
 
 class QuoteElem extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.quantityHasBeenChanged = false;
     this.priceHasBeenChanged = false;
     this.noteHasBeenChanged = false;
@@ -20,7 +19,7 @@ class QuoteElem extends Component {
 
     this.materialList = [];
     this.sizeList = [];
-    this.userPermission = 1;
+    this.userPermission = props.userPermission;
   }
 
   state = {
@@ -38,6 +37,7 @@ class QuoteElem extends Component {
   componentWillMount() {
     const product = this.props.products.find(el => el.id === this.props.quoteItem.id_product);
     this.product = product;
+    console.log(this.product);
     // TODO: Remove this verification later, as the back office should have that property always.
     // Or make it better
     // TODO: Case no variation
@@ -81,7 +81,7 @@ class QuoteElem extends Component {
     // INITIAL PRICE
     let priceInitialValue = product.acf.variations !== undefined
     && product.acf.variations.length > 0
-      ? product.acf.variations[0].price : null;
+      ? product.acf.variations[0].price : 0;
     priceInitialValue = this.props.quoteItem.price === null ? priceInitialValue : this.props.quoteItem.price;
 
     // INITIAL TOTAL PRICE
@@ -100,15 +100,24 @@ class QuoteElem extends Component {
     });
   }
 
-  getPriceFromCombination = () => {
+  getPriceFromCombination = (price = null) => {
     // Adding here new conditions for combinations
-    let newPrice = this.product.acf.variations.find((el) => {
-      if (this.isPricePerMeterSquare) {
-        return el.material.toLowerCase() === this.state.material;
-      }
-      return el.size.toLowerCase() === this.state.size
-      && el.material.toLowerCase() === this.state.material;
-    });
+    console.log(price);
+    console.log(this.product);
+    let newPrice;
+    if (price === null) {
+      newPrice = this.product.acf.variations.find((el) => {
+        if (this.isPricePerMeterSquare) {
+          return el.material.toLowerCase() === this.state.material;
+        }
+        return el.size.toLowerCase() === this.state.size
+        && el.material.toLowerCase() === this.state.material;
+      });
+    } else {
+      newPrice = {
+        price,
+      };
+    }
 
     newPrice = this.isPricePerMeterSquare ? newPrice.price * this.state.size_x * this.state.size_y : newPrice.price;
     const newTotalPrice = newPrice * this.state.quantity;
@@ -172,6 +181,8 @@ class QuoteElem extends Component {
             // TODO: Try refactoring with setState Callback
             this.debounce('quantityHasBeenChanged', () => {
               if (this.state.quantity !== this.props.quoteItem.quantity) {
+                const price = this.props.quoteItem.price !== null ? this.props.quoteItem.price : 0;
+                this.getPriceFromCombination(price);
                 this.props.updateQuantity({
                   id: this.props.quoteItem.id,
                   quantity: parseInt(this.state.quantity, 10),
@@ -316,11 +327,16 @@ class QuoteElem extends Component {
   }
 
   render() {
-    const { index, quoteItem, removeItem } = this.props;
+    const {
+      index, quoteItem, removeItem, children,
+    } = this.props;
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     return (
       <QuoteBox>
         <QuoteBoxHeader>
           <h3>{index + 1}. {this.state.product.title.rendered}</h3>
+          { !isMobile && children }
           <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
@@ -355,8 +371,8 @@ class QuoteElem extends Component {
                 <div>
                   <Input type="input" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
                   <div>
-                    <span>Preço total</span>
-                    <span>{this.state.totalPrice}</span>
+                    <div className="total_price">Preço total</div>
+                    <div>{this.state.totalPrice}</div>
                   </div>
                 </div>
               )}
@@ -371,10 +387,12 @@ class QuoteElem extends Component {
 export default QuoteElem;
 
 QuoteElem.propTypes = {
+  userPermission: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
+  children: PropTypes.shape().isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   quoteItem: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.number,
     id_product: PropTypes.number,
     quantity: PropTypes.number,
     price: PropTypes.number,
@@ -416,24 +434,34 @@ const QuoteBoxHeader = styled.div`
   }
 `;
 
+const QuoteBoxContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  @media only screen and (min-width: 1024px) {
+    flex-direction: row;
+  }
+`;
+
 const RatioCustom = styled(Ratio)`
-  width: 50%;
-  padding-right: 10px;
+  width: 100%;
+  padding-right: 0;
+  padding-bottom: 20px;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-`;
-
-const QuoteBoxContent = styled.div`
-  display: flex;
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    padding-left: 10px;
+    padding-bottom: 0;
+  }
 `;
 
 const QuoteBoxContentForm = styled.div`
   display: flex;
-  width: 50%;
-  padding-left: 10px;
+  width: 100%;
+  padding-left: 0;
   > div {
     width: 50%;
     &:first-child {
@@ -442,7 +470,7 @@ const QuoteBoxContentForm = styled.div`
     &:last-child {
       padding-left: 5px;
     }
-    > label {
+    label {
       display: block;
       margin-bottom: 10px;
       span {
@@ -450,7 +478,8 @@ const QuoteBoxContentForm = styled.div`
         margin-bottom: 5px;
       }
       input {
-        max-width: 100px;
+        max-width: 140px;
+        width: 100%;
       }
       textarea {
         max-width: 100%;
@@ -459,5 +488,12 @@ const QuoteBoxContentForm = styled.div`
         height: 50px;
       }
     }
+    .total_price {
+      margin-bottom: 5px;
+    }
+  }
+  @media only screen and (min-width: 1024px) {
+    width: 50%;
+    padding-left: 10px;  
   }
 `;

@@ -13,12 +13,11 @@ import {
 } from '../../actions';
 
 const mapStateToProps = state => ({
-  products: state.products.products,
-  isLoaded: state.products.productsLoaded,
+  products: state.app.products,
+  userPermission: state.session.permission,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  // getProduct,
   removeItem: removeProductFromQuotation,
   updateQuantity: updateProductQuantity,
   updatePrice: updateProductPrice,
