@@ -5,9 +5,8 @@ import Quotation from './Quotation';
 
 
 const mapStateToProps = state => ({
-  appLoadedAt: state.app.appLoadedAt,
-  appLoaded: state.app.appLoaded,
-  categories: state.app.categories,
+  app: state.app,
+  session: state.session,
 });
 
 

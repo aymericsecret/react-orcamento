@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { initSession } from './actions';
+import { initSession, stopSession } from './actions';
 import LoginForm from './LoginForm';
 
 
@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   initSession,
+  stopSession,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

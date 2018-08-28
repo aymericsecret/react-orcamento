@@ -1,4 +1,4 @@
-import { INIT_SESSION } from './actions';
+import { INIT_SESSION, STOP_SESSION } from './actions';
 
 const initialState = {
   login: '',
@@ -20,6 +20,15 @@ export default function (state = initialState, action) {
         isLoggedIn: true,
         loggedAt: new Date(),
         permission: 1,
+      };
+    }
+    case STOP_SESSION: {
+      return {
+        ...state,
+        login: initialState.login,
+        isLoggedIn: initialState.isLoggedIn,
+        loggedAt: initialState.loggedAt,
+        permission: initialState.permission,
       };
     }
     default:

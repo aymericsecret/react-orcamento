@@ -23,7 +23,7 @@ const ProductSystem = styled.div`
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 20px 0;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   @media only screen and (min-width: 576px) {
     width: 50%;

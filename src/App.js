@@ -35,6 +35,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" render={() => (<VisibleQuotation />)} />
               <Route path="/login" component={Login} />
+              <Route path="/logout" component={() => (<Login isLogout />)} />
             </Switch>
           </AppLayout>
         </Router>
