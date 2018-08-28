@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
+import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
@@ -13,18 +14,38 @@ class CategoryList extends Component {
   }
 
   state = {
-    active: 0,
+    active: this.props.mainCategory,
+    imageStatus: 'loading',
   }
 
   selectMainCategory = (index) => {
-    const { setMainCategory } = this.props;
-    setMainCategory(index);
-    this.setState({ active: index });
+    setTimeout(() => {
+      const { setMainCategory } = this.props;
+      setMainCategory(index);
+      if (this.state.active !== this.props.mainCategory) {
+        this.setState({
+          imageStatus: 'loading',
+        });
+      }
+      this.setState({
+        active: index,
+      });
+    }, 0);
   }
 
   selectSubCategory = (index) => {
-    const { setSubCategory } = this.props;
-    setSubCategory(index);
+    setTimeout(() => {
+      const { setSubCategory } = this.props;
+      setSubCategory(index);
+    }, 0);
+  }
+
+  handleImageLoaded() {
+    this.setState({ imageStatus: 'loaded' });
+  }
+
+  handleImageErrored() {
+    this.setState({ imageStatus: 'failed to load' });
   }
 
   render() {
@@ -43,6 +64,11 @@ class CategoryList extends Component {
     } else {
       return <h1>Category not loaded</h1>;
     }
+    const MyLoaderImg = () => (
+      <ContentLoader height={300}>
+        <rect x="0" y="0" rx="5" ry="5" width="400" height="800" />
+      </ContentLoader>
+    );
     return (
       <ProductsBlock>
         <HeaderCategories>
@@ -88,7 +114,14 @@ class CategoryList extends Component {
                           src={sousCategorie.cover.sizes.thumbnail}
                           className="photoCategory"
                           alt={sousCategorie.cover.alt}
+                          onLoad={this.handleImageLoaded.bind(this)}
+                          onError={this.handleImageErrored.bind(this)}
                         />
+                        <Loader>
+                          {this.state.imageStatus === 'loading' && (
+                            MyLoaderImg()
+                          )}
+                        </Loader>
                       </RatioCustom>
                       <h4>
                         {sousCategorie.name}
@@ -176,6 +209,7 @@ const HeaderCategories = styled.div`
   margin-bottom: 40px;
 `;
 const RatioCustom = styled(Ratio)`
+  position: relative;
   img {
     width: 100%;
     height: 100%;
@@ -228,4 +262,12 @@ const SubCategories = styled.div`
 `;
 const SubCategory = styled.div`
   margin-bottom: 30px;
+`;
+const Loader = styled.div`
+  position: absolute;
+  z-index: 300;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 `;

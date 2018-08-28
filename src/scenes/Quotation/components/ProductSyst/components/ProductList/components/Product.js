@@ -1,43 +1,81 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
+import ContentLoader from 'react-content-loader';
 
-const Product = ({ product, addProductToQuotation, toggleSide }) => (
-  <TestDiv>
-    <button
-      type="button"
-      onClick={() => {
-        addProductToQuotation(product);
-        toggleSide({ type: 'add_product' });
-      }}
-    >
-      {console.log(product.acf)}
-      <RatioCustom ratio={16 / 9}>
-        <img
-          src={product.acf.header.cover.sizes.thumbnail}
-          className="photoProduct"
-          alt={product.acf.header.cover.alt}
-        />
-      </RatioCustom>
-      <h4 className="nameProduct">
-        {product !== undefined && product.title.rendered}
-      </h4>
-    </button>
-  </TestDiv>
-);
 
-export default Product;
+export default class Product extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { imageStatus: 'loading' };
+  }
+
+  handleImageLoaded() {
+    this.setState({ imageStatus: 'loaded' });
+  }
+
+  handleImageErrored() {
+    this.setState({ imageStatus: 'failed to load' });
+  }
+
+  render() {
+    const MyLoaderImg = () => (
+      <ContentLoader height={300}>
+        <rect x="0" y="0" rx="5" ry="5" width="400" height="800" />
+      </ContentLoader>
+    );
+    return (
+      <TestDiv>
+        <button
+          type="button"
+          onClick={() => {
+            this.props.addProductToQuotation(this.props.product);
+            this.props.toggleSide({ type: 'add_product' });
+          }}
+        >
+          {console.log(this.props.product.acf)}
+          <RatioCustom ratio={16 / 9}>
+            <img
+              src={this.props.product.acf.header.cover.sizes.thumbnail}
+              className="photoProduct"
+              alt={this.props.product.acf.header.cover.alt}
+              onLoad={this.handleImageLoaded.bind(this)}
+              onError={this.handleImageErrored.bind(this)}
+            />
+            {this.state.imageStatus === 'loaded' && (
+              <DivFondAdd>
+                <div className="add">+</div>
+                <div className="fond" />
+              </DivFondAdd>
+            )}
+            <Loader>
+              {this.state.imageStatus === 'loading' && (
+                MyLoaderImg()
+              )}
+            </Loader>
+          </RatioCustom>
+          <h4 className="nameProduct">
+            {this.props.product !== undefined && this.props.product.title.rendered}
+          </h4>
+        </button>
+      </TestDiv>
+    );
+  }
+}
 
 Product.propTypes = {
   product: PropTypes.shape({
     id: PropTypes.number,
+    title: PropTypes.object,
+    acf: PropTypes.object,
   }).isRequired,
   addProductToQuotation: PropTypes.func.isRequired,
   toggleSide: PropTypes.func.isRequired,
 };
 
 const TestDiv = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   text-align: center;
@@ -78,6 +116,7 @@ const TestDiv = styled.div`
 `;
 
 const RatioCustom = styled(Ratio)`
+  position: relative;
   img {
     width: 100%;
     height: 100%;
@@ -85,4 +124,49 @@ const RatioCustom = styled(Ratio)`
   }
   margin-bottom: 15px;
   overflow: hidden;
+`;
+
+const DivFondAdd = styled.div`
+  position: absolute;
+  z-index: 400;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  .fond {
+    width: 100%;
+    height: 100%;
+    background-color: #ededed;
+    opacity: 0;
+    transition: opacity 0.7s ease-out;
+  }
+  .add {
+    position: absolute;
+    z-index: 500;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    opacity: 0;
+    font-size: 100px;
+    transition: opacity 0.7s ease-out;
+    backface-visibility: hidden;
+  }
+  &:hover {
+    .fond {
+      opacity: 0.7;
+    }
+    .add {
+      opacity: 1;
+    }
+  }
+`;
+
+const Loader = styled.div`
+  position: absolute;
+  z-index: 300;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 `;
