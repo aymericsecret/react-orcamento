@@ -4,33 +4,51 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Input from './components/Input';
 
+// const user = {
+//   login: 'a',
+//   password: 'a',
+// };
+const user = {
+  login: 'admin_cremme',
+  password: 'test',
+};
+
 class LoginForm extends Component {
+  constructor(props) {
+    super(props);
+    this.hadSession = props.session.isLoggedIn;
+  }
+
   state = {
-    login: '',
-    password: '',
+    login: 'a',
+    password: 'a',
     message: '',
+    isLogged: false,
   }
 
   componentDidMount = () => {
-    const { session } = this.props;
+    const { session, isLogout, stopSession } = this.props;
 
-    if (session.isLoggedIn) {
+    if (isLogout) {
+      stopSession();
+      this.setState({
+        message: 'You have been logged out.',
+      });
+    } else if (session.isLoggedIn) {
       this.setState({
         message: 'You are already logged in.',
+        isLogged: true,
       });
     }
-    // const oneHour = 60 * 60 * 1000;
-    // console.log(new Date() - new Date(session.loggedAt));
-    // if (!session.isLogged || new Date() - new Date(session.loggedAt) > oneHour) {
-    //   initApp();
-    // }
   }
 
   login = (e) => {
-    console.log(this.props.session);
     if (e.type === 'click' || (e.type === 'keypress' && e.which === 13)) {
-      if (this.state.login === 'admin_cremme' && this.state.password === 'test') {
+      if (this.state.login === user.login && this.state.password === user.password) {
         this.props.initSession({ login: this.state.login });
+        this.setState({
+          isLogged: true,
+        });
       } else {
         this.setState({
           message: 'Wrong login or password.',
@@ -54,14 +72,19 @@ class LoginForm extends Component {
   render() {
     return (
       <div>
-        {this.props.session.isLoggedIn ? (
+        {/* Case 1 : accessing logout page but not logged in (no session), Go to login */}
+        {this.props.isLogout && !this.hadSession && (
+          <Redirect to={{ pathname: '/login' }} />
+        )}
+        {/* Case 2 : accessing login and logged in sucessfully, or arrived at login when already logged in */}
+        {this.state.isLogged ? (
           <Redirect to={{ pathname: '/' }} />
         ) : (
           <div>
             {this.state.message !== '' && (
-              <FormMessage>
-                <span>{this.state.message}</span>
-              </FormMessage>
+            <FormMessage>
+              <span>{this.state.message}</span>
+            </FormMessage>
             )}
             <InputWrapper>
               <Input id="id" label="Login" type="text" value={this.state.login} updateValue={this.updateLogin} login={this.login} />
@@ -85,6 +108,11 @@ LoginForm.propTypes = {
     loggedAt: PropTypes.any.isRequired,
   }).isRequired,
   initSession: PropTypes.func.isRequired,
+  stopSession: PropTypes.func.isRequired,
+  isLogout: PropTypes.bool,
+};
+LoginForm.defaultProps = {
+  isLogout: false,
 };
 
 const FormMessage = styled.div`

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
-import Toggle from './components/Toggle/Toggle';
 import LoadingScreen from '../../components/LoadingScreen';
+import Menu from '../../components/Menu';
 
 class Quotation extends Component {
   constructor(props) {
@@ -20,10 +20,15 @@ class Quotation extends Component {
 
 
   componentDidMount = () => {
-    const { initApp, appLoadedAt, appLoaded } = this.props;
+    const { initApp, app } = this.props;
     const oneHour = 60 * 60 * 1000;
-    console.log(new Date() - new Date(appLoadedAt));
-    if (!appLoaded || new Date() - new Date(appLoadedAt) > oneHour) {
+    console.log(new Date() - new Date(app.appLoadedAt));
+    if (!app.appLoaded
+      || app.categories === {}
+      || app.products.length === 0
+      || new Date() - new Date(app.appLoadedAt) > oneHour) {
+      console.log('ON INIT');
+
       initApp();
     }
   }
@@ -48,24 +53,23 @@ class Quotation extends Component {
   }
 
   render() {
-    console.log(this.props.appLoaded);
+    const { app, session, initApp } = this.props;
 
     return (
-      <div>
-        {this.props.appLoaded ? (
-          <div>
-            <Toggle toggle={this.toggle} />
+      <StyledQuotation>
+        {app.appCategoriesLoaded ? (
+          <QuotationWrapper>
+            <Menu session={session} initApp={initApp} toggleSide={this.toggle}>Orçamento</Menu>
+
             <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
               <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
               <ProductSyst toggleSide={this.toggle} />
             </QuotationGrid>
-          </div>
+          </QuotationWrapper>
         ) : (
-
           <LoadingScreen />
-
         )}
-      </div>
+      </StyledQuotation>
     );
   }
 }
@@ -73,14 +77,24 @@ class Quotation extends Component {
 export default Quotation;
 
 Quotation.propTypes = {
+  session: PropTypes.shape().isRequired,
+  app: PropTypes.shape({
+    appLoadedAt: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.any,
+    ]),
+    appLoaded: PropTypes.bool,
+    products: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
   initApp: PropTypes.func.isRequired,
-  appLoadedAt: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.any,
-  ]).isRequired,
-  appLoaded: PropTypes.bool.isRequired,
 };
 
+const StyledQuotation = styled.div`
+  height: 100%;
+`;
+const QuotationWrapper = styled.div`
+  height: 100%;
+`;
 const QuotationGrid = styled.div`
   position: relative;
   display: flex;
@@ -88,6 +102,7 @@ const QuotationGrid = styled.div`
   height: 100%;
   overflow-x: hidden;
   transition: transform .3s ease-out;
+  padding-top: 65px;
   &.product-list {
     transform: translateX(-50%);
   }

@@ -17,8 +17,11 @@
 
 body {
   color: #3c3c3c;
-  /* background-color: #DFDFDF; */
 }
+body h3 {
+  margin: 0;
+}
+
 * {
   -webkit-overflow-scrolling: touch;
 }

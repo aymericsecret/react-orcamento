@@ -5,9 +5,7 @@ import idGenerator from 'react-id-generator';
 import PropTypes from 'prop-types';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
-import Header from '../../../../components/Header';
 import QuoteElemDrag from './components/QuoteElement/QuoteElemDrag';
-// import VisibleQuoteElem from './components/QuoteElement/VisibleQuoteElem';
 
 class QuoteSystem extends Component {
   constructor(props) {
@@ -44,9 +42,6 @@ class QuoteSystem extends Component {
     const { quotation } = this.props;
     return (
       <QuoteBlock>
-        <StyledHeader>
-          <Header />
-        </StyledHeader>
         <QuoteElemsContainer ref={this.quoteElemsRef}>
           {quotation.products.map((elem, index) => (
             <QuoteElemDrag
@@ -68,6 +63,7 @@ class QuoteSystem extends Component {
 export default DragDropContext(HTML5Backend)(QuoteSystem);
 
 QuoteSystem.propTypes = {
+  // session: PropTypes.shape().isRequired,
   quotation: PropTypes.shape({
     id: PropTypes.string,
     products: PropTypes.arrayOf(PropTypes.object),
@@ -77,22 +73,13 @@ QuoteSystem.propTypes = {
   updateElemNode: PropTypes.func.isRequired,
 };
 
-const StyledHeader = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 0;
-  height: 80px;
-  width: 50%;
-`;
 const QuoteBlock = styled.div`
   position: relative;
   
   background: #EDEDED;
   overflow-x: hidden;
   overflow-y: scroll;
-  padding-top: 100px;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   @media only screen and (min-width: 576px) {
     width: 50%;
