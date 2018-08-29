@@ -6,7 +6,7 @@ import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
-
+/* eslint linebreak-style: ["error", "windows"] */
 class CategoryList extends Component {
   constructor(props) {
     super(props);

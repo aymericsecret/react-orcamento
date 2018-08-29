@@ -6,7 +6,7 @@ import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import LoadingScreen from '../../components/LoadingScreen';
 import Menu from '../../components/Menu';
-
+/* eslint linebreak-style: ["error", "windows"] */
 class Quotation extends Component {
   constructor(props) {
     super(props);

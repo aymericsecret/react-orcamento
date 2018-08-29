@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 
-
+/* eslint linebreak-style: ["error", "windows"] */
 export default class Product extends Component {
   constructor(props) {
     super(props);
