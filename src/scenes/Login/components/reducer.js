@@ -10,8 +10,6 @@ const initialState = {
 
 export default function (state = initialState, action) {
   const { type, data } = action;
-  console.log(data);
-
   switch (type) {
     case INIT_SESSION: {
       return {

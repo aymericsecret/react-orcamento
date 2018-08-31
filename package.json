@@ -12,6 +12,7 @@
     "react-dom": "^16.4.2",
     "react-id-generator": "^0.1.6",
     "react-loading": "^2.0.3",
+    "react-onclickoutside": "^6.7.1",
     "react-ratio": "^0.1.5",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",

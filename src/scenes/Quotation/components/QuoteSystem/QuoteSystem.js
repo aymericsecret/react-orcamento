@@ -5,7 +5,11 @@ import idGenerator from 'react-id-generator';
 import PropTypes from 'prop-types';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
+
 import QuoteElemDrag from './components/QuoteElement/QuoteElemDrag';
+import Toggle from '../../../../components/Toggle/Toggle';
+import VisibleQuoteRequest from '../QuoteRequest/VisibleQuoteRequest';
+
 
 class QuoteSystem extends Component {
   constructor(props) {
@@ -13,8 +17,13 @@ class QuoteSystem extends Component {
     this.quoteElemsRef = React.createRef();
   }
 
+  state = {
+    showPopup: false,
+  }
+
   componentWillMount() {
     const { quotation, initQuotation } = this.props;
+
     if (quotation.id === null) {
       quotation.id = idGenerator();
       initQuotation(quotation);
@@ -30,12 +39,22 @@ class QuoteSystem extends Component {
     });
   }
 
+  handleClickOutside = () => {
+    console.log('onClickOutside() method called');
+  }
+
   moveElem = (dragIndex, hoverIndex) => {
     console.log(dragIndex, hoverIndex);
 
     const { quotation, updateProductsOrder } = this.props;
     quotation.products.splice(hoverIndex, 0, quotation.products.splice(dragIndex, 1)[0]);
     updateProductsOrder();
+  }
+
+  togglePopup = () => {
+    this.setState(prevState => ({
+      showPopup: !prevState.showPopup,
+    }));
   }
 
   render() {
@@ -51,9 +70,11 @@ class QuoteSystem extends Component {
               moveCard={this.moveElem}
               key={`key_${elem.id}`}
             />
-
           ))}
         </QuoteElemsContainer>
+        <Toggle toggle={this.togglePopup}>Devis</Toggle>
+        <VisibleQuoteRequest isOpen={this.state.showPopup} togglePopup={this.togglePopup} />
+        {/* <Popup isOpen={this.state.showPopup} toggle={this.togglePopup} /> */}
       </QuoteBlock>
     );
   }
@@ -90,8 +111,8 @@ const QuoteElemsContainer = styled.div`
 
   > div {
     border-bottom: 1px solid #3c3c3c;
-    &:first-child {
-      border-top: 1px solid #3c3c3c;
+    &:last-child {
+      border-bottom: none;
     }
   }
 `;

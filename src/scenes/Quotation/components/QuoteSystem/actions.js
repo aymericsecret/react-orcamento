@@ -1,4 +1,5 @@
 export const INIT_QUOTATION = 'INIT_QUOTATION';
+export const RESET_QUOTATION = 'RESET_QUOTATION';
 export const ADD_PRODUCT_TO_QUOTATION = 'ADD_PRODUCT_TO_QUOTATION';
 export const REMOVE_PRODUCT_TO_QUOTATION = 'REMOVE_PRODUCT_TO_QUOTATION';
 export const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';
@@ -14,6 +15,12 @@ export function initQuotation(quotation) {
   return dispatch => dispatch({
     type: 'INIT_QUOTATION',
     data: quotation,
+  });
+}
+
+export function resetQuotation() {
+  return dispatch => dispatch({
+    type: 'RESET_QUOTATION',
   });
 }
 

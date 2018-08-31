@@ -1,6 +1,7 @@
 // import idGenerator from 'react-id-generator';
 import {
   INIT_QUOTATION,
+  RESET_QUOTATION,
   ADD_PRODUCT_TO_QUOTATION,
   REMOVE_PRODUCT_TO_QUOTATION,
   UPDATE_PRODUCT_QUANTITY,
@@ -39,6 +40,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         quotation: data,
+      };
+    }
+    case RESET_QUOTATION: {
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          total_id: 0,
+          products: [],
+        },
       };
     }
     case ADD_PRODUCT_TO_QUOTATION: {

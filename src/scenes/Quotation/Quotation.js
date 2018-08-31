@@ -18,7 +18,6 @@ class Quotation extends Component {
     showProducts: true,
   }
 
-
   componentDidMount = () => {
     const { initApp, app } = this.props;
     const oneHour = 60 * 60 * 1000;

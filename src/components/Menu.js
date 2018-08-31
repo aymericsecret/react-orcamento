@@ -5,7 +5,7 @@ import {
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import logo from '../assets/logo_cremme_grey.svg';
-import Toggle from '../scenes/Quotation/components/Toggle/Toggle';
+import Toggle from './Toggle/Toggle';
 
 class Menu extends Component {
   reload = () => {
@@ -31,7 +31,7 @@ class Menu extends Component {
             Welcome {session.login}.
           </UserMessage>
           )}
-          <Toggle toggle={toggleSide} />
+          <Toggle toggle={toggleSide}>Change</Toggle>
           <button type="button" onClick={this.reload} className="menu_link">reload</button>
           {session.isLoggedIn && session.permission === 1 && (
             <Link to="/logout" className="menu_link">logout</Link>
@@ -93,6 +93,16 @@ const MenuWrapper = styled.div`
   .menu_link {
     color: #3C3C3C;
     margin-right: 10px;
+  }
+  button.toggle {
+    display: block;
+    position: fixed;
+    top: 10px;
+    z-index: 100;
+    right: 20px;
+    @media only screen and (min-width: 576px) {
+      display: none;
+    }
   }
 `;
 

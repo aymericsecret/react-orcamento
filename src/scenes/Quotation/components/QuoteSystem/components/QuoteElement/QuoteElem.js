@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
 import iconClose from '../../../../../../assets/close_2.svg';
-import Input from './components/Input';
+import Input from '../../../../../../components/Input';
 
 class QuoteElem extends Component {
   constructor(props) {
@@ -348,28 +348,28 @@ class QuoteElem extends Component {
           </RatioCustom>
           <QuoteBoxContentForm>
             <div>
-              <Input type="input" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
+              <Input type="input" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
 
               {this.state.size !== null && (
-                <Input type="select" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
+                <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
               )}
               {this.state.size_x !== null && (
-                <Input type="input" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
+                <Input type="input" domain="product" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
               )}
               {this.state.size_y !== null && (
-                <Input type="input" id={quoteItem.id} label="Profondidade" idType="size_y" value={this.state.size_y} updateValue={this.updateInput} />
+                <Input type="input" domain="product" id={quoteItem.id} label="Profondidade" idType="size_y" value={this.state.size_y} updateValue={this.updateInput} />
               )}
 
               {this.state.material !== null && (
-                <Input type="select" id={quoteItem.id} label="Acabamento" idType="material" value={this.state.material} updateValue={this.updateSelect} selectList={this.materialList} />
+                <Input type="select" domain="product" id={quoteItem.id} label="Acabamento" idType="material" value={this.state.material} updateValue={this.updateSelect} selectList={this.materialList} />
               )}
             </div>
 
             <div>
-              <Input type="textarea" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
+              <Input type="textarea" domain="product" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
               {this.userPermission === 1 && this.state.price !== null && (
                 <div>
-                  <Input type="input" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
+                  <Input type="input" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
                   <div>
                     <div className="total_price">Preço total</div>
                     <div>{this.state.totalPrice}</div>
