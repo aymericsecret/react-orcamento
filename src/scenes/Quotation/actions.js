@@ -4,7 +4,7 @@ export const RESET_APP_PRODUCTS = 'RESET_APP_PRODUCTS';
 export const INIT_APP_PRODUCTS_TMP = 'INIT_APP_PRODUCTS_TMP';
 export const SET_APP_PRODUCTS_TMP = 'SET_APP_PRODUCTS_TMP';
 export const SET_APP_PRODUCTS = 'SET_APP_PRODUCTS';
-
+/* eslint linebreak-style: ["error", "windows"] */
 const productsPerPage = 25;
 let productsTotal = null;
 
