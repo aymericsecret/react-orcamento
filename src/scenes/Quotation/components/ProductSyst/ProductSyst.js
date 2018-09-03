@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import VisibleCategoryList from './components/CategoryList/VisibleCategoryList';
 import VisibleProductList from './components/ProductList/VisibleProductList';
+import VisibleProductSearch from '../ProductSearch/VisibleProductSearch';
 
-const ProductSyst = props => (
-  <ProductSystem>
-    <VisibleCategoryList />
-    <VisibleProductList toggleSide={props.toggleSide} />
-  </ProductSystem>
-);
+class ProductSyst extends Component {
+  state = {
+    search: false,
+  }
+
+  toggleSearch = () => {
+    console.log('yo');
+
+    const { search } = this.state;
+    this.setState({
+      search: !search,
+    });
+  }
+
+  render() {
+    return (
+      <ProductSystem>
+        {this.state.search ? (
+          <VisibleProductSearch toggleSide={this.props.toggleSide} toggleSearch={this.toggleSearch} />
+        ) : (
+          <Fragment>
+            <VisibleCategoryList toggleSearch={this.toggleSearch} />
+            <VisibleProductList toggleSide={this.props.toggleSide} />
+          </Fragment>
+        )}
+      </ProductSystem>
+
+    );
+  }
+}
 
 export default ProductSyst;
 

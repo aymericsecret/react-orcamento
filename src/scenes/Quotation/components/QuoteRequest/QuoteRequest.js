@@ -18,9 +18,9 @@ export default class QuoteRequest extends Component {
   componentDidMount = () => {
     const { initQuoteRequest, isCreated, quoteRequest } = this.props;
 
-    console.log(isCreated);
+    // console.log(isCreated);
     if (!isCreated) {
-      console.log('ON INIT');
+      // console.log('ON INIT');
       initQuoteRequest();
     }
     this.quoteRequest = quoteRequest;
@@ -37,45 +37,46 @@ export default class QuoteRequest extends Component {
       request_message: this.props.quoteRequest.message,
       request_permission: this.props.isAdmin,
     };
-    console.log(JSON.stringify(emailParams));
+    // console.log(JSON.stringify(emailParams));
     this.setState({
       isSending: true,
     });
 
-    setTimeout(() => {
-      // this.setState({
-      //   sendingMessage: 'An error has occured. Please try again later',
-      //   hasError: true,
-      // });
-      this.setState({
-        isSending: false,
-        isSent: true,
-      });
-    }, 2000);
-
-    // fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
-    //   method: 'post',
-    //   body: JSON.stringify(emailParams),
-    // }).then(response => response.json())
-    //   .then((data) => {
-    //     console.log('response', data.status);
-    //     switch (data.status) {
-    //       case 200:
-    //         // Success
-    //         this.setState({
-    //           isSending: false,
-    //           isSent: true,
-    //         });
-    //         break;
-    //       case 304:
-    //         this.setState({
-    //           sendingMessage: 'An error has occured',
-    //         });
-    //         break;
-    //       default:
-    //         break;
-    //     }
+    // setTimeout(() => {
+    //   // this.setState({
+    //   //   sendingMessage: 'An error has occured. Please try again later',
+    //   //   hasError: true,
+    //   // });
+    //   this.setState({
+    //     isSending: false,
+    //     isSent: true,
     //   });
+    // }, 2000);
+
+    fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+      method: 'post',
+      body: JSON.stringify(emailParams),
+    }).then(response => response.json())
+      .then((data) => {
+        // console.log('response', data.status);
+        switch (data.status) {
+          case 200:
+            // Success
+            this.setState({
+              isSending: false,
+              isSent: true,
+            });
+            break;
+          case 304:
+            this.setState({
+              sendingMessage: 'An error has occured',
+              hasError: true,
+            });
+            break;
+          default:
+            break;
+        }
+      });
   }
 
   resetQuotation = () => {

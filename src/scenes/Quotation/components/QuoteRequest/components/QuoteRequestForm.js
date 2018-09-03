@@ -56,7 +56,7 @@ class QuoteRequestForm extends Component {
   }
 
   submit = () => {
-    console.log('submit');
+    // console.log('submit');
     this.props.processRequest();
   }
 

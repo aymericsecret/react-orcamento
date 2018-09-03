@@ -1,7 +1,7 @@
 import {
   INIT_APP, INIT_APP_CATEGORIES, INIT_APP_PRODUCTS_TMP, SET_APP_PRODUCTS_TMP, SET_APP_PRODUCTS,
 } from './actions';
-/* eslint linebreak-style: ["error", "windows"] */
+
 const initialState = {
   categories: {},
   products: [],

@@ -6,7 +6,7 @@ import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
-/* eslint linebreak-style: ["error", "windows"] */
+
 class CategoryList extends Component {
   constructor(props) {
     super(props);
@@ -16,6 +16,13 @@ class CategoryList extends Component {
   state = {
     active: this.props.mainCategory,
     imageStatus: 'loading',
+    searchOpened: false,
+  }
+
+  onClickSearch = () => {
+    this.props.toggleSearch();
+    // const lastState = this.state.searchOpened;
+    // this.setState({ searchOpened: !lastState });
   }
 
   selectMainCategory = (index) => {
@@ -40,11 +47,11 @@ class CategoryList extends Component {
     }, 0);
   }
 
-  handleImageLoaded() {
+  handleImageLoaded = () => {
     this.setState({ imageStatus: 'loaded' });
   }
 
-  handleImageErrored() {
+  handleImageErrored = () => {
     this.setState({ imageStatus: 'failed to load' });
   }
 
@@ -56,7 +63,6 @@ class CategoryList extends Component {
       subCategory,
     } = this.props;
     let objetSubCategory = { name: 'Name not defined' };
-    console.log(categoryList.children);
 
     if (categoryList.children !== undefined) {
       objetSubCategory = categoryList.children[mainCategory].children.find(
@@ -72,13 +78,17 @@ class CategoryList extends Component {
     return (
       <ProductsBlock>
         <HeaderCategories>
-          <IconSearchDiv>
+          {/* <HeaderSearch className={this.state.searchOpened ? 'opened' : ''}>
+            <SearchBar onClickCallback={this.onClickSearch} />
+          </HeaderSearch> */}
+          <IconSearchDiv onClick={this.onClickSearch}>
             <img
               src={iconSearch}
               className="icons_search openingGridMenu"
               alt=""
             />
           </IconSearchDiv>
+
           <Categories>
             { (categoryList.children !== undefined)
             && categoryList.children.map((categorie, index) => (
@@ -114,8 +124,8 @@ class CategoryList extends Component {
                           src={sousCategorie.cover.sizes.thumbnail}
                           className="photoCategory"
                           alt={sousCategorie.cover.alt}
-                          onLoad={this.handleImageLoaded.bind(this)}
-                          onError={this.handleImageErrored.bind(this)}
+                          onLoad={this.handleImageLoaded}
+                          onError={this.handleImageErrored}
                         />
                         <Loader>
                           {this.state.imageStatus === 'loading' && (
@@ -149,17 +159,22 @@ CategoryList.propTypes = {
   setSubCategory: PropTypes.func.isRequired,
   subCategory: PropTypes.number.isRequired,
   showSubCategory: PropTypes.bool.isRequired,
+  toggleSearch: PropTypes.func.isRequired,
 };
 const ProductsBlock = styled.div`
+  position: relative;
   width: 100%;
   margin-bottom: 50px;
-  padding: 0 20px;
+  padding: 60px 20px 0 20px;
 `;
 const Categories = styled.div`
   display: flex;
   flex-direction: column;
   @media only screen and (min-width: 1024px) {
     flex-direction: row;
+
+    width: calc(100% - 80px);
+    margin: 0 40px;
   }
   justify-content: space-around;
   text-align: center;
@@ -201,12 +216,43 @@ const Categories = styled.div`
     
   }
 `;
+
+
 const IconSearchDiv = styled.div`
-  float: right;
-  margin-right: 10px;
+  position: absolute;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  background-color: white;
+  top: 0;
+  right: 0;
+  img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+`;
+
+// const IconSearchDiv = styled.div`
+//   float: right;
+//   margin-right: 10px;
+// `;
+const HeaderSearch = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0%;
+  height: 30px;
+  transition: width .3s ease-out;
+  &.opened {
+    width: 100%;
+  }
 `;
 const HeaderCategories = styled.div`
-  margin-bottom: 40px;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  width: calc(100% - 40px);
 `;
 const RatioCustom = styled(Ratio)`
   position: relative;

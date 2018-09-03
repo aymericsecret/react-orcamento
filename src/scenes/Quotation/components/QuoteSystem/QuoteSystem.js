@@ -71,10 +71,13 @@ class QuoteSystem extends Component {
               key={`key_${elem.id}`}
             />
           ))}
+          {quotation.products.length > 0 && (
+            <QuoteRequest>
+              <Toggle toggle={this.togglePopup}>Pedir o orçamento</Toggle>
+            </QuoteRequest>
+          )}
         </QuoteElemsContainer>
-        <Toggle toggle={this.togglePopup}>Devis</Toggle>
         <VisibleQuoteRequest isOpen={this.state.showPopup} togglePopup={this.togglePopup} />
-        {/* <Popup isOpen={this.state.showPopup} toggle={this.togglePopup} /> */}
       </QuoteBlock>
     );
   }
@@ -115,4 +118,7 @@ const QuoteElemsContainer = styled.div`
       border-bottom: none;
     }
   }
+`;
+const QuoteRequest = styled.div`
+  margin-top: 20px;
 `;

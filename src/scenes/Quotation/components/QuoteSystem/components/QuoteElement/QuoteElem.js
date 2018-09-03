@@ -37,7 +37,7 @@ class QuoteElem extends Component {
   componentWillMount() {
     const product = this.props.products.find(el => el.id === this.props.quoteItem.id_product);
     this.product = product;
-    console.log(this.product);
+    // console.log(this.product);
     // TODO: Remove this verification later, as the back office should have that property always.
     // Or make it better
     // TODO: Case no variation
@@ -102,8 +102,8 @@ class QuoteElem extends Component {
 
   getPriceFromCombination = (price = null) => {
     // Adding here new conditions for combinations
-    console.log(price);
-    console.log(this.product);
+    // console.log(price);
+    // console.log(this.product);
     let newPrice;
     if (price === null) {
       newPrice = this.product.acf.variations.find((el) => {

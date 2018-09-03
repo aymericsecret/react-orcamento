@@ -4,18 +4,17 @@ import styled from 'styled-components';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 
-/* eslint linebreak-style: ["error", "windows"] */
 export default class Product extends Component {
   constructor(props) {
     super(props);
     this.state = { imageStatus: 'loading' };
   }
 
-  handleImageLoaded() {
+  handleImageLoaded = () => {
     this.setState({ imageStatus: 'loaded' });
   }
 
-  handleImageErrored() {
+  handleImageErrored = () => {
     this.setState({ imageStatus: 'failed to load' });
   }
 
@@ -40,8 +39,8 @@ export default class Product extends Component {
               src={this.props.product.acf.header.cover.sizes.thumbnail}
               className="photoProduct"
               alt={this.props.product.acf.header.cover.alt}
-              onLoad={this.handleImageLoaded.bind(this)}
-              onError={this.handleImageErrored.bind(this)}
+              onLoad={this.handleImageLoaded}
+              onError={this.handleImageErrored}
             />
             {this.state.imageStatus === 'loaded' && (
               <DivFondAdd>

@@ -31,6 +31,7 @@ class Menu extends Component {
             Welcome {session.login}.
           </UserMessage>
           )}
+
           <Toggle toggle={toggleSide}>Change</Toggle>
           <button type="button" onClick={this.reload} className="menu_link">reload</button>
           {session.isLoggedIn && session.permission === 1 && (
