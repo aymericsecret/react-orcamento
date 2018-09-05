@@ -477,7 +477,7 @@ const QuoteBoxContentForm = styled.div`
         display: block;
         margin-bottom: 5px;
       }
-      input {
+      input, select {
         max-width: 140px;
         width: 100%;
       }

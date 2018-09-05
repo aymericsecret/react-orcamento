@@ -74,6 +74,8 @@ class QuoteSystem extends Component {
           {quotation.products.length > 0 && (
             <QuoteRequest>
               <Toggle toggle={this.togglePopup}>Pedir o orçamento</Toggle>
+
+              <Toggle toggle={this.props.resetQuotation}>Reiniciar</Toggle>
             </QuoteRequest>
           )}
         </QuoteElemsContainer>
@@ -95,6 +97,7 @@ QuoteSystem.propTypes = {
   initQuotation: PropTypes.func.isRequired,
   updateProductsOrder: PropTypes.func.isRequired,
   updateElemNode: PropTypes.func.isRequired,
+  resetQuotation: PropTypes.func.isRequired,
 };
 
 const QuoteBlock = styled.div`
@@ -121,4 +124,7 @@ const QuoteElemsContainer = styled.div`
 `;
 const QuoteRequest = styled.div`
   margin-top: 20px;
+  button {
+    margin-right: 20px;
+  }
 `;

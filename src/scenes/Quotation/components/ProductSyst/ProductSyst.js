@@ -1,45 +1,36 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import VisibleCategoryList from './components/CategoryList/VisibleCategoryList';
 import VisibleProductList from './components/ProductList/VisibleProductList';
-import VisibleProductSearch from '../ProductSearch/VisibleProductSearch';
+import VisibleProductSearchResults from '../ProductSearch/VisibleProductSearchResults';
 
-class ProductSyst extends Component {
-  state = {
-    search: false,
-  }
+const ProductSyst = props => (
+  <ProductSystem>
+    {props.search.searchToggle ? (
+      <VisibleProductSearchResults toggleSide={props.toggleSide} />
+    ) : (
+      <Fragment>
+        <VisibleCategoryList />
+        <VisibleProductList toggleSide={props.toggleSide} />
+      </Fragment>
+    )}
+  </ProductSystem>
+);
 
-  toggleSearch = () => {
-    console.log('yo');
+const mapStateToProps = state => ({
+  search: state.search,
+});
 
-    const { search } = this.state;
-    this.setState({
-      search: !search,
-    });
-  }
-
-  render() {
-    return (
-      <ProductSystem>
-        {this.state.search ? (
-          <VisibleProductSearch toggleSide={this.props.toggleSide} toggleSearch={this.toggleSearch} />
-        ) : (
-          <Fragment>
-            <VisibleCategoryList toggleSearch={this.toggleSearch} />
-            <VisibleProductList toggleSide={this.props.toggleSide} />
-          </Fragment>
-        )}
-      </ProductSystem>
-
-    );
-  }
-}
-
-export default ProductSyst;
+export default connect(mapStateToProps)(ProductSyst);
 
 ProductSyst.propTypes = {
   toggleSide: PropTypes.func.isRequired,
+  search: PropTypes.shape({
+    searchToggle: PropTypes.bool,
+  }).isRequired,
 };
 
 const ProductSystem = styled.div`

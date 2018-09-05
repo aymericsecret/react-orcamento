@@ -1,20 +1,23 @@
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { initQuoteRequest, saveQuoteRequest } from './actions';
-// import { resetQuotation } from '../QuoteSystem/actions';
+import { bindActionCreators } from 'redux';
+import {
+  initSearch, updateSearchTerm, updateSearchResult, searchToggle,
+} from './actions';
 import ProductSearch from './ProductSearch';
 
 
 const mapStateToProps = state => ({
   products: state.app.products,
   categories: state.app.categories,
+  search: state.search,
 });
 
 
-// const mapDispatchToProps = dispatch => bindActionCreators({
-//   initQuoteRequest,
-//   saveQuoteRequest,
-//   resetQuotation,
-// }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+  initSearch,
+  updateSearchTerm,
+  updateSearchResult,
+  searchToggle,
+}, dispatch);
 
-export default connect(mapStateToProps)(ProductSearch);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductSearch);

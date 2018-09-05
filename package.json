@@ -4,7 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-pdf/node": "^0.7.6",
     "@react-pdf/renderer": "^1.0.0-alpha.15",
+    "@react-pdf/styled-components": "^1.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-animate-on-change": "^2.1.1",

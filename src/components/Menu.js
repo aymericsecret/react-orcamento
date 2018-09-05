@@ -6,10 +6,22 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import logo from '../assets/logo_cremme_grey.svg';
 import Toggle from './Toggle/Toggle';
+import VisibleProductSearch from '../scenes/Quotation/components/ProductSearch/VisibleProductSearch';
+import logout from '../assets/logout.png';
+import reload from '../assets/reload.png';
 
 class Menu extends Component {
+  onClickSearch = (e) => {
+    const target = e.currentTarget;
+    if (target.className.indexOf('active') >= 0) {
+      // This won't happen ever
+      target.classList.remove('active');
+    } else {
+      target.classList.add('active');
+    }
+  }
+
   reload = () => {
-    // console.log('click');
     this.props.initApp();
   }
 
@@ -26,16 +38,18 @@ class Menu extends Component {
           <h3>{children}</h3>
           )}
           <Space />
-          {session.isLoggedIn && session.permission === 1 && (
+          {/* {session.isLoggedIn && session.permission === 1 && (
           <UserMessage>
             Welcome {session.login}.
           </UserMessage>
-          )}
+          )} */}
+
+          <VisibleProductSearch toggleSide={this.props.toggleSide} toggleSearch={this.toggleSearch} />
 
           <Toggle toggle={toggleSide}>Change</Toggle>
-          <button type="button" onClick={this.reload} className="menu_link">reload</button>
+          <button type="button" onClick={this.reload} className="btn_reload menu_link"><img src={reload} alt="" /></button>
           {session.isLoggedIn && session.permission === 1 && (
-            <Link to="/logout" className="menu_link">logout</Link>
+            <Link to="/logout" className="menu_link"><img src={logout} alt="" /></Link>
           )}
         </MenuWrapper>
       </StyledMenu>
@@ -91,9 +105,18 @@ const MenuWrapper = styled.div`
       height: 25px;
     }
   }
+  .btn_reload {
+    border: none;
+  }
   .menu_link {
+
+    display: flex;
+    align-self: center;
     color: #3C3C3C;
-    margin-right: 10px;
+    margin-right: 5px;
+    img {
+      height: 15px;
+    }
   }
   button.toggle {
     display: block;
@@ -107,9 +130,6 @@ const MenuWrapper = styled.div`
   }
 `;
 
-const UserMessage = styled.div`
-  margin-right: 10px;
-`;
 const Space = styled.div`
   flex: 1;
 `;

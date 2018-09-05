@@ -84,9 +84,17 @@ export default class QuoteRequest extends Component {
     this.props.togglePopup();
   }
 
+  toggleRestart = () => {
+    this.setState({
+      isSending: false,
+      isSent: false,
+    });
+    this.props.togglePopup();
+  }
+
   render() {
     return (
-      <Popup isOpen={this.props.isOpen} toggle={this.props.togglePopup} title="Pedido do orçamento">
+      <Popup isOpen={this.props.isOpen} toggle={this.toggleRestart} title="Pedido do orçamento">
         <QuoteRequestForm
           isAdmin={this.props.isAdmin}
           processRequest={this.processRequest}
@@ -97,7 +105,7 @@ export default class QuoteRequest extends Component {
         <QuoteRequestRestart
           resetQuotation={this.resetQuotation}
           requestSent={this.state.isSent}
-          toggle={this.props.togglePopup}
+          toggle={this.toggleRestart}
         />
         {this.state.isSending && (
           <StyledLoader>

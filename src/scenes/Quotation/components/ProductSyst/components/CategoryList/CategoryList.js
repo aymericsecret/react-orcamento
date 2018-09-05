@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
-import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
 
 class CategoryList extends Component {
@@ -16,14 +15,9 @@ class CategoryList extends Component {
   state = {
     active: this.props.mainCategory,
     imageStatus: 'loading',
-    searchOpened: false,
+    // searchOpened: false,
   }
 
-  onClickSearch = () => {
-    this.props.toggleSearch();
-    // const lastState = this.state.searchOpened;
-    // this.setState({ searchOpened: !lastState });
-  }
 
   selectMainCategory = (index) => {
     setTimeout(() => {
@@ -81,13 +75,7 @@ class CategoryList extends Component {
           {/* <HeaderSearch className={this.state.searchOpened ? 'opened' : ''}>
             <SearchBar onClickCallback={this.onClickSearch} />
           </HeaderSearch> */}
-          <IconSearchDiv onClick={this.onClickSearch}>
-            <img
-              src={iconSearch}
-              className="icons_search openingGridMenu"
-              alt=""
-            />
-          </IconSearchDiv>
+
 
           <Categories>
             { (categoryList.children !== undefined)
@@ -159,14 +147,20 @@ CategoryList.propTypes = {
   setSubCategory: PropTypes.func.isRequired,
   subCategory: PropTypes.number.isRequired,
   showSubCategory: PropTypes.bool.isRequired,
-  toggleSearch: PropTypes.func.isRequired,
 };
 const ProductsBlock = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 50px;
-  padding: 60px 20px 0 20px;
+  padding: 0 20px 0 20px;
 `;
+
+const HeaderCategories = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+`;
+
 const Categories = styled.div`
   display: flex;
   flex-direction: column;
@@ -217,43 +211,6 @@ const Categories = styled.div`
   }
 `;
 
-
-const IconSearchDiv = styled.div`
-  position: absolute;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  background-color: white;
-  top: 0;
-  right: 0;
-  img {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-`;
-
-// const IconSearchDiv = styled.div`
-//   float: right;
-//   margin-right: 10px;
-// `;
-const HeaderSearch = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0%;
-  height: 30px;
-  transition: width .3s ease-out;
-  &.opened {
-    width: 100%;
-  }
-`;
-const HeaderCategories = styled.div`
-  position: absolute;
-  top: 0;
-  margin: 0;
-  width: calc(100% - 40px);
-`;
 const RatioCustom = styled(Ratio)`
   position: relative;
   img {
