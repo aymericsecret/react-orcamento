@@ -34,6 +34,10 @@ export default class ProductSearch extends Component {
     let filteredProducts = [];
     if (this.props.search.searchTerm.length > 2) {
       filteredProducts = this.props.products.filter(createFilter(this.props.search.searchTerm, KEYS_TO_FILTERS));
+      if (this.props.sessionPermission === 0) {
+        filteredProducts = filteredProducts.filter(el => el.acf.permission !== true);
+      }
+
       // remove this to toggle when clicking on the search button only
       if (!this.props.search.searchToggle) this.props.searchToggle(true);
     }
@@ -84,6 +88,7 @@ ProductSearch.propTypes = {
   updateSearchTerm: PropTypes.func.isRequired,
   updateSearchResult: PropTypes.func.isRequired,
   searchToggle: PropTypes.func.isRequired,
+  sessionPermission: PropTypes.number.isRequired,
 };
 
 

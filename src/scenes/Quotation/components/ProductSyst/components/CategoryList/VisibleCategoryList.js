@@ -7,6 +7,7 @@ import {
 import CategoryList from './CategoryList';
 
 const mapStateToProps = state => ({
+  sessionPermission: state.session.permission,
   categoryList: state.app.categories,
   mainCategory: state.categoryList.mainCategory,
   subCategory: state.categoryList.subCategory,

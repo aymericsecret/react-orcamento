@@ -21,6 +21,7 @@ export default function (state = initialState, action) {
         ...state,
         appLoadedAt: new Date(),
         appLoaded: false,
+        appCategoriesLoaded: false,
       };
     }
     case INIT_APP_CATEGORIES: {

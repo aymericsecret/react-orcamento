@@ -8,6 +8,7 @@ export default class Product extends Component {
   constructor(props) {
     super(props);
     this.state = { imageStatus: 'loading' };
+    console.log(this.props.product);
   }
 
   handleImageLoaded = () => {
@@ -19,13 +20,20 @@ export default class Product extends Component {
   }
 
   render() {
+    const coverImg = (this.props.product.acf.packshot === undefined || this.props.product.acf.packshot === false)
+      ? this.props.product.acf.header.cover.sizes.thumbnail
+      : this.props.product.acf.packshot.sizes.thumbnail;
+    const coverAlt = (this.props.product.acf.packshot === undefined || this.props.product.acf.packshot === false)
+      ? this.props.product.acf.header.cover.alt
+      : this.props.product.acf.packshot.alt;
+
     const MyLoaderImg = () => (
       <ContentLoader height={300}>
         <rect x="0" y="0" rx="5" ry="5" width="400" height="800" />
       </ContentLoader>
     );
     return (
-      <TestDiv>
+      <ProductBlock>
         <button
           type="button"
           onClick={() => {
@@ -36,9 +44,9 @@ export default class Product extends Component {
           {console.log(this.props.product.acf)}
           <RatioCustom ratio={16 / 9}>
             <img
-              src={this.props.product.acf.header.cover.sizes.thumbnail}
+              src={coverImg}
               className="photoProduct"
-              alt={this.props.product.acf.header.cover.alt}
+              alt={coverAlt}
               onLoad={this.handleImageLoaded}
               onError={this.handleImageErrored}
             />
@@ -58,7 +66,7 @@ export default class Product extends Component {
             {this.props.product !== undefined && this.props.product.title.rendered}
           </h4>
         </button>
-      </TestDiv>
+      </ProductBlock>
     );
   }
 }
@@ -73,7 +81,7 @@ Product.propTypes = {
   toggleSide: PropTypes.func.isRequired,
 };
 
-const TestDiv = styled.div`
+const ProductBlock = styled.div`
   position: relative;
   width: 100%;
   height: 100%;

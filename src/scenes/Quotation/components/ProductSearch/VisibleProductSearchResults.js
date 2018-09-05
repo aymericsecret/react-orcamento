@@ -8,6 +8,7 @@ import ProductSearchResults from './ProductSearchResults';
 
 const mapStateToProps = state => ({
   search: state.search,
+  sessionPermission: state.session.permission,
 });
 
 

@@ -31,15 +31,19 @@ const ProductList = (props) => {
     product => product.categories.find(
       category => category === subCategory) !== undefined);
 
+  console.log(products);
+
   return (
     <div>
 
       <ProductsBlock>
         {showSubCategory
             && productToShow.map(product => (
+              (!(props.sessionPermission === 0 && product.acf.permission === true) && (
               <div className="flex50" key={product.id}>
                 <VisibleProduct product={product} key={product.id} toggleSide={toggleSide} />
               </div>
+              ))
             ))
           }
       </ProductsBlock>
@@ -58,6 +62,7 @@ ProductList.propTypes = {
     children: PropTypes.array.isRequired,
   }).isRequired,
   mainCategory: PropTypes.number.isRequired,
+  sessionPermission: PropTypes.number.isRequired,
 };
 
 const ProductsBlock = styled.div`

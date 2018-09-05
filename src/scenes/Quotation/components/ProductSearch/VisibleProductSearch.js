@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
   products: state.app.products,
   categories: state.app.categories,
   search: state.search,
+  sessionPermission: state.session.permission,
 });
 
 

@@ -9,7 +9,7 @@ export default class ProductSearch extends Component {
   }
 
   render() {
-    const { search } = this.props;
+    const { search, sessionPermission } = this.props;
     return (
       <SearchResults>
         <SearchResultsHeader>
@@ -18,9 +18,11 @@ export default class ProductSearch extends Component {
         </SearchResultsHeader>
 
         {search.searchResult.length > 0 && search.searchResult.map(p => (
-          <div className="flex50" key={p.id}>
-            <VisibleProduct product={p} key={p.id} toggleSide={this.props.toggleSide} />
-          </div>
+          (!(sessionPermission === 0 && p.acf.permission === true) && (
+            <div className="flex50" key={p.id}>
+              <VisibleProduct product={p} key={p.id} toggleSide={this.props.toggleSide} />
+            </div>
+          ))
         ))}
         {search.searchResult.length === 0 && search.searchTerm.length > 2 && (
           <h3>
@@ -40,6 +42,7 @@ export default class ProductSearch extends Component {
 
 
 ProductSearch.propTypes = {
+  sessionPermission: PropTypes.number.isRequired,
   searchToggle: PropTypes.func.isRequired,
   toggleSide: PropTypes.func.isRequired,
   search: PropTypes.shape({

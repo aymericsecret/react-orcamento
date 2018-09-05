@@ -331,6 +331,13 @@ class QuoteElem extends Component {
       index, quoteItem, removeItem, children,
     } = this.props;
 
+    const coverImg = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
+      ? this.state.product.acf.header.cover.sizes.thumbnail
+      : this.state.product.acf.packshot.sizes.thumbnail;
+    const coverAlt = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
+      ? this.state.product.acf.header.cover.alt
+      : this.state.product.acf.packshot.alt;
+
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     return (
       <QuoteBox>
@@ -342,8 +349,8 @@ class QuoteElem extends Component {
         <QuoteBoxContent>
           <RatioCustom ratio={16 / 9}>
             <img
-              src={this.state.product.acf.header.cover.sizes.thumbnail}
-              alt={this.state.product.acf.header.cover.alt}
+              src={coverImg}
+              alt={coverAlt}
             />
           </RatioCustom>
           <QuoteBoxContentForm>

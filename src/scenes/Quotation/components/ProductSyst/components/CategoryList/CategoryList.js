@@ -5,6 +5,9 @@ import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import '../../../../../../font.css';
+import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
+
+const CATEGORY_LIST_ADMIN = ['nao-publicado'];
 
 class CategoryList extends Component {
   constructor(props) {
@@ -69,35 +72,30 @@ class CategoryList extends Component {
         <rect x="0" y="0" rx="5" ry="5" width="400" height="800" />
       </ContentLoader>
     );
+
     return (
       <ProductsBlock>
         <HeaderCategories>
-          {/* <HeaderSearch className={this.state.searchOpened ? 'opened' : ''}>
-            <SearchBar onClickCallback={this.onClickSearch} />
-          </HeaderSearch> */}
-
-
           <Categories>
             { (categoryList.children !== undefined)
             && categoryList.children.map((categorie, index) => (
-              (this.state.active === index)
-                ? (
-                  <LinkCustom
-                    key={categorie.term_id}
-                    eventClick={() => this.selectMainCategory(index)}
-                  >
-                    <h3 className="active"><div className="categoryName">{categorie.name}</div></h3>
-                  </LinkCustom>
-                ) : (
-                  <LinkCustom
-                    key={categorie.term_id}
-                    eventClick={() => this.selectMainCategory(index)}
-                  >
-                    <h3 className="notActive">{categorie.name}</h3>
-                  </LinkCustom>
+              (!(this.props.sessionPermission === 0 && CATEGORY_LIST_ADMIN.indexOf(categorie.slug) >= 0)
+                && (
+                <LinkCustom
+                  key={categorie.term_id}
+                  eventClick={() => this.selectMainCategory(index)}
+                >
+                  <h3 className={this.state.active === index ? 'active' : 'noActive'}>
+                    <div className={this.state.active === index ? 'categoryName' : ''}>
+                      {categorie.name}
+                    </div>
+                  </h3>
+                </LinkCustom>
                 )
-            ))
-            }
+              )
+
+            ),
+            )}
           </Categories>
         </HeaderCategories>
         {!showSubCategory
@@ -109,9 +107,9 @@ class CategoryList extends Component {
                     <LinkCustom eventClick={() => this.selectSubCategory(sousCategorie.term_id)}>
                       <RatioCustom ratio={16 / 9}>
                         <img
-                          src={sousCategorie.cover.sizes.thumbnail}
+                          src={sousCategorie.cover !== false ? sousCategorie.cover.sizes.thumbnail : defaultPicture}
                           className="photoCategory"
-                          alt={sousCategorie.cover.alt}
+                          alt={sousCategorie.cover !== false ? sousCategorie.cover.alt : ''}
                           onLoad={this.handleImageLoaded}
                           onError={this.handleImageErrored}
                         />
@@ -138,6 +136,7 @@ class CategoryList extends Component {
 export default CategoryList;
 
 CategoryList.propTypes = {
+  sessionPermission: PropTypes.number.isRequired,
   mainCategory: PropTypes.number.isRequired,
   categoryList: PropTypes.shape({
     term_id: PropTypes.number,
@@ -179,6 +178,10 @@ const Categories = styled.div`
     background-position: 0px 100%;
     background-size: 0 1px;
     background-repeat: no-repeat;
+    margin-bottom: 10px;
+    @media only screen and (min-width: 1024px) {
+      margin-bottom: 0;
+    }
     &:hover {
       cursor: pointer;
     }
@@ -191,7 +194,8 @@ const Categories = styled.div`
     background-repeat: no-repeat;
     transition: background-size 0.3s ease-out;
     margin: 0;
-    padding-right: 10px;
+    display: inline-block;
+    margin-right: 10px;
     font-size: 25px;
     line-height: 28px;
     letter-spacing: 1px;
