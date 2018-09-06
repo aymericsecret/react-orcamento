@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from '@react-pdf/styled-components';
 import {
   Page,
@@ -17,70 +18,90 @@ const styles = StyleSheet.create({
   },
 });
 
-// eslint-disable-react/prop-types
-// top of table orçamento
-function BigTab(props) {
-  return (
-    <ContentTab x={props.x} y={props.y} width={0} height={0}>
-      <Tab x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="">
-        <ImageOrcaCustom src={LogCremmeCircle} />
-      </Tab>
-      <Tab x={162.5} y={0} width={159.75} height={props.height} text1={props.text[1]} text2={props.text[2]} />
-      <Tab x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
-      <Tab x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
-      <Tab x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2="" />
-      {/* <Tab x={0} y={0} width={props.width} height={props.height} />
-      <Tab x={183} y={0} width={160} height={props.height} />
-      <Tab x={507} y={0} width={214} height={props.height} /> */}
-    </ContentTab>
-  );
-}
 
 // top of table orçamento
-function Tab(props) {
-  return (
-    <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-      <TraitTableau width={1} height={props.height} top={0} left={0} />
-      <TraitTableau width={1} height={props.height} top={0} left={props.width} />
-      <TraitTableau width={props.width} height={1} top={0} left={0} />
-      <TraitTableau width={props.width} height={1} top={props.height} left={0} />
-      <TextTab width={props.width - 40} height={(props.height / 3)}>
-        <Text>
-          {props.text1}
-        </Text>
-        <Text>
-          {props.text2}
-        </Text>
-      </TextTab>
-    </ContentTab>
-  );
-}
+const BigTab = props => (
+  <ContentTab x={props.x} y={props.y} width={0} height={0}>
+    <Tab x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="" />
+    <Tab x={162.5} y={0} width={159.25} height={props.height} text1={props.text[1]} text2={props.text[2]} />
+    <Tab x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
+    <Tab x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
+    <Tab x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2="" />
+    {/* <Tab x={0} y={0} width={props.width} height={props.height} />
+    <Tab x={183} y={0} width={160} height={props.height} />
+    <Tab x={507} y={0} width={214} height={props.height} /> */}
+    <ImageOrcaCustom y={props.y} src={props.src} />
+  </ContentTab>
+);
+BigTab.propTypes = {
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  text: PropTypes.string.isRequired,
+  src: PropTypes.string.isRequired,
+};
 
+// top of table orçamento
+const Tab = props => (
+  <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
+    <TraitTableau width={1} height={props.height} top={0} left={0} />
+    <TraitTableau width={1} height={props.height} top={0} left={props.width} />
+    <TraitTableau width={props.width} height={1} top={0} left={0} />
+    <TraitTableau width={props.width} height={1} top={props.height} left={0} />
+    <TextTab width={props.width - 40} height={(props.height / 3)}>
+      <Text>
+        {props.text1}
+      </Text>
+      <Text>
+        {props.text2}
+      </Text>
+    </TextTab>
+  </ContentTab>
+);
+Tab.propTypes = {
+  text1: PropTypes.string.isRequired,
+  text2: PropTypes.string.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
 
-export default class PDF extends Component {
-  constructor(props) {
-    super(props);
-    console.log(this.props);
-  }
-
-  allPage = () => {
-    let table = [];
-
+class PDF extends Component {
+  AllPage = () => {
+    const table = [];
+    const productBy4 = [];
+    for (let i = 0; i < this.props.products.length / 4; i += 1) {
+      productBy4.push([]);
+      let limite = 4;
+      if (i >= (this.props.products.length / 4) - 1) {
+        limite = this.props.products.length - (4 * i);
+      }
+      for (let j = 0; j < limite; j += 1) {
+        productBy4[i].push(this.props.products[i * 4 + j]);
+      }
+    }
+    console.log('PRODUCT TEST :');
+    console.log(productBy4);
     for (let i = 0; i < (this.props.products.length / 4); i += 1) {
       console.log('DANS LE FOR ALL PAAAAAAAGE');
       table.push(
-        <Page size="A4" orientation="landscape" style={styles.page}>
+        <Page key={i} size="A4" orientation="landscape" style={styles.page}>
           <FondGris />
           <BigTab x={20} y={20} width={802} height={13} text={['TEEEEST', 'tipologia', '', 'L x P x A (cm)', 'acabamento', 'preço unitario']} />
-          {this.props.products.map((product, i) => {
-            const foundProduct = this.props.allProducts.find(function (oneProduct) { return oneProduct.id === product.id_product });
+          {productBy4[i].map((product, key) => {
+            console.log(product.id_product);
+            const foundProduct = this.props.allProducts.find(
+              function (oneProduct) { return oneProduct.id === product.id_product }
+            );
+            console.log('foundProduct');
+            console.log(foundProduct.acf.header.cover.url);
             // Check if product.size is defined or not
             let sizeProduct = `${product.size} (cm)`;
             // console.log(foundProduct.acf.layout);
             if (product.size === null) {
               sizeProduct = '';
             }
-            console.log(i + ' taille : ' + sizeProduct);
             // Check if product.material is defined or not
             let materialProduct = product.material;
             if (product.size === null) {
@@ -92,22 +113,15 @@ export default class PDF extends Component {
               priceProduct = '';
               // priceProduct = foundProduct.acf.variations[0].price;
             }
-            return <BigTab key={i} x={20} y={33 + i * 87} width={802} height={87} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
+            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} src={foundProduct.acf.header.cover.url} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
           })
           }
           <LogoCircleCustom src={LogCremmeCircle} />
         </Page>,
       );
     }
-    console.log("TABLE : ");
-    console.log(table);
     return table;
   }
-
-  // test = () => {
-  //   let allPageVar = this.allPage();
-  //   return (allPageVar.map(page) =>)
-  // }
 
   // Create Document Component
   MyDocument = () => (
@@ -128,35 +142,7 @@ export default class PDF extends Component {
           <Text>11 3064 2590</Text>
         </Contact>
       </Page>
-      { this.allPage() }
-      <Page size="A4" orientation="landscape" style={styles.page}>
-        <FondGris />
-        <BigTab x={20} y={20} width={802} height={13} text={['foto', 'tipologia', '', 'L x P x A (cm)', 'acabamento', 'preço unitario']} />
-        {this.props.products.map((product, i) => {
-          const foundProduct = this.props.allProducts.find(function (oneProduct) { return oneProduct.id === product.id_product});
-          // Check if product.size is defined or not
-          let sizeProduct = `${product.size} (cm)`;
-          // console.log(foundProduct.acf.layout);
-          if (product.size === null) {
-            sizeProduct = '';
-          }
-          console.log(i + ' taille : ' +sizeProduct);
-          // Check if product.material is defined or not
-          let materialProduct = product.material;
-          if (product.size === null) {
-            materialProduct = '';
-          }
-          // Check if product.price is defined or not
-          let priceProduct = `R$ ${product.price}`;
-          if (product.price === null) {
-            priceProduct = '';
-            // priceProduct = foundProduct.acf.variations[0].price;
-          }
-          return <BigTab key={i} x={20} y={33 + i * 87} width={802} height={87} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
-        })
-        }
-        <LogoCircleCustom src={LogCremmeCircle} />
-      </Page>
+      { this.AllPage() }
     </Document>
   );
 
@@ -169,6 +155,13 @@ export default class PDF extends Component {
     );
   }
 }
+
+export default PDF;
+
+PDF.propTypes = {
+  allProducts: PropTypes.arrayOf(PropTypes.object).isRequired,
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 // Page 1
 const Titre = styled.Text`
@@ -247,7 +240,8 @@ const FondGris = styled.View`
   left: 20px;
   width: 802px;
   height: 440px
-  background-color: #D8D8D8;
+  background-color: #ffffff;
+  opacity:
 `;
 const TraitTableau = styled.View`
   position: absolute;
@@ -280,6 +274,12 @@ const TextTab = styled.View`
 `;
 
 const ImageOrcaCustom = styled.Image`
-  position: relative;
+  position: absolute;
   z-index: 20;
+  top: 10px;
+  left: 30px;
+  width: 100px;
+  height: 67px;
+  object-fit: cover;
+  object-position: 50%, 50%;
 `;
