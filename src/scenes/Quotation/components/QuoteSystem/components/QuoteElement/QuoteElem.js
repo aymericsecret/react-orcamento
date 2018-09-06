@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
 import iconClose from '../../../../../../assets/close_2.svg';
-import Input from './components/Input';
+import Input from '../../../../../../components/Input';
 
 class QuoteElem extends Component {
   constructor(props) {
@@ -26,7 +26,7 @@ class QuoteElem extends Component {
     product: {},
     quantity: 0,
     price: 0,
-    totalPrice: 0,
+    total_price: 0,
     note: '',
     material: '',
     size: '',
@@ -37,7 +37,7 @@ class QuoteElem extends Component {
   componentWillMount() {
     const product = this.props.products.find(el => el.id === this.props.quoteItem.id_product);
     this.product = product;
-    console.log(this.product);
+    // console.log(this.product);
     // TODO: Remove this verification later, as the back office should have that property always.
     // Or make it better
     // TODO: Case no variation
@@ -85,13 +85,13 @@ class QuoteElem extends Component {
     priceInitialValue = this.props.quoteItem.price === null ? priceInitialValue : this.props.quoteItem.price;
 
     // INITIAL TOTAL PRICE
-    const totalPrice = quantidadeInitialValue * priceInitialValue;
+    const totalPriceInitialValue = quantidadeInitialValue * priceInitialValue;
 
     this.setState({
       product,
       quantity: quantidadeInitialValue,
       price: priceInitialValue,
-      totalPrice,
+      total_price: this.props.quoteItem.total_price === null ? totalPriceInitialValue : this.props.quoteItem.total_price,
       note: this.props.quoteItem.note,
       size: this.props.quoteItem.size === null ? sizeInitialValue : this.props.quoteItem.size,
       material: this.props.quoteItem.material === null ? materialInitialValue : this.props.quoteItem.material,
@@ -101,17 +101,14 @@ class QuoteElem extends Component {
   }
 
   getPriceFromCombination = (price = null) => {
-    // Adding here new conditions for combinations
-    console.log(price);
-    console.log(this.product);
-    let newPrice;
+    let newPrice = {};
     if (price === null) {
       newPrice = this.product.acf.variations.find((el) => {
         if (this.isPricePerMeterSquare) {
-          return el.material.toLowerCase() === this.state.material;
+          return el.material.toLowerCase() === this.state.material.toLowerCase();
         }
-        return el.size.toLowerCase() === this.state.size
-        && el.material.toLowerCase() === this.state.material;
+        return el.size.toLowerCase() === this.state.size.toLowerCase()
+        && el.material.toLowerCase() === this.state.material.toLowerCase();
       });
     } else {
       newPrice = {
@@ -125,13 +122,19 @@ class QuoteElem extends Component {
     if (newPrice !== undefined) {
       this.setState({
         price: newPrice,
-        totalPrice: newTotalPrice,
+        total_price: newTotalPrice,
       });
       this.debounce('priceHasBeenChanged', () => {
         if (this.state.price !== this.props.quoteItem.price) {
           this.props.updatePrice({
             id: this.props.quoteItem.id,
             price: parseInt(this.state.price, 10),
+          });
+        }
+        if (this.state.total_price !== this.props.quoteItem.total_price) {
+          this.props.updateTotalPrice({
+            id: this.props.quoteItem.id,
+            total_price: parseInt(this.state.total_price, 10),
           });
         }
       });
@@ -161,7 +164,7 @@ class QuoteElem extends Component {
           case 'price': {
             this.setState({
               price: parseInt(value, 10),
-              totalPrice: quantity * parseInt(value, 10),
+              total_price: quantity * parseInt(value, 10),
             });
             // TODO: Refactor inside setState's callback function
             this.debounce('priceHasBeenChanged', () => {
@@ -169,6 +172,12 @@ class QuoteElem extends Component {
                 this.props.updatePrice({
                   id: this.props.quoteItem.id,
                   price: parseInt(this.state.price, 10),
+                });
+              }
+              if (this.state.total_price !== this.props.quoteItem.total_price) {
+                this.props.updateTotalPrice({
+                  id: this.props.quoteItem.id,
+                  total_price: parseInt(this.state.total_price, 10),
                 });
               }
             });
@@ -233,7 +242,7 @@ class QuoteElem extends Component {
           case 'price': {
             this.setState({
               price: newValue,
-              totalPrice: quantity * newValue,
+              total_price: quantity * newValue,
             });
             break;
           }
@@ -331,48 +340,55 @@ class QuoteElem extends Component {
       index, quoteItem, removeItem, children,
     } = this.props;
 
+    const coverImg = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
+      ? this.state.product.acf.header.cover.sizes.thumbnail
+      : this.state.product.acf.packshot.sizes.thumbnail;
+    const coverAlt = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
+      ? this.state.product.acf.header.cover.alt
+      : this.state.product.acf.packshot.alt;
+
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     return (
       <QuoteBox>
         <QuoteBoxHeader>
-          <h3>{index + 1}. {this.state.product.title.rendered}</h3>
+          <h3>{index + 1}. <span dangerouslySetInnerHTML={{ __html: this.state.product.title.rendered }} /></h3>
           { !isMobile && children }
           <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
           <RatioCustom ratio={16 / 9}>
             <img
-              src={this.state.product.acf.header.cover.sizes.thumbnail}
-              alt={this.state.product.acf.header.cover.alt}
+              src={coverImg}
+              alt={coverAlt}
             />
           </RatioCustom>
           <QuoteBoxContentForm>
             <div>
-              <Input type="input" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
+              <Input type="input" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
 
               {this.state.size !== null && (
-                <Input type="select" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
+                <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
               )}
               {this.state.size_x !== null && (
-                <Input type="input" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
+                <Input type="input" domain="product" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
               )}
               {this.state.size_y !== null && (
-                <Input type="input" id={quoteItem.id} label="Profondidade" idType="size_y" value={this.state.size_y} updateValue={this.updateInput} />
+                <Input type="input" domain="product" id={quoteItem.id} label="Profondidade" idType="size_y" value={this.state.size_y} updateValue={this.updateInput} />
               )}
 
               {this.state.material !== null && (
-                <Input type="select" id={quoteItem.id} label="Acabamento" idType="material" value={this.state.material} updateValue={this.updateSelect} selectList={this.materialList} />
+                <Input type="select" domain="product" id={quoteItem.id} label="Acabamento" idType="material" value={this.state.material} updateValue={this.updateSelect} selectList={this.materialList} />
               )}
             </div>
 
             <div>
-              <Input type="textarea" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
+              <Input type="textarea" domain="product" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
               {this.userPermission === 1 && this.state.price !== null && (
                 <div>
-                  <Input type="input" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
+                  <Input type="input" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
                   <div>
                     <div className="total_price">Preço total</div>
-                    <div>{this.state.totalPrice}</div>
+                    <div>{this.state.total_price}</div>
                   </div>
                 </div>
               )}
@@ -395,6 +411,7 @@ QuoteElem.propTypes = {
     id: PropTypes.number,
     id_product: PropTypes.number,
     quantity: PropTypes.number,
+    total_price: PropTypes.number,
     price: PropTypes.number,
     note: PropTypes.string,
     size: PropTypes.string,
@@ -405,6 +422,7 @@ QuoteElem.propTypes = {
   removeItem: PropTypes.func.isRequired,
   updateQuantity: PropTypes.func.isRequired,
   updatePrice: PropTypes.func.isRequired,
+  updateTotalPrice: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
   updateSize: PropTypes.func.isRequired,
   updateMaterial: PropTypes.func.isRequired,
@@ -477,7 +495,7 @@ const QuoteBoxContentForm = styled.div`
         display: block;
         margin-bottom: 5px;
       }
-      input {
+      input, select {
         max-width: 140px;
         width: 100%;
       }

@@ -1,31 +1,26 @@
 import React from 'react';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import PropTypes from 'prop-types';
 // import { iconToggle } from '../../../../assets/grab.svg';
 
 
 const Toggle = props => (
 
-  <StyledButton
+  <button
     type="button"
     onClick={() => props.toggle()}
-  >Change
-  </StyledButton>
+    className="toggle"
+  >{props.children}
+  </button>
 );
 
 export default Toggle;
 
 Toggle.propTypes = {
   toggle: PropTypes.func.isRequired,
+  children: PropTypes.node,
 };
 
-const StyledButton = styled.button`
-  display: block;
-  position: fixed;
-  top: 10px;
-  z-index: 100;
-  right: 20px;
-  @media only screen and (min-width: 576px) {
-    display: none;
-  }
-`;
+Toggle.defaultProps = {
+  children: null,
+};

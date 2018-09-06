@@ -6,7 +6,7 @@ import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import LoadingScreen from '../../components/LoadingScreen';
 import Menu from '../../components/Menu';
-/* eslint linebreak-style: ["error", "windows"] */
+
 class Quotation extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +18,10 @@ class Quotation extends Component {
     showProducts: true,
   }
 
-
   componentDidMount = () => {
     const { initApp, app } = this.props;
     const oneHour = 60 * 60 * 1000;
-    console.log(new Date() - new Date(app.appLoadedAt));
+    // console.log(new Date() - new Date(app.appLoadedAt));
     if (!app.appLoaded
       || app.categories === {}
       || app.products.length === 0

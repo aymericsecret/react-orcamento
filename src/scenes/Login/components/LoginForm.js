@@ -20,8 +20,8 @@ class LoginForm extends Component {
   }
 
   state = {
-    login: 'a',
-    password: 'a',
+    login: 'admin_cremme',
+    password: 'test',
     message: '',
     isLogged: false,
   }

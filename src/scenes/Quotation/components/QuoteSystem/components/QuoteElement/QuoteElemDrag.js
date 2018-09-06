@@ -85,7 +85,7 @@ class QuoteElemDrag extends Component {
     const opacity = {
       opacity: isDraggedElem ? 0.5 : 1,
     };
-    console.log(quoteItem);
+    // console.log(quoteItem);
 
     return (
 

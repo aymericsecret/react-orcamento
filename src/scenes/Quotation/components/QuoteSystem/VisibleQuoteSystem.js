@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { initQuotation, updateProductsOrder } from './actions';
+import { initQuotation, updateProductsOrder, resetQuotation } from './actions';
 import QuoteSystem from './QuoteSystem';
 
 
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
   initQuotation,
   updateProductsOrder,
+  resetQuotation,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(QuoteSystem);

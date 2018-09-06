@@ -8,6 +8,7 @@ const mapStateToProps = state => ({
   appCategoriesLoaded: state.app.appProductsLoaded,
   categories: state.app.categories,
   mainCategory: state.categoryList.mainCategory,
+  sessionPermission: state.session.permission,
 });
 
 

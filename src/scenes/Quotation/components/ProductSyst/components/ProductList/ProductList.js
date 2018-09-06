@@ -8,7 +8,6 @@ const ProductList = (props) => {
   const {
     products, showSubCategory, subCategory, toggleSide, categories, mainCategory,
   } = props;
-  console.log(subCategory);
 
   const MyLoaderImg = () => (
     <ContentLoader height={170} width={210}>
@@ -20,32 +19,28 @@ const ProductList = (props) => {
   if (products.length === 0
     && showSubCategory
     && categories.children[mainCategory].children[subCategory] !== undefined) {
-    console.log(categories.children[mainCategory].children[subCategory]);
     return (
       <ProductsBlock>{
-        [...Array(categories.children[mainCategory].children[subCategory].count)].map(i => <div className="flex50">{MyLoaderImg()}</div>)
+        [...Array(categories.children[mainCategory].children[subCategory].count)].map(() => <div className="flex50">{MyLoaderImg()}</div>)
         }
       </ProductsBlock>
     );
   }
 
-  console.log(`products : ${products}`);
   const productToShow = products.filter(
     product => product.categories.find(
       category => category === subCategory) !== undefined);
-  console.log(`productToShow : ${productToShow}`);
-
   return (
     <div>
-      {/* <ProductsBlock>{
-        [...Array(3)].map(i => <div className="flex50">{MyLoaderImg()}</div>)}
-      </ProductsBlock> */}
+
       <ProductsBlock>
         {showSubCategory
             && productToShow.map(product => (
+              (!(props.sessionPermission === 0 && product.acf.permission === true) && (
               <div className="flex50" key={product.id}>
                 <VisibleProduct product={product} key={product.id} toggleSide={toggleSide} />
               </div>
+              ))
             ))
           }
       </ProductsBlock>
@@ -64,6 +59,7 @@ ProductList.propTypes = {
     children: PropTypes.array.isRequired,
   }).isRequired,
   mainCategory: PropTypes.number.isRequired,
+  sessionPermission: PropTypes.number.isRequired,
 };
 
 const ProductsBlock = styled.div`

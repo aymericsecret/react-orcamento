@@ -16,7 +16,7 @@ import thunk from 'redux-thunk';
 import VisibleQuotation from './scenes/Quotation/VisibleQuotation';
 import Login from './scenes/Login/Login';
 import rootReducer from './rootReducer';
-/* eslint linebreak-style: ["error", "windows"] */
+
 const middleware = [thunk];
 
 const store = createStore(

@@ -25,3 +25,15 @@ body h3 {
 * {
   -webkit-overflow-scrolling: touch;
 }
+button {
+  position: initial;
+  height: 25px;
+  padding: 0 20px;
+  background: white;
+  border: 1px solid #3C3C3C;
+  border-radius: 2px;
+  color: #3C3C3C;
+  cursor: pointer;
+  font-family: 'Omnes';
+  font-size: 14px;
+}

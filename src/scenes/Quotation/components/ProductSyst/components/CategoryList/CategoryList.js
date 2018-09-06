@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
-import iconSearch from '../../../../../../assets/icons_search_dark.png';
 import '../../../../../../font.css';
-/* eslint linebreak-style: ["error", "windows"] */
+import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
+
+const CATEGORY_LIST_ADMIN = ['nao-publicado'];
+
 class CategoryList extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,9 @@ class CategoryList extends Component {
   state = {
     active: this.props.mainCategory,
     imageStatus: 'loading',
+    // searchOpened: false,
   }
+
 
   selectMainCategory = (index) => {
     setTimeout(() => {
@@ -40,11 +44,11 @@ class CategoryList extends Component {
     }, 0);
   }
 
-  handleImageLoaded() {
+  handleImageLoaded = () => {
     this.setState({ imageStatus: 'loaded' });
   }
 
-  handleImageErrored() {
+  handleImageErrored = () => {
     this.setState({ imageStatus: 'failed to load' });
   }
 
@@ -56,7 +60,6 @@ class CategoryList extends Component {
       subCategory,
     } = this.props;
     let objetSubCategory = { name: 'Name not defined' };
-    console.log(categoryList.children);
 
     if (categoryList.children !== undefined) {
       objetSubCategory = categoryList.children[mainCategory].children.find(
@@ -69,37 +72,30 @@ class CategoryList extends Component {
         <rect x="0" y="0" rx="5" ry="5" width="400" height="800" />
       </ContentLoader>
     );
+
     return (
       <ProductsBlock>
         <HeaderCategories>
-          <IconSearchDiv>
-            <img
-              src={iconSearch}
-              className="icons_search openingGridMenu"
-              alt=""
-            />
-          </IconSearchDiv>
           <Categories>
             { (categoryList.children !== undefined)
             && categoryList.children.map((categorie, index) => (
-              (this.state.active === index)
-                ? (
-                  <LinkCustom
-                    key={categorie.term_id}
-                    eventClick={() => this.selectMainCategory(index)}
-                  >
-                    <h3 className="active"><div className="categoryName">{categorie.name}</div></h3>
-                  </LinkCustom>
-                ) : (
-                  <LinkCustom
-                    key={categorie.term_id}
-                    eventClick={() => this.selectMainCategory(index)}
-                  >
-                    <h3 className="notActive">{categorie.name}</h3>
-                  </LinkCustom>
+              (!(this.props.sessionPermission === 0 && CATEGORY_LIST_ADMIN.indexOf(categorie.slug) >= 0)
+                && (
+                <LinkCustom
+                  key={categorie.term_id}
+                  eventClick={() => this.selectMainCategory(index)}
+                >
+                  <h3 className={this.state.active === index ? 'active' : 'noActive'}>
+                    <div className={this.state.active === index ? 'categoryName' : ''}>
+                      {categorie.name}
+                    </div>
+                  </h3>
+                </LinkCustom>
                 )
-            ))
-            }
+              )
+
+            ),
+            )}
           </Categories>
         </HeaderCategories>
         {!showSubCategory
@@ -111,11 +107,11 @@ class CategoryList extends Component {
                     <LinkCustom eventClick={() => this.selectSubCategory(sousCategorie.term_id)}>
                       <RatioCustom ratio={16 / 9}>
                         <img
-                          src={sousCategorie.cover.sizes.thumbnail}
+                          src={sousCategorie.cover !== false ? sousCategorie.cover.sizes.thumbnail : defaultPicture}
                           className="photoCategory"
-                          alt={sousCategorie.cover.alt}
-                          onLoad={this.handleImageLoaded.bind(this)}
-                          onError={this.handleImageErrored.bind(this)}
+                          alt={sousCategorie.cover !== false ? sousCategorie.cover.alt : ''}
+                          onLoad={this.handleImageLoaded}
+                          onError={this.handleImageErrored}
                         />
                         <Loader>
                           {this.state.imageStatus === 'loading' && (
@@ -140,6 +136,7 @@ class CategoryList extends Component {
 export default CategoryList;
 
 CategoryList.propTypes = {
+  sessionPermission: PropTypes.number.isRequired,
   mainCategory: PropTypes.number.isRequired,
   categoryList: PropTypes.shape({
     term_id: PropTypes.number,
@@ -151,15 +148,26 @@ CategoryList.propTypes = {
   showSubCategory: PropTypes.bool.isRequired,
 };
 const ProductsBlock = styled.div`
+  position: relative;
   width: 100%;
   margin-bottom: 50px;
-  padding: 0 20px;
+  padding: 0 20px 0 20px;
 `;
+
+const HeaderCategories = styled.div`
+  position: relative;
+  width: 100%;
+  margin-bottom: 40px;
+`;
+
 const Categories = styled.div`
   display: flex;
   flex-direction: column;
   @media only screen and (min-width: 1024px) {
     flex-direction: row;
+
+    width: calc(100% - 80px);
+    margin: 0 40px;
   }
   justify-content: space-around;
   text-align: center;
@@ -170,6 +178,10 @@ const Categories = styled.div`
     background-position: 0px 100%;
     background-size: 0 1px;
     background-repeat: no-repeat;
+    margin-bottom: 10px;
+    @media only screen and (min-width: 1024px) {
+      margin-bottom: 0;
+    }
     &:hover {
       cursor: pointer;
     }
@@ -182,7 +194,8 @@ const Categories = styled.div`
     background-repeat: no-repeat;
     transition: background-size 0.3s ease-out;
     margin: 0;
-    padding-right: 10px;
+    display: inline-block;
+    margin-right: 10px;
     font-size: 25px;
     line-height: 28px;
     letter-spacing: 1px;
@@ -201,13 +214,7 @@ const Categories = styled.div`
     
   }
 `;
-const IconSearchDiv = styled.div`
-  float: right;
-  margin-right: 10px;
-`;
-const HeaderCategories = styled.div`
-  margin-bottom: 40px;
-`;
+
 const RatioCustom = styled(Ratio)`
   position: relative;
   img {
