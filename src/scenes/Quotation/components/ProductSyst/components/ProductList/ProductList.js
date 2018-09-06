@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ContentLoader from 'react-content-loader';
 import VisibleProduct from './components/VisibleProduct';
-
+/* eslint linebreak-style: ["error", "windows"] */
 const ProductList = (props) => {
   const {
     products, showSubCategory, subCategory, toggleSide, categories, mainCategory,
@@ -32,7 +32,6 @@ const ProductList = (props) => {
       category => category === subCategory) !== undefined);
   return (
     <div>
-
       <ProductsBlock>
         {showSubCategory
             && productToShow.map(product => (
