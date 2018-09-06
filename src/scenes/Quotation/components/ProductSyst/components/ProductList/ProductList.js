@@ -30,9 +30,6 @@ const ProductList = (props) => {
   const productToShow = products.filter(
     product => product.categories.find(
       category => category === subCategory) !== undefined);
-
-  console.log(products);
-
   return (
     <div>
 

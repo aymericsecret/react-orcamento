@@ -6,6 +6,7 @@ import {
   REMOVE_PRODUCT_TO_QUOTATION,
   UPDATE_PRODUCT_QUANTITY,
   UPDATE_PRODUCT_PRICE,
+  UPDATE_PRODUCT_TOTAL_PRICE,
   UPDATE_PRODUCT_NOTE,
   UPDATE_PRODUCT_SIZE,
   UPDATE_PRODUCT_MATERIAL,
@@ -26,6 +27,7 @@ const initialQuoteProduct = {
   id_product: null,
   quantity: null,
   price: null,
+  total_price: null,
   note: '',
   material: null,
   size: null,
@@ -54,6 +56,19 @@ export default function (state = initialState, action) {
     }
     case ADD_PRODUCT_TO_QUOTATION: {
       const nextID = state.quotation.total_id + 1;
+      const tmpQuoteProduct = JSON.parse(JSON.stringify(initialQuoteProduct));
+      if (data.acf.variations !== false && data.acf.variations !== undefined && data.acf.variations.length > 0) {
+        tmpQuoteProduct.price = parseInt(data.acf.variations[0].price, 10);
+        tmpQuoteProduct.total_price = parseInt(data.acf.variations[0].price, 10);
+        tmpQuoteProduct.quantity = 1;
+        tmpQuoteProduct.material = data.acf.variations[0].material;
+        if (data.acf.msquare) {
+          tmpQuoteProduct.size_x = 1;
+          tmpQuoteProduct.size_y = 1;
+        } else {
+          tmpQuoteProduct.size = data.acf.variations[0].size;
+        }
+      }
       return {
         ...state,
         quotation: {
@@ -62,7 +77,7 @@ export default function (state = initialState, action) {
           products: [
             ...state.quotation.products,
             {
-              ...initialQuoteProduct,
+              ...tmpQuoteProduct,
               id: nextID,
               id_product: data.id,
             },
@@ -103,6 +118,20 @@ export default function (state = initialState, action) {
       const productListUpdated = state.quotation.products;
 
       productListUpdated[productIndex].price = data.price;
+      return {
+        ...state,
+        quotation: {
+          ...state.quotation,
+          products: productListUpdated,
+        },
+      };
+    }
+    case UPDATE_PRODUCT_TOTAL_PRICE: {
+      const productToUpdate = state.quotation.products.find(el => el.id === data.id);
+      const productIndex = state.quotation.products.indexOf(productToUpdate);
+      const productListUpdated = state.quotation.products;
+
+      productListUpdated[productIndex].total_price = data.total_price;
       return {
         ...state,
         quotation: {

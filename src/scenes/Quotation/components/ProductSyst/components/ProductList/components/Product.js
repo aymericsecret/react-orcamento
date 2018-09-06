@@ -62,9 +62,7 @@ export default class Product extends Component {
               )}
             </Loader>
           </RatioCustom>
-          <h4 className="nameProduct">
-            {this.props.product !== undefined && this.props.product.title.rendered}
-          </h4>
+          <h4 className="nameProduct" dangerouslySetInnerHTML={{ __html: this.props.product !== undefined && this.props.product.title.rendered }} />
         </button>
       </ProductBlock>
     );

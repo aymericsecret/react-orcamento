@@ -4,6 +4,7 @@ export const ADD_PRODUCT_TO_QUOTATION = 'ADD_PRODUCT_TO_QUOTATION';
 export const REMOVE_PRODUCT_TO_QUOTATION = 'REMOVE_PRODUCT_TO_QUOTATION';
 export const UPDATE_PRODUCT_QUANTITY = 'UPDATE_PRODUCT_QUANTITY';
 export const UPDATE_PRODUCT_PRICE = 'UPDATE_PRODUCT_PRICE';
+export const UPDATE_PRODUCT_TOTAL_PRICE = 'UPDATE_PRODUCT_TOTAL_PRICE';
 export const UPDATE_PRODUCT_NOTE = 'UPDATE_PRODUCT_NOTE';
 export const UPDATE_PRODUCT_SIZE = 'UPDATE_PRODUCT_SIZE';
 export const UPDATE_PRODUCT_MATERIAL = 'UPDATE_PRODUCT_MATERIAL';
@@ -49,6 +50,13 @@ export function updateProductPrice(price) {
   return dispatch => dispatch({
     type: 'UPDATE_PRODUCT_PRICE',
     data: price,
+  });
+}
+
+export function updateProductTotalPrice(totalPrice) {
+  return dispatch => dispatch({
+    type: 'UPDATE_PRODUCT_TOTAL_PRICE',
+    data: totalPrice,
   });
 }
 

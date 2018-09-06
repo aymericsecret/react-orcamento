@@ -26,7 +26,7 @@ class QuoteElem extends Component {
     product: {},
     quantity: 0,
     price: 0,
-    totalPrice: 0,
+    total_price: 0,
     note: '',
     material: '',
     size: '',
@@ -85,13 +85,13 @@ class QuoteElem extends Component {
     priceInitialValue = this.props.quoteItem.price === null ? priceInitialValue : this.props.quoteItem.price;
 
     // INITIAL TOTAL PRICE
-    const totalPrice = quantidadeInitialValue * priceInitialValue;
+    const totalPriceInitialValue = quantidadeInitialValue * priceInitialValue;
 
     this.setState({
       product,
       quantity: quantidadeInitialValue,
       price: priceInitialValue,
-      totalPrice,
+      total_price: this.props.quoteItem.total_price === null ? totalPriceInitialValue : this.props.quoteItem.total_price,
       note: this.props.quoteItem.note,
       size: this.props.quoteItem.size === null ? sizeInitialValue : this.props.quoteItem.size,
       material: this.props.quoteItem.material === null ? materialInitialValue : this.props.quoteItem.material,
@@ -101,17 +101,14 @@ class QuoteElem extends Component {
   }
 
   getPriceFromCombination = (price = null) => {
-    // Adding here new conditions for combinations
-    // console.log(price);
-    // console.log(this.product);
-    let newPrice;
+    let newPrice = {};
     if (price === null) {
       newPrice = this.product.acf.variations.find((el) => {
         if (this.isPricePerMeterSquare) {
-          return el.material.toLowerCase() === this.state.material;
+          return el.material.toLowerCase() === this.state.material.toLowerCase();
         }
-        return el.size.toLowerCase() === this.state.size
-        && el.material.toLowerCase() === this.state.material;
+        return el.size.toLowerCase() === this.state.size.toLowerCase()
+        && el.material.toLowerCase() === this.state.material.toLowerCase();
       });
     } else {
       newPrice = {
@@ -125,13 +122,19 @@ class QuoteElem extends Component {
     if (newPrice !== undefined) {
       this.setState({
         price: newPrice,
-        totalPrice: newTotalPrice,
+        total_price: newTotalPrice,
       });
       this.debounce('priceHasBeenChanged', () => {
         if (this.state.price !== this.props.quoteItem.price) {
           this.props.updatePrice({
             id: this.props.quoteItem.id,
             price: parseInt(this.state.price, 10),
+          });
+        }
+        if (this.state.total_price !== this.props.quoteItem.total_price) {
+          this.props.updateTotalPrice({
+            id: this.props.quoteItem.id,
+            total_price: parseInt(this.state.total_price, 10),
           });
         }
       });
@@ -161,7 +164,7 @@ class QuoteElem extends Component {
           case 'price': {
             this.setState({
               price: parseInt(value, 10),
-              totalPrice: quantity * parseInt(value, 10),
+              total_price: quantity * parseInt(value, 10),
             });
             // TODO: Refactor inside setState's callback function
             this.debounce('priceHasBeenChanged', () => {
@@ -169,6 +172,12 @@ class QuoteElem extends Component {
                 this.props.updatePrice({
                   id: this.props.quoteItem.id,
                   price: parseInt(this.state.price, 10),
+                });
+              }
+              if (this.state.total_price !== this.props.quoteItem.total_price) {
+                this.props.updateTotalPrice({
+                  id: this.props.quoteItem.id,
+                  total_price: parseInt(this.state.total_price, 10),
                 });
               }
             });
@@ -233,7 +242,7 @@ class QuoteElem extends Component {
           case 'price': {
             this.setState({
               price: newValue,
-              totalPrice: quantity * newValue,
+              total_price: quantity * newValue,
             });
             break;
           }
@@ -342,7 +351,7 @@ class QuoteElem extends Component {
     return (
       <QuoteBox>
         <QuoteBoxHeader>
-          <h3>{index + 1}. {this.state.product.title.rendered}</h3>
+          <h3>{index + 1}. <span dangerouslySetInnerHTML={{ __html: this.state.product.title.rendered }} /></h3>
           { !isMobile && children }
           <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
         </QuoteBoxHeader>
@@ -379,7 +388,7 @@ class QuoteElem extends Component {
                   <Input type="input" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
                   <div>
                     <div className="total_price">Preço total</div>
-                    <div>{this.state.totalPrice}</div>
+                    <div>{this.state.total_price}</div>
                   </div>
                 </div>
               )}
@@ -402,6 +411,7 @@ QuoteElem.propTypes = {
     id: PropTypes.number,
     id_product: PropTypes.number,
     quantity: PropTypes.number,
+    total_price: PropTypes.number,
     price: PropTypes.number,
     note: PropTypes.string,
     size: PropTypes.string,
@@ -412,6 +422,7 @@ QuoteElem.propTypes = {
   removeItem: PropTypes.func.isRequired,
   updateQuantity: PropTypes.func.isRequired,
   updatePrice: PropTypes.func.isRequired,
+  updateTotalPrice: PropTypes.func.isRequired,
   updateNote: PropTypes.func.isRequired,
   updateSize: PropTypes.func.isRequired,
   updateMaterial: PropTypes.func.isRequired,
