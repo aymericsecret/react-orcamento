@@ -26,6 +26,7 @@ export default class QuoteRequest extends Component {
     this.quoteRequest = quoteRequest;
   }
 
+
   storeQuoteRequest = (request = this.props.quoteRequest) => {
     this.props.saveQuoteRequest(request);
   }

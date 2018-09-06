@@ -6,9 +6,8 @@ import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import LoadingScreen from '../../components/LoadingScreen';
 import Menu from '../../components/Menu';
-import VisiblePdf from '../../utils/VisiblePdf';
 
-/* eslint linebreak-style: ["error", "windows"] */
+
 class Quotation extends Component {
   constructor(props) {
     super(props);
@@ -34,6 +33,7 @@ class Quotation extends Component {
     }
   }
 
+
   updateElemNode = (node) => {
     if (this.shouldScroll) {
       this.shouldScroll = false;
@@ -53,16 +53,18 @@ class Quotation extends Component {
     }
   }
 
+
   render() {
     const { app, session, initApp } = this.props;
 
     return (
       <StyledQuotation>
-        <VisiblePdf />
         {app.appCategoriesLoaded ? (
           <QuotationWrapper>
             <Menu session={session} initApp={initApp} toggleSide={this.toggle}>Orçamento</Menu>
+
             <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
+
               <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
               <ProductSyst toggleSide={this.toggle} />
             </QuotationGrid>

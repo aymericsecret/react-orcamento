@@ -91,7 +91,9 @@ class QuoteElem extends Component {
       product,
       quantity: quantidadeInitialValue,
       price: priceInitialValue,
-      total_price: this.props.quoteItem.total_price === null ? totalPriceInitialValue : this.props.quoteItem.total_price,
+      total_price: this.props.quoteItem.total_price === null
+        ? totalPriceInitialValue
+        : this.props.quoteItem.total_price,
       note: this.props.quoteItem.note,
       size: this.props.quoteItem.size === null ? sizeInitialValue : this.props.quoteItem.size,
       material: this.props.quoteItem.material === null ? materialInitialValue : this.props.quoteItem.material,

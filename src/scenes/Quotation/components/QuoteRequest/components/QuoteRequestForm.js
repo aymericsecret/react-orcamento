@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import VisiblePdf from '../../../../../utils/VisiblePdf';
 import Input from '../../../../../components/Input';
 
 class QuoteRequestForm extends Component {
@@ -8,6 +9,7 @@ class QuoteRequestForm extends Component {
     email: '',
     message: '',
     name: '',
+    url: '',
   }
 
   componentWillMount = () => {
@@ -18,6 +20,12 @@ class QuoteRequestForm extends Component {
     }
     this.setState(newState);
   }
+
+  onRender = ({ blob }) => {
+    console.log('onRendre', blob);
+
+    this.setState({ url: URL.createObjectURL(blob) });
+  };
 
   updateInput = (e) => {
     switch (e.type) {
@@ -60,6 +68,7 @@ class QuoteRequestForm extends Component {
     this.props.processRequest();
   }
 
+
   render() {
     const displayValues = this.props.requestSent ? {
       visibility: 'hidden',
@@ -72,6 +81,7 @@ class QuoteRequestForm extends Component {
     };
     return (
       <StyledForm style={displayValues}>
+        <VisiblePdf render={this.onRender} />
         <Input type="text" domain="popup_quotation" id="name" label="Nome" idType="name" value={this.state.name} updateValue={this.updateInput} />
 
         <Input type="email" domain="popup_quotation" id="email" label="Email" idType="email" value={this.state.email} updateValue={this.updateInput} />
@@ -90,6 +100,8 @@ class QuoteRequestForm extends Component {
         <button type="submit" onClick={this.submit}>
           {this.props.isAdmin === 1 ? 'Mandar o orçamento' : 'Pedir o seu orçamento'}
         </button>
+        <a className="button" href={this.state.url} download="orcamento.pdf">Baixar</a>
+
       </StyledForm>
 
     );
@@ -125,6 +137,12 @@ const StyledForm = styled.div`
     input {
       width: 200px;
     }
+  }
+  a {
+    display: inline-block;
+    text-decoration: none;
+    line-height: 24px;
+    margin-left: 20px;
   }
   #popup_quotation_name_name {
 

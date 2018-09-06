@@ -6,6 +6,7 @@ import {
   Document,
   Text,
   StyleSheet,
+  pdf,
 } from '@react-pdf/renderer';
 
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
@@ -293,8 +294,7 @@ class PDF extends Component {
 
   // Create Document Component (the PDF)
   MyDocument = () => (
-    <Document>
-      {/* First Page PDF */}
+    <Document shallow onRender={this.props.render}>
       <Page size="A4" orientation="landscape" style={styles.page}>
         <Titre>orçamento</Titre>
         <ImageCustom src="http://cremme.com.br/wp-content/uploads/2017/09/cremme-mesas-botane_2-e1532970266702.jpg" />
@@ -344,11 +344,12 @@ class PDF extends Component {
     </Document>
   );
 
+
   render() {
     return (
-      <div>
-        PDF :
+      <div style={{ display: 'none' }}>
         {this.MyDocument()}
+
       </div>
     );
   }
@@ -359,6 +360,7 @@ export default PDF;
 PDF.propTypes = {
   allProducts: PropTypes.arrayOf(PropTypes.object).isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  render: PropTypes.func.isRequired,
 };
 
 // ----------------- Page 1 of the PDF -----------------
