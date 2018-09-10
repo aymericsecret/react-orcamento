@@ -8,7 +8,6 @@ export default class Product extends Component {
   constructor(props) {
     super(props);
     this.state = { imageStatus: 'loading' };
-    console.log(this.props.product);
   }
 
   handleImageLoaded = () => {
@@ -41,7 +40,6 @@ export default class Product extends Component {
             this.props.toggleSide({ type: 'add_product' });
           }}
         >
-          {console.log(this.props.product.acf)}
           <RatioCustom ratio={16 / 9}>
             <img
               src={coverImg}

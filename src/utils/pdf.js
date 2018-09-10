@@ -9,6 +9,7 @@ import {
 } from '@react-pdf/renderer';
 
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
+import Omnes from '../assets/fonts/Omnes-Regular.eot';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -27,18 +28,20 @@ const BigTab = props => (
     <Tab x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
     <Tab x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
     <Tab x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2="" />
-    {/* <Tab x={0} y={0} width={props.width} height={props.height} />
-    <Tab x={183} y={0} width={160} height={props.height} />
-    <Tab x={507} y={0} width={214} height={props.height} /> */}
-    <ImageOrcaCustom y={props.y} src={props.src} />
+    {props.src !== undefined
+      && <ImageOrcaCustom y={props.y} src={props.src} />
+    }
   </ContentTab>
 );
 BigTab.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  text: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
+  text: PropTypes.arrayOf(PropTypes.string).isRequired,
+  src: PropTypes.string,
+};
+BigTab.defaultProps = {
+  src: undefined,
 };
 
 // top of table orçamento
@@ -48,13 +51,9 @@ const Tab = props => (
     <TraitTableau width={1} height={props.height} top={0} left={props.width} />
     <TraitTableau width={props.width} height={1} top={0} left={0} />
     <TraitTableau width={props.width} height={1} top={props.height} left={0} />
-    <TextTab width={props.width - 40} height={(props.height / 3)}>
-      <Text>
-        {props.text1}
-      </Text>
-      <Text>
-        {props.text2}
-      </Text>
+    <TextTab width={props.width - 40} height={props.height / 3}>
+      <Text>{props.text1}</Text>
+      <Text>{props.text2}</Text>
     </TextTab>
   </ContentTab>
 );
@@ -81,21 +80,15 @@ class PDF extends Component {
         productBy4[i].push(this.props.products[i * 4 + j]);
       }
     }
-    console.log('PRODUCT TEST :');
-    console.log(productBy4);
     for (let i = 0; i < (this.props.products.length / 4); i += 1) {
-      console.log('DANS LE FOR ALL PAAAAAAAGE');
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
           <FondGris />
-          <BigTab x={20} y={20} width={802} height={13} text={['TEEEEST', 'tipologia', '', 'L x P x A (cm)', 'acabamento', 'preço unitario']} />
+          <BigTab x={20} y={20} width={802} height={13} text={['foto', 'tipologia', '', 'L x P x A (cm)', 'acabamento', 'preço unitario']} />
           {productBy4[i].map((product, key) => {
-            console.log(product.id_product);
             const foundProduct = this.props.allProducts.find(
-              function (oneProduct) { return oneProduct.id === product.id_product }
+              oneProduct => oneProduct.id === product.id_product,
             );
-            console.log('foundProduct');
-            console.log(foundProduct.acf.header.cover.url);
             // Check if product.size is defined or not
             let sizeProduct = `${product.size} (cm)`;
             // console.log(foundProduct.acf.layout);
@@ -123,9 +116,42 @@ class PDF extends Component {
     return table;
   }
 
+  pagePDF = () => {
+    const table = [];
+    const TableurlImagePDF = [];
+    table.push(
+      this.props.products.map((product) => {
+        const foundProduct = this.props.allProducts.find(
+          // function toFind(oneProduct) { return oneProduct.id === product.id_product; },
+          oneProduct => oneProduct.id === product.id_product,
+        );
+        let URLimagePDF;
+        if (foundProduct.acf.pdf !== undefined && foundProduct.acf.pdf !== false) {
+          console.log(foundProduct.acf.pdf);
+          foundProduct.acf.pdf.forEach((element) => {
+            URLimagePDF = element.image.url;
+          });
+          if (TableurlImagePDF.indexOf(URLimagePDF) === -1) {
+            TableurlImagePDF.push(URLimagePDF);
+            if ((URLimagePDF !== undefined)) {
+              return (
+                <Page key={product.id} size="A4" orientation="landscape" style={styles.page}>
+                  <ImageAllPage key={product.id} src={URLimagePDF} />
+                </Page>
+              );
+            }
+          }
+        }
+        return false;
+      }),
+    );
+    return table;
+  }
+
   // Create Document Component
   MyDocument = () => (
     <Document>
+      {/* First Page PDF */}
       <Page size="A4" orientation="landscape" style={styles.page}>
         <Titre>orçamento</Titre>
         <ImageCustom src="http://cremme.com.br/wp-content/uploads/2017/09/cremme-mesas-botane_2-e1532970266702.jpg" />
@@ -142,7 +168,36 @@ class PDF extends Component {
           <Text>11 3064 2590</Text>
         </Contact>
       </Page>
+      {/* PDF part */}
+      {this.pagePDF()}
+      {/* Orçamento PDF */}
       { this.AllPage() }
+      {/* Last Page PDF */}
+      <Page size="A4" orientation="landscape" style={styles.page}>
+        <TitreContato>contato</TitreContato>
+        <TraitHaut />
+        <TitreMerci>- Merci -</TitreMerci>
+        <ContentContato>
+          <Text>hadrien.lelong@cremme.com.br</Text>
+          <Text2>pierre.colnet@cremme.com.br</Text2>
+          <Text>Rua Mateus Grou, 629</Text>
+          <Text2>Pinheiros - São Paulo</Text2>
+          <Text>+55 11 2539-3034</Text>
+          <Text2>+55 11 2538-3776</Text2>
+          <Text>www.cremme.com.br</Text>
+        </ContentContato>
+        <Trait />
+        <Adresse>
+          <Text>Alameda Gabriel Monteiro da Silva,</Text>
+          <Text>384</Text>
+        </Adresse>
+        <LogoCircleCustom src={LogCremmeCircle} />
+        <Contact>
+          <Text>www.cremme.com.br</Text>
+          <Text>contat@cremme.com.br</Text>
+          <Text>11 3064 2590</Text>
+        </Contact>
+      </Page>
     </Document>
   );
 
@@ -169,6 +224,9 @@ const Titre = styled.Text`
   margin-left: 35px;
   margin-bottom: 20px;
   font-size: 23px;
+  @font-face {
+    font-family: Omnes;
+  }
   color: #979797;
 `;
 
@@ -231,6 +289,17 @@ const Contact = styled.View`
   color: #979797;
 `;
 
+// Page PDF
+const ImageAllPage = styled.Image`
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+`;
 
 // Page Tableau
 const FondGris = styled.View`
@@ -282,4 +351,44 @@ const ImageOrcaCustom = styled.Image`
   height: 67px;
   object-fit: cover;
   object-position: 50%, 50%;
+`;
+
+// Last page : Contato
+const TitreContato = styled.Text`
+  margin-top: 50px;
+  margin-left: 135px;
+  margin-bottom: 20px;
+  font-size: 23px;
+  color: #979797;
+`;
+
+const TraitHaut = styled.View`
+  position: absolute;
+  z-index: 15;
+  top: 92px;
+  left: 35px;
+  width: 772px;
+  height: 1px;
+  background-color: #979797;
+`;
+
+const TitreMerci = styled.Text`
+  position: absolute;
+  z-index: 15px;
+  top: 142px;
+  text-align: center;
+  font-size: 50px;
+  color: #979797;
+`;
+const ContentContato = styled.View`
+  position: absolute;
+  z-index: 15px;
+  top: 222px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5px;
+  color: #979797;
+`;
+const Text2 = styled.Text`
+  margin-bottom: 15px;
 `;
