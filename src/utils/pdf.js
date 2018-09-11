@@ -9,7 +9,6 @@ import {
 } from '@react-pdf/renderer';
 
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
-import Omnes from '../assets/fonts/Omnes-Regular.eot';
 
 // Create styles
 const styles = StyleSheet.create({
@@ -67,20 +66,77 @@ Tab.propTypes = {
 };
 
 class PDF extends Component {
+  // Function to class the product with the same ID (need because they have the same picture)
+  classMoveis = () => {
+    // Tab will be return with good class of the product of quotation
+    const ReturnProductClass = [];
+    // Tab with a save of the ID already class
+    const IDAlreadyClass = [];
+    // All the product of quotation get by the Redux
+    const { products } = this.props;
+    // Tab with all the product with same ID
+    let productsWithSameID = [];
+
+    // For all products
+    products.forEach((product) => {
+      // Tcheck if this ID is not already class
+      if (IDAlreadyClass.find(
+        ID => ID === product.id_product,
+      ) === undefined) {
+        // Add the ID to the list of ID already class
+        console.log('');
+        console.log('element with ID product not class:');
+        console.log(productsWithSameID);
+        console.log(product.id_product);
+        IDAlreadyClass.push(product.id_product);
+        console.log(IDAlreadyClass);
+        // Create tab with all the products with the same ID
+        productsWithSameID = products.filter(
+          productFilter => product.id_product === productFilter.id_product,
+        );
+        // Tcheck if the element
+        if (productsWithSameID !== []) {
+          // Add each product with same ID at the end of the ReturnProductClass
+          productsWithSameID.forEach((productWithSameID) => {
+            ReturnProductClass.push(productWithSameID);
+          });
+        } else {
+          ReturnProductClass.push(product);
+        }
+      } else {
+        // If element doesn't have another product with the same ID add to the return tab
+        console.log('');
+        console.log('');
+        console.log(`element already with ID product already class : ${product.id_product}`);
+      }
+      console.log('');
+      console.log('at the end for each');
+      console.log(ReturnProductClass);
+    });
+    console.log('');
+    console.log('');
+    console.log('RETURN VALUE');
+    console.log(ReturnProductClass);
+    console.log(productsWithSameID);
+    return ReturnProductClass;
+  }
+
+
   AllPage = () => {
     const table = [];
     const productBy4 = [];
-    for (let i = 0; i < this.props.products.length / 4; i += 1) {
+    const allProductsClass = this.classMoveis();
+    for (let i = 0; i < allProductsClass.length / 4; i += 1) {
       productBy4.push([]);
       let limite = 4;
-      if (i >= (this.props.products.length / 4) - 1) {
-        limite = this.props.products.length - (4 * i);
+      if (i >= (allProductsClass.length / 4) - 1) {
+        limite = allProductsClass.length - (4 * i);
       }
       for (let j = 0; j < limite; j += 1) {
-        productBy4[i].push(this.props.products[i * 4 + j]);
+        productBy4[i].push(allProductsClass[i * 4 + j]);
       }
     }
-    for (let i = 0; i < (this.props.products.length / 4); i += 1) {
+    for (let i = 0; i < (allProductsClass.length / 4); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
           <FondGris />
@@ -127,7 +183,7 @@ class PDF extends Component {
         );
         let URLimagePDF;
         if (foundProduct.acf.pdf !== undefined && foundProduct.acf.pdf !== false) {
-          console.log(foundProduct.acf.pdf);
+          // console.log(foundProduct.acf.pdf);
           foundProduct.acf.pdf.forEach((element) => {
             URLimagePDF = element.image.url;
           });
