@@ -22,13 +22,13 @@ const styles = StyleSheet.create({
 // top of table orçamento
 const BigTab = props => (
   <ContentTab x={props.x} y={props.y} width={0} height={0}>
-    <Tab x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="" />
-    <Tab x={162.5} y={0} width={159.25} height={props.height} text1={props.text[1]} text2={props.text[2]} />
-    <Tab x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
-    <Tab x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
-    <Tab x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2="" />
-    {props.src !== undefined
-      && <ImageOrcaCustom y={props.y} src={props.src} />
+    <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="" />
+    <Tab showUnderBorder="block" show="block" x={162.5} y={0} width={159.25} height={props.height} text1={props.text[1]} text2={props.text[2]} />
+    <Tab showUnderBorder="block" show="block" x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
+    <Tab showUnderBorder="block" show="block" x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
+    <Tab showUnderBorder="block" show="block" x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2="" />
+    {(props.src !== undefined)
+      && <ImageOrcaCustom top={props.positionYimg} y={props.y} src={props.src} />
     }
   </ContentTab>
 );
@@ -38,18 +38,24 @@ BigTab.propTypes = {
   height: PropTypes.number.isRequired,
   text: PropTypes.arrayOf(PropTypes.string).isRequired,
   src: PropTypes.string,
+  showImg: PropTypes.string,
+  showUnderBorder: PropTypes.string,
+  positionYimg: PropTypes.string,
 };
 BigTab.defaultProps = {
   src: undefined,
+  showImg: undefined,
+  showUnderBorder: undefined,
+  positionYimg: undefined,
 };
 
 // top of table orçamento
 const Tab = props => (
   <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-    <TraitTableau width={1} height={props.height} top={0} left={0} />
-    <TraitTableau width={1} height={props.height} top={0} left={props.width} />
-    <TraitTableau width={props.width} height={1} top={0} left={0} />
-    <TraitTableau width={props.width} height={1} top={props.height} left={0} />
+    <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
+    <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor="#979797" />
+    <TraitTableau show={props.show} width={props.width} height={1} top={0} left={0} backgroundColor="#979797" />
+    <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
     <TextTab width={props.width - 40} height={props.height / 3}>
       <Text>{props.text1}</Text>
       <Text>{props.text2}</Text>
@@ -63,6 +69,12 @@ Tab.propTypes = {
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  show: PropTypes.string,
+  showUnderBorder: PropTypes.string,
+};
+Tab.defaultProps = {
+  show: undefined,
+  showUnderBorder: undefined,
 };
 
 class PDF extends Component {
@@ -84,12 +96,12 @@ class PDF extends Component {
         ID => ID === product.id_product,
       ) === undefined) {
         // Add the ID to the list of ID already class
-        console.log('');
-        console.log('element with ID product not class:');
-        console.log(productsWithSameID);
-        console.log(product.id_product);
+        // console.log('');
+        // console.log('element with ID product not class:');
+        // console.log(productsWithSameID);
+        // console.log(product.id_product);
         IDAlreadyClass.push(product.id_product);
-        console.log(IDAlreadyClass);
+        // console.log(IDAlreadyClass);
         // Create tab with all the products with the same ID
         productsWithSameID = products.filter(
           productFilter => product.id_product === productFilter.id_product,
@@ -105,27 +117,29 @@ class PDF extends Component {
         }
       } else {
         // If element doesn't have another product with the same ID add to the return tab
-        console.log('');
-        console.log('');
-        console.log(`element already with ID product already class : ${product.id_product}`);
+        // console.log('');
+        // console.log('');
+        // console.log(`element already with ID product already class : ${product.id_product}`);
       }
-      console.log('');
-      console.log('at the end for each');
-      console.log(ReturnProductClass);
+      // console.log('');
+      // console.log('at the end for each');
+      // console.log(ReturnProductClass);
     });
-    console.log('');
-    console.log('');
-    console.log('RETURN VALUE');
-    console.log(ReturnProductClass);
-    console.log(productsWithSameID);
+    // console.log('');
+    // console.log('');
+    // console.log('RETURN VALUE');
+    // console.log(ReturnProductClass);
+    // console.log(productsWithSameID);
     return ReturnProductClass;
   }
-
 
   AllPage = () => {
     const table = [];
     const productBy4 = [];
+    // Use product class my ID :
     const allProductsClass = this.classMoveis();
+    // Use product withou be class by ID :
+    // const allProductsClass = this.props.products;
     for (let i = 0; i < allProductsClass.length / 4; i += 1) {
       productBy4.push([]);
       let limite = 4;
@@ -162,7 +176,58 @@ class PDF extends Component {
               priceProduct = '';
               // priceProduct = foundProduct.acf.variations[0].price;
             }
-            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} src={foundProduct.acf.header.cover.url} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
+            // Value of src image of product
+            let srcImageProduct = foundProduct.acf.header.cover.url;
+            // Check if the next product is not the same
+            let valueShowImg = 'block';
+            let showUnderBorder = 'block';
+            // Put the img of products with same ID at the good position
+            const positionYimg = '10px';
+            let keyToUsePlus = key + 1;
+            let iToUsePlus = i;
+            if (key === 3 && allProductsClass.length > i) {
+              keyToUsePlus = 0;
+              iToUsePlus = i + 1;
+            }
+            let keyToUseLess = key - 1;
+            let iToUseLess = i;
+            if (key === 0 && i > 0) {
+              keyToUseLess = 3;
+              iToUseLess = i - 1;
+            }
+            // When Image of product with same ID is hide
+            if (productBy4[iToUsePlus][keyToUsePlus] !== undefined) {
+              if (product.id_product === productBy4[iToUsePlus][keyToUsePlus].id_product) {
+                console.log(`same ID on next product : ${product.id_product}`);
+                valueShowImg = 'none';
+                showUnderBorder = 'none';
+              }
+            }
+            // When Image of product with same ID is show
+            if (productBy4[iToUseLess][keyToUseLess] !== undefined) {
+              if (product.id_product === productBy4[iToUseLess][keyToUseLess].id_product) {
+                console.log(`same ID on next product : ${product.id_product}`);
+                valueShowImg = 'none';
+                srcImageProduct = undefined;
+
+                // TODO: Mettre la photo au milieu
+                // let iToCountNumberOfProductWithSameID = iToUseLess;
+                // let keyToCountNumberOfProductWithSameID = keyToUseLess;
+                // let numberOfProductWithSameID = 0;
+                // // while (productBy4[iToCountNumberOfProductWithSameID][keyToCountNumberOfProductWithSameID] !== undefined) {
+                // while (keyToCountNumberOfProductWithSameID > 1) {
+                //   console.log(`id : ${iToCountNumberOfProductWithSameID} & key : ${keyToCountNumberOfProductWithSameID}`);
+                //   numberOfProductWithSameID += 1;
+                //   keyToCountNumberOfProductWithSameID -= 1;
+                //   if (keyToCountNumberOfProductWithSameID === 0 && iToCountNumberOfProductWithSameID > 0) {
+                //     keyToCountNumberOfProductWithSameID = 3;
+                //     iToCountNumberOfProductWithSameID -= 1;
+                //   }
+                // }
+                // positionYimg = -((87 * numberOfProductWithSameID) / 2 + 10);
+              }
+            }
+            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
           })
           }
           <LogoCircleCustom src={LogCremmeCircle} />
@@ -372,12 +437,12 @@ const TraitTableau = styled.View`
   position: absolute;
   top: ${props => props.top};
   left: ${props => props.left};
-  z-index: 15px;
+  z-index: 15;
   width: ${props => props.width};
   height: ${props => props.height};
-  background-color: #979797;
+  background-color: ${props => props.backgroundColor};
+  display: ${props => props.show}
 `;
-
 
 const ContentTab = styled.View`
   position: absolute;
@@ -401,7 +466,7 @@ const TextTab = styled.View`
 const ImageOrcaCustom = styled.Image`
   position: absolute;
   z-index: 20;
-  top: 10px;
+  top: ${props => props.top};
   left: 30px;
   width: 100px;
   height: 67px;
