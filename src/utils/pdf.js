@@ -195,10 +195,18 @@ class PDF extends Component {
               keyToUseLess = 3;
               iToUseLess = i - 1;
             }
+            // If is last element
+            let isLastElement = false;
+            if ((i <= (allProductsClass.length / 4)) && (productBy4[i].length === key + 1)) {
+              isLastElement = true;
+            }
+            console.log(key + 1);
+            console.log(productBy4[i].length);
+            console.log((productBy4[i].length === key + 1));
             // When Image of product with same ID is hide
             if (productBy4[iToUsePlus][keyToUsePlus] !== undefined) {
               if (product.id_product === productBy4[iToUsePlus][keyToUsePlus].id_product) {
-                console.log(`same ID on next product : ${product.id_product}`);
+                // console.log(`same ID on next product : ${product.id_product}`);
                 valueShowImg = 'none';
                 showUnderBorder = 'none';
               }
@@ -206,10 +214,9 @@ class PDF extends Component {
             // When Image of product with same ID is show
             if (productBy4[iToUseLess][keyToUseLess] !== undefined) {
               if (product.id_product === productBy4[iToUseLess][keyToUseLess].id_product) {
-                console.log(`same ID on next product : ${product.id_product}`);
+                // console.log(`same ID on next product : ${product.id_product}`);
                 valueShowImg = 'none';
                 srcImageProduct = undefined;
-
                 // TODO: Mettre la photo au milieu
                 // let iToCountNumberOfProductWithSameID = iToUseLess;
                 // let keyToCountNumberOfProductWithSameID = keyToUseLess;
@@ -226,6 +233,9 @@ class PDF extends Component {
                 // }
                 // positionYimg = -((87 * numberOfProductWithSameID) / 2 + 10);
               }
+            }
+            if (false || isLastElement) {
+              showUnderBorder = 'block';
             }
             return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
           })
