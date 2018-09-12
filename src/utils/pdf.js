@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 });
 
 
-// top of table orçamento
+// Line of tab with 5 columns
 const BigTab = props => (
   <ContentTab x={props.x} y={props.y} width={0} height={0}>
     <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="" />
@@ -49,7 +49,7 @@ BigTab.defaultProps = {
   positionYimg: undefined,
 };
 
-// top of table orçamento
+// Tab with border and text
 const Tab = props => (
   <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
     <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
@@ -77,6 +77,7 @@ Tab.defaultProps = {
   showUnderBorder: undefined,
 };
 
+
 class PDF extends Component {
   // Function to class the product with the same ID (need because they have the same picture)
   classMoveis = () => {
@@ -95,11 +96,11 @@ class PDF extends Component {
       if (IDAlreadyClass.find(
         ID => ID === product.id_product,
       ) === undefined) {
-        // Add the ID to the list of ID already class
         // console.log('');
         // console.log('element with ID product not class:');
         // console.log(productsWithSameID);
         // console.log(product.id_product);
+        // Add the ID to the list of ID already class
         IDAlreadyClass.push(product.id_product);
         // console.log(IDAlreadyClass);
         // Create tab with all the products with the same ID
@@ -133,13 +134,17 @@ class PDF extends Component {
     return ReturnProductClass;
   }
 
+  // Component that create the tab of the orçamento
   AllPage = () => {
+    // Declaration of the tab with all the Page of the orçamento that will return by the component
     const table = [];
+    // Declaration of the tab with all the products class 4 by 4 (because 4 products by page)
     const productBy4 = [];
     // Use product class my ID :
     const allProductsClass = this.classMoveis();
-    // Use product withou be class by ID :
+    // Use product withou be class by ID : USE UNDER CONST \/\/\/
     // const allProductsClass = this.props.products;
+    // For of the number of page in the orçamento put the products 4 by 4 in productBy4
     for (let i = 0; i < allProductsClass.length / 4; i += 1) {
       productBy4.push([]);
       let limite = 4;
@@ -150,6 +155,7 @@ class PDF extends Component {
         productBy4[i].push(allProductsClass[i * 4 + j]);
       }
     }
+    // Create all the page of the orçamento
     for (let i = 0; i < (allProductsClass.length / 4); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
@@ -178,32 +184,35 @@ class PDF extends Component {
             }
             // Value of src image of product
             let srcImageProduct = foundProduct.acf.header.cover.url;
-            // Check if the next product is not the same
+            // Var if the img of product need to me show
             let valueShowImg = 'block';
+            // Var if the under border need to me show (exemple not between same product)
             let showUnderBorder = 'block';
-            // Put the img of products with same ID at the good position
+            // Position TOP of the Img in the tab (border <10px> IMG(height:67px) <10px> border) total height:87px
             const positionYimg = '10px';
+            // Check if the next product is not the same
             let keyToUsePlus = key + 1;
             let iToUsePlus = i;
+            // if product is at the end of a page go to the begenning of the next page
             if (key === 3 && allProductsClass.length > i) {
               keyToUsePlus = 0;
               iToUsePlus = i + 1;
             }
+            // Check if the last product is not the same
             let keyToUseLess = key - 1;
             let iToUseLess = i;
+            // if product is at the beginning of a page go to the end of the last page
             if (key === 0 && i > 0) {
               keyToUseLess = 3;
               iToUseLess = i - 1;
             }
-            // If is last element
+            // Test if is last element
             let isLastElement = false;
             if ((i <= (allProductsClass.length / 4)) && (productBy4[i].length === key + 1)) {
               isLastElement = true;
             }
-            console.log(key + 1);
-            console.log(productBy4[i].length);
-            console.log((productBy4[i].length === key + 1));
-            // When Image of product with same ID is hide
+            // When Image of product with same ID (after) is show
+            // and border under is hide
             if (productBy4[iToUsePlus][keyToUsePlus] !== undefined) {
               if (product.id_product === productBy4[iToUsePlus][keyToUsePlus].id_product) {
                 // console.log(`same ID on next product : ${product.id_product}`);
@@ -211,13 +220,13 @@ class PDF extends Component {
                 showUnderBorder = 'none';
               }
             }
-            // When Image of product with same ID is show
+            // When Image the tab of product with same ID (before) is hide
             if (productBy4[iToUseLess][keyToUseLess] !== undefined) {
               if (product.id_product === productBy4[iToUseLess][keyToUseLess].id_product) {
                 // console.log(`same ID on next product : ${product.id_product}`);
                 valueShowImg = 'none';
                 srcImageProduct = undefined;
-                // TODO: Mettre la photo au milieu
+                // TODO: Trying to put img at the middle of the bloc of products with same ID
                 // let iToCountNumberOfProductWithSameID = iToUseLess;
                 // let keyToCountNumberOfProductWithSameID = keyToUseLess;
                 // let numberOfProductWithSameID = 0;
@@ -234,9 +243,11 @@ class PDF extends Component {
                 // positionYimg = -((87 * numberOfProductWithSameID) / 2 + 10);
               }
             }
-            if (false || isLastElement) {
+            // show the border under the last product
+            if (isLastElement) {
               showUnderBorder = 'block';
             }
+            // The line of one product in the orçamento
             return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct]} />;
           })
           }
@@ -247,6 +258,7 @@ class PDF extends Component {
     return table;
   }
 
+  // Add the PDF page that are defined in the back-office
   pagePDF = () => {
     const table = [];
     const TableurlImagePDF = [];
@@ -279,7 +291,7 @@ class PDF extends Component {
     return table;
   }
 
-  // Create Document Component
+  // Create Document Component (the PDF)
   MyDocument = () => (
     <Document>
       {/* First Page PDF */}
@@ -349,7 +361,7 @@ PDF.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-// Page 1
+// ----------------- Page 1 of the PDF -----------------
 const Titre = styled.Text`
   margin-top: 50px;
   margin-left: 35px;
@@ -420,7 +432,7 @@ const Contact = styled.View`
   color: #979797;
 `;
 
-// Page PDF
+// ----------------- Page PDF of the back office  -----------------
 const ImageAllPage = styled.Image`
   position: absolute;
   z-index: 5;
@@ -432,7 +444,7 @@ const ImageAllPage = styled.Image`
   object-position: 50% 50%;
 `;
 
-// Page Tableau
+// ----------------- Page Tableau of the orçamento -----------------
 const FondGris = styled.View`
   position: absolute;
   z-index: -1;
@@ -484,7 +496,7 @@ const ImageOrcaCustom = styled.Image`
   object-position: 50%, 50%;
 `;
 
-// Last page : Contato
+// ----------------- Last page : Contato -----------------
 const TitreContato = styled.Text`
   margin-top: 50px;
   margin-left: 135px;
