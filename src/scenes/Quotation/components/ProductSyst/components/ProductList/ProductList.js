@@ -68,5 +68,6 @@ const ProductsBlock = styled.div`
   justify-content: space-between;
   .flex50 {
     width: calc(50% - 10px);
+    margin-bottom: 30px;
   }
 `;

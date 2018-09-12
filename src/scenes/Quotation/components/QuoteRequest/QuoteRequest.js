@@ -31,35 +31,26 @@ export default class QuoteRequest extends Component {
     this.props.saveQuoteRequest(request);
   }
 
-  processRequest = () => {
+  processRequest = (urlPDF) => {
     const emailParams = {
       request_name: this.props.quoteRequest.name,
       request_email: this.props.quoteRequest.email,
       request_message: this.props.quoteRequest.message,
       request_permission: this.props.isAdmin,
+      request_file: urlPDF,
     };
-    // console.log(JSON.stringify(emailParams));
+
     this.setState({
       isSending: true,
     });
 
-    // setTimeout(() => {
-    //   // this.setState({
-    //   //   sendingMessage: 'An error has occured. Please try again later',
-    //   //   hasError: true,
-    //   // });
-    //   this.setState({
-    //     isSending: false,
-    //     isSent: true,
-    //   });
-    // }, 2000);
-
+    // fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
     fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
     }).then(response => response.json())
       .then((data) => {
-        // console.log('response', data.status);
+        console.log('response', data);
         switch (data.status) {
           case 200:
             // Success
@@ -81,6 +72,10 @@ export default class QuoteRequest extends Component {
   }
 
   resetQuotation = () => {
+    this.setState({
+      isSending: false,
+      isSent: false,
+    });
     this.props.resetQuotation();
     this.props.togglePopup();
   }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Toggle from '../../Toggle/Toggle';
-import closeIcon from '../../../assets/close.svg';
+import closeIcon from '../../../assets/SVG/light/Icones-02.svg';
 // import Input from '../../Input';
 
 class PopupWrapper extends Component {
@@ -38,7 +38,6 @@ PopupWrapper.propTypes = {
 
 
 const StyledToggle = styled.div`
-  button {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -46,7 +45,12 @@ const StyledToggle = styled.div`
     border: none;
     cursor: pointer;
     padding: 0;
-  }
+    button {
+      padding: 0;
+      width: 20px;
+      height: 20px;
+      background-color: unset;
+    }
 `;
 const StyledWrapper = styled.div`
   position: absolute;
@@ -61,10 +65,13 @@ const StyledWrapper = styled.div`
   z-index: 650;
   padding: 20px;
   box-shadow: 0px 3px 20px -3px rgba(0,0,0,.6);
-  button {
+
+  @media only screen and (max-width: 567px) {
+     width: calc(100% - 40px);
   }
   h3 {
     line-height: 27px;
     margin: 0 0 20px 0;
+    font-family: 'Omnes';
   }
 `;

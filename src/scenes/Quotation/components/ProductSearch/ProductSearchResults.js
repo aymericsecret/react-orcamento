@@ -61,6 +61,7 @@ const SearchResults = styled.div`
   justify-content: space-between;
   .flex50 {
     width: calc(50% - 10px);
+    margin-bottom: 20px;
   }
 `;
 const SearchResultsHeader = styled.div`

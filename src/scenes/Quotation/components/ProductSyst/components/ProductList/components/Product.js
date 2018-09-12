@@ -60,6 +60,7 @@ export default class Product extends Component {
               )}
             </Loader>
           </RatioCustom>
+          {/* eslint-disable-next-line react/no-danger */}
           <h4 className="nameProduct" dangerouslySetInnerHTML={{ __html: this.props.product !== undefined && this.props.product.title.rendered }} />
         </button>
       </ProductBlock>
@@ -82,9 +83,9 @@ const ProductBlock = styled.div`
   width: 100%;
   height: 100%;
   text-align: center;
-  margin-bottom: 30px;
   button {
     width: 100%;
+    height: auto;
     border: none;
     padding: 0;
     background-color: #ffffff;
@@ -109,7 +110,9 @@ const ProductBlock = styled.div`
     font-family: OmnesLight;
     font-size: 17px;
     line-height: 23px;
-    letter-spacing: 0.7px;
+
+    opacity: .95;
+    letter-spacing: 0.8px;
     color: #3c3c3c;
     margin: 0;
     @media only screen and (min-width: 1024px) {

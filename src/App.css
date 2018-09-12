@@ -3,16 +3,16 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   outline:none;
-  -webkit-font-smoothing:antialiased;
+  /* -webkit-font-smoothing:antialiased; */
   -moz-osx-font-smoothing:grayscale;
 
-  text-rendering: optimizeLegibility !important;
-  -webkit-font-smoothing: antialiased !important;
-  /* // -webkit-text-stroke: 0.45px;
-  // // or
-  // -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.1);
-  // or
-  // text-shadow: #fff 0px 1px 1px; */
+  /* text-rendering: optimizeLegibility !important; */
+  /* -webkit-font-smoothing: antialiased !important; */
+  /* -webkit-text-stroke: 0.45px; */
+  /* or */
+  /* -webkit-text-stroke: 0.45px rgba(0, 0, 0, 0.1); */
+  /* or */
+  text-shadow: #fff 0px 1px 1px;
 }
 
 body {
@@ -25,15 +25,22 @@ body h3 {
 * {
   -webkit-overflow-scrolling: touch;
 }
+
+img.img_icon {
+  width: 20px;
+  height: 20px;
+}
 button, a.button {
   position: initial;
   height: 25px;
   padding: 0 20px;
   background: white;
-  border: 1px solid #3C3C3C;
   border-radius: 2px;
   color: #3C3C3C;
   cursor: pointer;
+  border: none;
   font-family: 'Omnes';
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.8px;
 }

@@ -105,12 +105,13 @@ const QuotationGrid = styled.div`
   height: 100%;
   overflow-x: hidden;
   transition: transform .3s ease-out;
-  padding-top: 65px;
+  padding-top: 80px;
   &.product-list {
     transform: translateX(-50%);
   }
   @media only screen and (min-width: 576px) {
     width: 100%;
+    padding-top: 65px;
     &.product-list {
       transform: none;
     }

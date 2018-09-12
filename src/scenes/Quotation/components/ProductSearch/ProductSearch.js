@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SearchInput, { createFilter } from 'react-search-input';
-import iconSearch from '../../../../assets/icons_search_dark.png';
+import iconSearch from '../../../../assets/SVG/light/Icones-08.svg';
 
 const KEYS_TO_FILTERS = ['title.rendered', 'subject', 'dest.name', 'cat_names'];
 
@@ -51,7 +51,7 @@ export default class ProductSearch extends Component {
         <IconSearchDiv>
           <img
             src={iconSearch}
-            className="icons_search openingGridMenu"
+            className="icons_search openingGridMenu img_icon"
             alt=""
           />
         </IconSearchDiv>
@@ -97,7 +97,7 @@ const ProductsBlock = styled.div`
   position: relative;
   overflow: hidden;
   width: 30px;
-  height: 25px;
+  height: 21px;
 
   padding: 0 20px;
   display: flex;
@@ -106,7 +106,14 @@ const ProductsBlock = styled.div`
 
   transition: width .2s ease-out;
   &.active {
-    width: 260px;
+    @media only screen and (min-width: 567px) {
+      width: 260px;
+    }
+    @media only screen and (max-width: 567px) {
+      .search-input {
+        opacity: 1;
+      }
+    }
   }
   .search-input {
     position: absolute;
@@ -114,26 +121,33 @@ const ProductsBlock = styled.div`
     top: 0;
     width: 220px;
     input {
-      height: 25px;
-      min-height: 25px;
+      height: 21px;
+      min-height: 21px;
       width: 100%;
       border: none;
-      border-bottom: 1px solid #3C3C3C;
+      border-bottom: 1px solid #3C3C3C !important;
       font-size: 16px;
       font-family: 'Omnes';
+    }
+    @media only screen and (max-width: 567px) {
+      position: fixed;
+      right: 0;
+      top: 54px;
+      width: 100vw;
+      padding: 0 20px 5px 20px;
+      background: white;
+      transition: opacity .3s ease-out;
+      opacity: 0;
     }
   }
 `;
 
 const IconSearchDiv = styled.div`
   cursor: pointer;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   position: absolute;
   right: 0;
   top: 0;
-  img {
-    width: 25px;
-    height: 25px;
-  }
+
 `;
