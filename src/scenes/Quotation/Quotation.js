@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import LoadingScreen from '../../components/LoadingScreen';
-import Menu from '../../components/Menu';
+import Menu from '../../components/VisibleMenu';
 
 
 class Quotation extends Component {
@@ -27,8 +27,6 @@ class Quotation extends Component {
       || app.categories === {}
       || app.products.length === 0
       || new Date() - new Date(app.appLoadedAt) > oneHour) {
-      console.log('ON INIT');
-
       initApp();
     }
   }
@@ -44,12 +42,22 @@ class Quotation extends Component {
   }
 
   toggle = (args) => {
-    this.setState(prevState => ({
-      showProducts: !prevState.showProducts,
-    }));
-    if (args && args.type !== undefined) {
-      // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
-      this.shouldScroll = true;
+    if (args && args.forceProductSide) {
+      if (!this.state.showProducts) {
+        // Force toggling to ProductSystem side
+        this.shouldScroll = true;
+        this.setState(prevState => ({
+          showProducts: !prevState.showProducts,
+        }));
+      }
+    } else {
+      this.setState(prevState => ({
+        showProducts: !prevState.showProducts,
+      }));
+      if (args && args.type !== undefined) {
+        // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
+        this.shouldScroll = true;
+      }
     }
   }
 
@@ -105,7 +113,7 @@ const QuotationGrid = styled.div`
   height: 100%;
   overflow-x: hidden;
   transition: transform .3s ease-out;
-  padding-top: 80px;
+  padding-top: 65px;
   &.product-list {
     transform: translateX(-50%);
   }

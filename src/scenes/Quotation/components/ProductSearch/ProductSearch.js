@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import windowDimensions from 'react-window-dimensions';
 import SearchInput, { createFilter } from 'react-search-input';
 import iconSearch from '../../../../assets/SVG/light/Icones-08.svg';
 
 const KEYS_TO_FILTERS = ['title.rendered', 'subject', 'dest.name', 'cat_names'];
 
-export default class ProductSearch extends Component {
+class ProductSearch extends Component {
   componentDidMount() {
     this.props.initSearch();
   }
@@ -14,16 +15,20 @@ export default class ProductSearch extends Component {
   extendSearchBar = (e) => {
     const { target, currentTarget } = e;
 
+    // If the loop has been clicked and not the search input
     if (target.classList.contains('icons_search')) {
+      // If SearchBar activated we remove it
       if (currentTarget.classList.contains('active')) {
-        // This won't happen ever
         currentTarget.classList.remove('active');
         this.props.searchToggle(false);
       } else {
         currentTarget.classList.add('active');
-        // remove this to toggle when clicking on the search button
-        if (this.props.search.searchTerm.length > 2) {
+        if (this.props.search.searchTerm.length > 2 || this.props.width < 567) {
           this.props.searchToggle(true);
+        }
+        // If mobile, we toggle the side to be on products side
+        if (this.props.width < 567) {
+          this.props.toggleSide({ forceProductSide: true });
         }
       }
     }
@@ -55,27 +60,12 @@ export default class ProductSearch extends Component {
             alt=""
           />
         </IconSearchDiv>
-        {/* {filteredProducts.length > 0 && filteredProducts.map(p => (
-          <div className="flex50" key={p.id}>
-            <VisibleProduct product={p} key={p.id} toggleSide={this.props.toggleSide} />
-          </div>
-        ))}
-        {filteredProducts.length === 0 && search.searchTerm.length > 2 && (
-          <h3>
-            No result found for that search.
-          </h3>
-        )}
-        {filteredProducts.length === 0 && search.searchTerm.length <= 2 && (
-          <h3>
-            Enter at least 3 letters to get a result.
-          </h3>
-        )} */}
-
       </ProductsBlock>
     );
   }
 }
 
+export default windowDimensions()(ProductSearch);
 
 ProductSearch.propTypes = {
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
@@ -87,8 +77,10 @@ ProductSearch.propTypes = {
   initSearch: PropTypes.func.isRequired,
   updateSearchTerm: PropTypes.func.isRequired,
   updateSearchResult: PropTypes.func.isRequired,
+  toggleSide: PropTypes.func.isRequired,
   searchToggle: PropTypes.func.isRequired,
   sessionPermission: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 
@@ -119,7 +111,7 @@ const ProductsBlock = styled.div`
     position: absolute;
     right: 40px;
     top: 0;
-    width: 220px;
+    width: 200px;
     input {
       height: 21px;
       min-height: 21px;
@@ -132,11 +124,11 @@ const ProductsBlock = styled.div`
     @media only screen and (max-width: 567px) {
       position: fixed;
       right: 0;
-      top: 54px;
+      top: 65px;
       width: 100vw;
       padding: 0 20px 5px 20px;
       background: white;
-      transition: opacity .3s ease-out;
+      transition: opacity .2s ease-out;
       opacity: 0;
     }
   }

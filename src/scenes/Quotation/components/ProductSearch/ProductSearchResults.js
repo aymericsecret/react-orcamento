@@ -55,10 +55,13 @@ ProductSearch.propTypes = {
 
 
 const SearchResults = styled.div`
-  padding: 0 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  padding: 20px 20px 0 20px;
+  @media only screen and (min-width: 567px) {
+    padding: 0 20px;
+  }
   .flex50 {
     width: calc(50% - 10px);
     margin-bottom: 20px;
