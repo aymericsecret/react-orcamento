@@ -5,10 +5,22 @@ import VisiblePdf from '../../../../../utils/VisiblePdf';
 import Input from '../../../../../components/Input';
 
 class QuoteRequestForm extends Component {
+  constructor(props) {
+    super(props);
+    this.typeList = [
+      'arquitecto/designer',
+      'cliente',
+      'comprador',
+      'outros',
+    ];
+  }
+
   state = {
-    email: '',
-    message: '',
     name: '',
+    email: '',
+    phone: '',
+    type: '',
+    message: '',
     url: '',
     disabledBtn: true,
   }
@@ -23,6 +35,7 @@ class QuoteRequestForm extends Component {
   }
 
 
+  // On PDF render creation of Blob string to be end to PHPMailer
   onRender = ({ blob }) => {
     // Doc FileReader : https://developer.mozilla.org/en-US/docs/Web/API/FileReader
     // Doc Blob : http://qnimate.com/an-introduction-to-javascript-blobs-and-file-interface/
@@ -51,15 +64,21 @@ class QuoteRequestForm extends Component {
       case 'change': {
         const newValue = e.target.value;
         switch (e.target.dataset.type) {
+          case 'name': {
+            this.setState({
+              name: newValue,
+            });
+            break;
+          }
           case 'email': {
             this.setState({
               email: newValue,
             });
             break;
           }
-          case 'name': {
+          case 'phone': {
             this.setState({
-              name: newValue,
+              phone: newValue,
             });
             break;
           }
@@ -80,6 +99,27 @@ class QuoteRequestForm extends Component {
       default:
         break;
     }
+  }
+
+  updateSelect = (e) => {
+    console.log(e);
+    console.log(e.target.dataset.type);
+
+    switch (e.target.dataset.type) {
+      case 'type': {
+        this.setState({
+          type: e.target.value,
+        });
+
+        break;
+      }
+
+      default:
+        break;
+    }
+    setTimeout(() => {
+      this.props.storeQuoteRequest(this.state);
+    });
   }
 
   submit = () => {
@@ -120,6 +160,29 @@ class QuoteRequestForm extends Component {
           value={this.state.email}
           updateValue={this.updateInput}
           labelFirst
+        />
+
+        <Input
+          type="number"
+          domain="popup_quotation"
+          id="phone"
+          label="Celular/Telefone"
+          idType="phone"
+          value={this.state.phone}
+          updateValue={this.updateInput}
+          labelFirst
+        />
+
+        <Input
+          type="select"
+          domain="popup_quotation"
+          id="type"
+          label="Tipo de projeto"
+          idType="type"
+          value={this.state.type}
+          updateValue={this.updateSelect}
+          labelFirst
+          selectList={this.typeList}
         />
 
         <Input
@@ -164,7 +227,7 @@ QuoteRequestForm.propTypes = {
 };
 
 const StyledForm = styled.div`
-  height: 285px;
+  height: auto;
   label {
     display: flex;
     margin-bottom: 20px;

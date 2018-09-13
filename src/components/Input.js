@@ -16,6 +16,9 @@ const Input = props => (
     {props.type === 'text' && (
       <input type="text" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
     )}
+    {props.type === 'number' && (
+      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
+    )}
     {props.type === 'input' && (
       <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
     )}
