@@ -6,16 +6,28 @@ import {
   Document,
   Text,
   StyleSheet,
-  pdf,
+  Font,
 } from '@react-pdf/renderer';
 
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
+
+Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Regular.ttf', { family: 'Omnes' });
+Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Medium.ttf', { family: 'OmnesMedium' });
+Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Bold.ttf', { family: 'OmnesBold' });
 
 // Create styles
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
     backgroundColor: '#ffffff',
+  },
+  h3: {
+    fontFamily: 'OmnesBold',
+    color: '#979797',
+  },
+  text: {
+    fontFamily: 'Omnes',
+    color: '#979797',
   },
 });
 
@@ -58,8 +70,8 @@ const Tab = props => (
     <TraitTableau show={props.show} width={props.width} height={1} top={0} left={0} backgroundColor="#979797" />
     <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
     <TextTab width={props.width - 40} height={props.height / 3}>
-      <Text>{props.text1}</Text>
-      <Text>{props.text2}</Text>
+      <Text style={styles.h3}>{props.text1}</Text>
+      <Text style={styles.text}>{props.text2}</Text>
     </TextTab>
   </ContentTab>
 );
@@ -80,6 +92,13 @@ Tab.defaultProps = {
 
 
 class PDF extends Component {
+  // constructor(props) {
+  //   super(props);
+  // }
+
+  // componentWillMount() {
+  // }
+
   // Function to class the product with the same ID (need because they have the same picture)
   classMoveis = () => {
     // Tab will be return with good class of the product of quotation
@@ -346,6 +365,8 @@ class PDF extends Component {
 
 
   render() {
+    // console.log(Font.getFont('OmnesMedium'));
+    // console.log(Font.load('OmnesMedium'));
     return (
       <div style={{ display: 'none' }}>
         {this.MyDocument()}
@@ -369,9 +390,6 @@ const Titre = styled.Text`
   margin-left: 35px;
   margin-bottom: 20px;
   font-size: 23px;
-  @font-face {
-    font-family: Omnes;
-  }
   color: #979797;
 `;
 

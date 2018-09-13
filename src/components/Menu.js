@@ -84,6 +84,7 @@ Menu.propTypes = {
     searchToggle: PropTypes.bool,
   }).isRequired,
   searchToggle: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 Menu.defaultProps = {

@@ -16,6 +16,7 @@
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.1",
     "react-dom": "^16.4.2",
+    "react-font-face": "^0.2.1",
     "react-id-generator": "^0.1.6",
     "react-loading": "^2.0.3",
     "react-onclickoutside": "^6.7.1",

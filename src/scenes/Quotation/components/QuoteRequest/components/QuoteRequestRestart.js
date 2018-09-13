@@ -28,12 +28,12 @@ QuoteRequestRestart.propTypes = {
 };
 
 const StyledRestart = styled.div`
-  transition: opacity .3s ease-out .3s;
+  transition: opacity .3s ease-out .4s;
   position: absolute;
-  bottom: 20px;
+  top: 80px;
   left: 20px;
   width: calc(100% - 40px);
-  height: 285px;
+  height: auto;
   p {
     margin: 0 0 40px 0;
   }

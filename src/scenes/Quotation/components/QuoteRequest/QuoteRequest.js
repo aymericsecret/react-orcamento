@@ -32,6 +32,8 @@ export default class QuoteRequest extends Component {
   }
 
   processRequest = (urlPDF) => {
+    console.log(urlPDF);
+
     const emailParams = {
       request_name: this.props.quoteRequest.name,
       request_email: this.props.quoteRequest.email,
@@ -44,8 +46,8 @@ export default class QuoteRequest extends Component {
       isSending: true,
     });
 
-    // fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
-    fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    // fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
     }).then(response => response.json())
@@ -106,7 +108,7 @@ export default class QuoteRequest extends Component {
         {this.state.isSending && (
           <StyledLoader>
             <h3>{this.state.sendingMessage}</h3>
-            {!this.state.hasError ? <ReactLoading type="bubbles" color="#3C3C3C" height={40} width={40} /> : <button type="button" onClick={this.props.togglePopup}>Fechar</button>}
+            {!this.state.hasError ? <ReactLoading type="bubbles" color="#3C3C3C" height={40} width={40} /> : <button type="button" onClick={this.toggleRestart}>Fechar</button>}
           </StyledLoader>
         )}
       </Popup>

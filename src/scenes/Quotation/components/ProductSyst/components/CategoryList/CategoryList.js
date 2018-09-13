@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
-import '../../../../../../font.css';
 import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
 
 const CATEGORY_LIST_ADMIN = ['nao-publicado'];
