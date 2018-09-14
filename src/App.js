@@ -11,6 +11,7 @@ import { save, load } from 'redux-localstorage-simple';
 import { Provider } from 'react-redux';
 
 import './App.css';
+import './font.css';
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import VisibleQuotation from './scenes/Quotation/VisibleQuotation';

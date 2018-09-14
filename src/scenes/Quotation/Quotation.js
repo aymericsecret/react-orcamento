@@ -5,10 +5,9 @@ import PropTypes from 'prop-types';
 import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
 import ProductSyst from './components/ProductSyst/ProductSyst';
 import LoadingScreen from '../../components/LoadingScreen';
-import Menu from '../../components/Menu';
-import VisiblePdf from '../../utils/VisiblePdf';
+import Menu from '../../components/VisibleMenu';
 
-/* eslint linebreak-style: ["error", "windows"] */
+
 class Quotation extends Component {
   constructor(props) {
     super(props);
@@ -28,11 +27,10 @@ class Quotation extends Component {
       || app.categories === {}
       || app.products.length === 0
       || new Date() - new Date(app.appLoadedAt) > oneHour) {
-      console.log('ON INIT');
-
       initApp();
     }
   }
+
 
   updateElemNode = (node) => {
     if (this.shouldScroll) {
@@ -44,25 +42,37 @@ class Quotation extends Component {
   }
 
   toggle = (args) => {
-    this.setState(prevState => ({
-      showProducts: !prevState.showProducts,
-    }));
-    if (args && args.type !== undefined) {
-      // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
-      this.shouldScroll = true;
+    if (args && args.forceProductSide) {
+      if (!this.state.showProducts) {
+        // Force toggling to ProductSystem side
+        this.shouldScroll = true;
+        this.setState(prevState => ({
+          showProducts: !prevState.showProducts,
+        }));
+      }
+    } else {
+      this.setState(prevState => ({
+        showProducts: !prevState.showProducts,
+      }));
+      if (args && args.type !== undefined) {
+        // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
+        this.shouldScroll = true;
+      }
     }
   }
+
 
   render() {
     const { app, session, initApp } = this.props;
 
     return (
       <StyledQuotation>
-        <VisiblePdf />
         {app.appCategoriesLoaded ? (
           <QuotationWrapper>
             <Menu session={session} initApp={initApp} toggleSide={this.toggle}>Orçamento</Menu>
+
             <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
+
               <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
               <ProductSyst toggleSide={this.toggle} />
             </QuotationGrid>
@@ -109,6 +119,7 @@ const QuotationGrid = styled.div`
   }
   @media only screen and (min-width: 576px) {
     width: 100%;
+    padding-top: 65px;
     &.product-list {
       transform: none;
     }

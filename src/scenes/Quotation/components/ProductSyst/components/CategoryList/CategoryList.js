@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
-import '../../../../../../font.css';
 import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
 
 const CATEGORY_LIST_ADMIN = ['nao-publicado'];
@@ -126,7 +125,7 @@ class CategoryList extends Component {
                   </SubCategory>
                 ))}
             </SubCategories>)
-          : <h3>{objetSubCategory.name}</h3>
+          : <h3 className="sub_category_title">{objetSubCategory.name}</h3>
         }
       </ProductsBlock>
     );
@@ -152,6 +151,9 @@ const ProductsBlock = styled.div`
   width: 100%;
   margin-bottom: 50px;
   padding: 0 20px 0 20px;
+  h3.sub_category_title {
+    font-family: "OmnesMedium";
+  }
 `;
 
 const HeaderCategories = styled.div`

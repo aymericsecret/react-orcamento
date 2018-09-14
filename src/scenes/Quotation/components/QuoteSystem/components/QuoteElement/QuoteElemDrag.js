@@ -7,7 +7,7 @@ import { findDOMNode } from 'react-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import VisibleQuoteElem from './VisibleQuoteElem';
-import iconDrag from '../../../../../../assets/grab.svg';
+import iconDrag from '../../../../../../assets/SVG/light/Icones-01.svg';
 
 const quoteElemSource = {
   beginDrag(props) {
@@ -98,7 +98,7 @@ class QuoteElemDrag extends Component {
               key={quoteItem.id}
             >
               {connectDragSource(
-                <img src={iconDrag} alt="" className="drag" style={{ cursor: '-webkit-grab' }} />,
+                <img src={iconDrag} alt="" className="drag img_icon" style={{ cursor: '-webkit-grab' }} />,
               )}
             </VisibleQuoteElem>
           </div>,

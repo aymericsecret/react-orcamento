@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
-import iconClose from '../../../../../../assets/close_2.svg';
+import iconClose from '../../../../../../assets/SVG/light/Icones-02.svg';
 import Input from '../../../../../../components/Input';
 
 class QuoteElem extends Component {
@@ -91,7 +91,9 @@ class QuoteElem extends Component {
       product,
       quantity: quantidadeInitialValue,
       price: priceInitialValue,
-      total_price: this.props.quoteItem.total_price === null ? totalPriceInitialValue : this.props.quoteItem.total_price,
+      total_price: this.props.quoteItem.total_price === null
+        ? totalPriceInitialValue
+        : this.props.quoteItem.total_price,
       note: this.props.quoteItem.note,
       size: this.props.quoteItem.size === null ? sizeInitialValue : this.props.quoteItem.size,
       material: this.props.quoteItem.material === null ? materialInitialValue : this.props.quoteItem.material,
@@ -183,6 +185,21 @@ class QuoteElem extends Component {
             });
             break;
           }
+          case 'total_price': {
+            this.setState({
+              total_price: parseInt(value, 10),
+            });
+            // TODO: Refactor inside setState's callback function
+            this.debounce('totalPriceHasBeenChanged', () => {
+              if (this.state.total_price !== this.props.quoteItem.total_price) {
+                this.props.updateTotalPrice({
+                  id: this.props.quoteItem.id,
+                  total_price: parseInt(this.state.total_price, 10),
+                });
+              }
+            });
+            break;
+          }
           case 'quantity': {
             this.setState({
               quantity: parseInt(value, 10),
@@ -243,6 +260,12 @@ class QuoteElem extends Component {
             this.setState({
               price: newValue,
               total_price: quantity * newValue,
+            });
+            break;
+          }
+          case 'total_price': {
+            this.setState({
+              total_price: newValue,
             });
             break;
           }
@@ -351,9 +374,10 @@ class QuoteElem extends Component {
     return (
       <QuoteBox>
         <QuoteBoxHeader>
+          {/* eslint-disable-next-line react/no-danger */}
           <h3>{index + 1}. <span dangerouslySetInnerHTML={{ __html: this.state.product.title.rendered }} /></h3>
           { !isMobile && children }
-          <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" /></button>
+          <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" className="img_icon" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
           <RatioCustom ratio={16 / 9}>
@@ -382,16 +406,17 @@ class QuoteElem extends Component {
             </div>
 
             <div>
-              <Input type="textarea" domain="product" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
               {this.userPermission === 1 && this.state.price !== null && (
                 <div>
                   <Input type="input" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
-                  <div>
+                  <Input type="input" domain="product" id={quoteItem.id} label="Preço total" idType="total_price" value={this.state.total_price} updateValue={this.updateInput} />
+                  {/* <div>
                     <div className="total_price">Preço total</div>
                     <div>{this.state.total_price}</div>
-                  </div>
+                  </div> */}
                 </div>
               )}
+              <Input type="textarea" domain="product" id={quoteItem.id} label="Notas" idType="note" value={this.state.note} updateValue={this.updateNote} />
             </div>
           </QuoteBoxContentForm>
         </QuoteBoxContent>
@@ -431,7 +456,7 @@ QuoteElem.propTypes = {
 };
 
 const QuoteBox = styled.div`
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   margin-bottom: 20px;
 `;
 
@@ -441,10 +466,16 @@ const QuoteBoxHeader = styled.div`
   h3 {
     width: calc(100% - 25px);
     margin: 0 0 20px 0;
+
+    font-size: 15px;
+    line-height: 18px;
+    letter-spacing: 0px;
+    font-family: 'OmnesMedium';
   }
   button {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
+    margin-left: 15px;
     background: none;
     border: none;
     cursor: pointer;
@@ -471,7 +502,7 @@ const RatioCustom = styled(Ratio)`
   }
   @media only screen and (min-width: 1024px) {
     width: 50%;
-    padding-left: 10px;
+    padding-right: 10px;
     padding-bottom: 0;
   }
 `;
@@ -491,13 +522,18 @@ const QuoteBoxContentForm = styled.div`
     label {
       display: block;
       margin-bottom: 10px;
+
+      font-family: 'Omnes';
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.8px;
       span {
         display: block;
-        margin-bottom: 5px;
       }
       input, select {
         max-width: 140px;
         width: 100%;
+        margin-bottom: 6px;
       }
       textarea {
         max-width: 100%;

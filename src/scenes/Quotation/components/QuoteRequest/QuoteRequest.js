@@ -26,39 +26,33 @@ export default class QuoteRequest extends Component {
     this.quoteRequest = quoteRequest;
   }
 
+
   storeQuoteRequest = (request = this.props.quoteRequest) => {
     this.props.saveQuoteRequest(request);
   }
 
-  processRequest = () => {
+  processRequest = (urlPDF) => {
+    console.log(urlPDF);
+
     const emailParams = {
       request_name: this.props.quoteRequest.name,
       request_email: this.props.quoteRequest.email,
       request_message: this.props.quoteRequest.message,
       request_permission: this.props.isAdmin,
+      request_file: urlPDF,
     };
-    // console.log(JSON.stringify(emailParams));
+
     this.setState({
       isSending: true,
     });
 
-    // setTimeout(() => {
-    //   // this.setState({
-    //   //   sendingMessage: 'An error has occured. Please try again later',
-    //   //   hasError: true,
-    //   // });
-    //   this.setState({
-    //     isSending: false,
-    //     isSent: true,
-    //   });
-    // }, 2000);
-
-    fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    // fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
     }).then(response => response.json())
       .then((data) => {
-        // console.log('response', data.status);
+        console.log('response', data);
         switch (data.status) {
           case 200:
             // Success
@@ -80,6 +74,10 @@ export default class QuoteRequest extends Component {
   }
 
   resetQuotation = () => {
+    this.setState({
+      isSending: false,
+      isSent: false,
+    });
     this.props.resetQuotation();
     this.props.togglePopup();
   }
@@ -110,7 +108,7 @@ export default class QuoteRequest extends Component {
         {this.state.isSending && (
           <StyledLoader>
             <h3>{this.state.sendingMessage}</h3>
-            {!this.state.hasError ? <ReactLoading type="bubbles" color="#3C3C3C" height={40} width={40} /> : <button type="button" onClick={this.props.togglePopup}>Fechar</button>}
+            {!this.state.hasError ? <ReactLoading type="bubbles" color="#3C3C3C" height={40} width={40} /> : <button type="button" onClick={this.toggleRestart}>Fechar</button>}
           </StyledLoader>
         )}
       </Popup>

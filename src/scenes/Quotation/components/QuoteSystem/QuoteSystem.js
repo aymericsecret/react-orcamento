@@ -116,7 +116,7 @@ const QuoteElemsContainer = styled.div`
   padding: 0 20px 20px;
 
   > div {
-    border-bottom: 1px solid #3c3c3c;
+    border-bottom: 1px solid #cdcdcd;
     &:last-child {
       border-bottom: none;
     }
