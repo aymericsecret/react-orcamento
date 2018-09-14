@@ -8,8 +8,13 @@ const initialState = {
   request: {
     name: '',
     email: '',
+    list_emails: [],
     phone: '',
     type: '',
+    type_outros: '',
+    deadline: '',
+    architect: '',
+    cep: '',
     message: '',
     defaultMessage: '',
   },

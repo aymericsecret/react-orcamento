@@ -63,10 +63,12 @@ const StyledWrapper = styled.div`
   background: #ededed;
   z-index: 650;
   padding: 20px;
-  box-shadow: 0px 3px 20px -3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 3px 20px -3px rgba(0,0,0,.6);
+  overflow: scroll;
 
   @media only screen and (max-width: 567px) {
     width: calc(100% - 40px);
+    max-height: calc(100vh - 40px);
   }
   h3 {
     line-height: 27px;
