@@ -39,6 +39,8 @@ export default class QuoteRequest extends Component {
       request_list_emails: this.props.quoteRequest.list_emails,
       request_infos: {
         phone: this.props.quoteRequest.phone,
+        occupation: this.props.quoteRequest.occupation,
+        occupation_outros: this.props.quoteRequest.occupation_outros,
         type: this.props.quoteRequest.type,
         type_outros: this.props.quoteRequest.type_outros,
         deadline: this.props.quoteRequest.deadline,

@@ -8,10 +8,17 @@ import Input from '../../../../../components/Input';
 class QuoteRequestForm extends Component {
   constructor(props) {
     super(props);
-    this.typeList = [
+    this.occupationList = [
       'arquitecto/designer',
       'cliente',
       'comprador',
+      'outros',
+    ];
+    this.typeList = [
+      'residencial',
+      'comercial',
+      'restaurante',
+      'hotel',
       'outros',
     ];
     this.deadlineList = [
@@ -29,6 +36,8 @@ class QuoteRequestForm extends Component {
       email: '',
       list_emails: [],
       phone: '',
+      occupation: 'residencial',
+      occupation_outros: '',
       type: 'arquitecto/designer',
       type_outros: '',
       deadline: 'pronta entrega',
@@ -138,6 +147,10 @@ class QuoteRequestForm extends Component {
             request.type_outros = newValue;
             break;
           }
+          case 'occupation_outros': {
+            request.occupation_outros = newValue;
+            break;
+          }
           case 'cep': {
             request.cep = newValue;
             break;
@@ -167,6 +180,10 @@ class QuoteRequestForm extends Component {
     switch (e.target.dataset.type) {
       case 'type': {
         request.type = e.target.value;
+        break;
+      }
+      case 'occupation': {
+        request.occupation = e.target.value;
         break;
       }
       case 'deadline': {
@@ -204,6 +221,19 @@ class QuoteRequestForm extends Component {
     window.URL.revokeObjectURL(this.state.url);
   };
 
+  isFormFilled = () => {
+    // eslint-disable-next-line
+    const re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;;
+    return this.state.request.name !== ''
+    && this.state.request.email !== ''
+    && re.test(this.state.request.email)
+    && this.state.request.phone !== ''
+    && (this.state.request.occupation !== '' || (this.state.request.occupation === 'outros' && this.state.request.occupation_outros !== ''))
+    && (this.state.request.type !== '' || (this.state.request.type === 'outros' && this.state.request.type_outros !== ''))
+    && this.state.request.deadline !== ''
+    && this.state.request.message !== '';
+  }
+
   render() {
     const { request } = this.state;
     const displayValues = this.props.requestSent ? {
@@ -225,6 +255,7 @@ class QuoteRequestForm extends Component {
           label="Nome"
           idType="name"
           value={request.name}
+          mandatory
           updateValue={this.updateInput}
           labelFirst
         />
@@ -237,6 +268,7 @@ class QuoteRequestForm extends Component {
             label="Email"
             idType="email"
             value={request.email}
+            mandatory
             updateValue={this.updateInput}
             labelFirst
           />
@@ -260,9 +292,36 @@ class QuoteRequestForm extends Component {
           label="Celular/Telefone"
           idType="phone"
           value={request.phone}
+          mandatory
           updateValue={this.updateInput}
           labelFirst
         />
+
+        <Input
+          type="select"
+          domain="popup_quotation"
+          id="occupation"
+          label="Atuação"
+          idType="occupation"
+          value={request.occupation}
+          mandatory
+          updateValue={this.updateSelect}
+          labelFirst
+          selectList={this.occupationList}
+        />
+        {this.state.request.occupation === 'outros' && (
+          <Input
+            type="text"
+            domain="popup_quotation"
+            id="occupation_outros"
+            label="Atuação (outros)"
+            idType="occupation_outros"
+            value={request.occupation_outros}
+            mandatory
+            updateValue={this.updateInput}
+            labelFirst
+          />
+        )}
 
         <Input
           type="select"
@@ -271,6 +330,7 @@ class QuoteRequestForm extends Component {
           label="Tipo de projeto"
           idType="type"
           value={request.type}
+          mandatory
           updateValue={this.updateSelect}
           labelFirst
           selectList={this.typeList}
@@ -280,9 +340,10 @@ class QuoteRequestForm extends Component {
             type="text"
             domain="popup_quotation"
             id="type_outros"
-            label="Tipo de projeto"
+            label="Tipo de projeto (outros)"
             idType="type_outros"
             value={request.type_outros}
+            mandatory
             updateValue={this.updateInput}
             labelFirst
           />
@@ -295,6 +356,7 @@ class QuoteRequestForm extends Component {
           label="Prazo do projeto"
           idType="deadline"
           value={request.deadline}
+          mandatory
           updateValue={this.updateSelect}
           labelFirst
           selectList={this.deadlineList}
@@ -329,13 +391,14 @@ class QuoteRequestForm extends Component {
           label="Mensagem"
           idType="message"
           value={request.message}
+          mandatory
           defaultValue={this.props.isAdmin === 1 ? this.props.quoteRequest.defaultMessage : ''}
           updateValue={this.updateInput}
 
           labelFirst
         />
 
-        <button type="submit" onClick={this.submit} disabled={this.state.disabledBtn}>
+        <button type="submit" onClick={this.submit} disabled={this.state.disabledBtn || !this.isFormFilled()}>
           {this.props.isAdmin === 1 ? 'Mandar o orçamento' : 'Pedir o seu orçamento'}
         </button>
         {this.props.isAdmin === 1 && (

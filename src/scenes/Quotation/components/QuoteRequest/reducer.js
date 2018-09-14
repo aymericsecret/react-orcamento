@@ -10,6 +10,8 @@ const initialState = {
     email: '',
     list_emails: [],
     phone: '',
+    occupation: '',
+    occupation_outros: '',
     type: '',
     type_outros: '',
     deadline: '',

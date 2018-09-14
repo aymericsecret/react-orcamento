@@ -64,7 +64,7 @@ const StyledWrapper = styled.div`
   z-index: 650;
   padding: 20px;
   box-shadow: 0px 3px 20px -3px rgba(0,0,0,.6);
-  overflow: scroll;
+  overflow-y: scroll;
 
   @media only screen and (max-width: 567px) {
     width: calc(100% - 40px);
