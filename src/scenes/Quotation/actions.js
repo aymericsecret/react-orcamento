@@ -1,9 +1,12 @@
+import { getNotes } from '../../utils/actions';
+
 export const INIT_APP = 'INIT_APP';
 export const INIT_APP_CATEGORIES = 'INIT_APP_CATEGORIES';
 export const RESET_APP_PRODUCTS = 'RESET_APP_PRODUCTS';
 export const INIT_APP_PRODUCTS_TMP = 'INIT_APP_PRODUCTS_TMP';
 export const SET_APP_PRODUCTS_TMP = 'SET_APP_PRODUCTS_TMP';
 export const SET_APP_PRODUCTS = 'SET_APP_PRODUCTS';
+
 
 const productsPerPage = 25;
 let productsTotal = null;
@@ -58,6 +61,6 @@ export function initApp() {
     });
     return getCategories(dispatch)
       .then(catID => getProducts(dispatch, catID, 1))
-      .then(() => true);
+      .then(() => getNotes(dispatch));
   };
 }

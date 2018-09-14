@@ -1,3 +1,15 @@
+/* Webfont: Omnes-Bold */@font-face {
+    font-family: 'OmnesBold';
+    src: url('./assets/fonts/Omnes-Bold.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Bold.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Bold.svg#Omnes-Bold') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
 /* Webfont: Omnes-Light */@font-face {
     font-family: 'OmnesLight';
     src: url('./assets/fonts/Omnes-Light.eot'); /* IE9 Compat Modes */

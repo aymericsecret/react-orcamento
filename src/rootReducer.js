@@ -5,6 +5,7 @@ import quotation from './scenes/Quotation/components/QuoteSystem/reducer';
 import categoryList from './scenes/Quotation/components/ProductSyst/components/CategoryList/reducer';
 import quoteRequest from './scenes/Quotation/components/QuoteRequest/reducer';
 import search from './scenes/Quotation/components/ProductSearch/reducer';
+import pdf from './utils/reducer';
 
 const rootReducer = combineReducers({
   app,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   categoryList,
   quotation,
   quoteRequest,
+  pdf,
 });
 
 export default rootReducer;
