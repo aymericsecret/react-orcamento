@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@react-pdf/styled-components';
-import idGenerator from 'react-id-generator';
 import {
   Page,
   Document,
@@ -11,6 +10,9 @@ import {
 } from '@react-pdf/renderer';
 
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
+
+import BigTab from './components/bigTab';
+import ShowTabNote from './components/tabNote';
 
 Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Regular.ttf', { family: 'Omnes' });
 Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Medium.ttf', { family: 'OmnesMedium' });
@@ -22,14 +24,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#ffffff',
   },
-  h3: {
-    fontFamily: 'OmnesBold',
-    color: '#979797',
-  },
-  text: {
-    fontFamily: 'Omnes',
-    color: '#979797',
-  },
   bold: {
     fontFamily: 'OmnesBold',
   },
@@ -38,97 +32,7 @@ const styles = StyleSheet.create({
   },
 });
 
-
-// Line of tab with 5 columns
-const BigTab = props => (
-  <ContentTab x={props.x} y={props.y} width={0} height={0}>
-    <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={162.5} height={props.height} text1={props.text[0]} text2="" />
-    <Tab showUnderBorder="block" show="block" x={162.5} y={0} width={159.25} height={props.height} boldText="11px" text1={props.text[1]} text2={props.text[2]} />
-    <Tab showUnderBorder="block" show="block" x={322.25} y={0} width={160} height={props.height} text1={props.text[3]} text2="" />
-    <Tab showUnderBorder="block" show="block" x={482.25} y={0} width={214} height={props.height} text1={props.text[4]} text2="" />
-    <Tab showUnderBorder="block" show="block" x={696.25} y={0} width={105} height={props.height} text1={props.text[5]} text2={props.text[6]} />
-    {(props.src !== undefined)
-      && <ImageOrcaCustom top={props.positionYimg} y={props.y} src={props.src} />
-    }
-  </ContentTab>
-);
-BigTab.propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  text: PropTypes.arrayOf(PropTypes.string).isRequired,
-  src: PropTypes.string,
-  showImg: PropTypes.string,
-  showUnderBorder: PropTypes.string,
-  positionYimg: PropTypes.string,
-};
-BigTab.defaultProps = {
-  src: undefined,
-  showImg: undefined,
-  showUnderBorder: undefined,
-  positionYimg: undefined,
-};
-
-// Tab with border and text
-const Tab = props => (
-  <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-    <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
-    <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor="#979797" />
-    <TraitTableau show={props.show} width={props.width} height={1} top={0} left={0} backgroundColor="#979797" />
-    <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
-    <TextTab width={props.width - 40} height={props.height / 3}>
-      <Text style={styles.h3}>{props.text1}</Text>
-      <Text style={styles.text}>{props.text2}</Text>
-    </TextTab>
-  </ContentTab>
-);
-Tab.propTypes = {
-  text1: PropTypes.string.isRequired,
-  text2: PropTypes.string.isRequired,
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
-  height: PropTypes.number.isRequired,
-  show: PropTypes.string,
-  showUnderBorder: PropTypes.string,
-};
-Tab.defaultProps = {
-  show: undefined,
-  showUnderBorder: undefined,
-};
-
-const ShowTabNote = (props) => {
-  const tabAllNote = [];
-  props.tabNote.forEach((note) => {
-    tabAllNote.push(<Text key={`note_${idGenerator()}`}>{note}</Text>);
-  });
-  return (
-    // <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-    <ContentTab x={20} y={props.y} width={801} height={12.8 * props.tabNote.length + 20}>
-      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={0} backgroundColor="#979797" />
-      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={801} backgroundColor="#979797" />
-      <TraitTableau show="block" width={801} height={1} top={0} left={0} backgroundColor="#979797" />
-      <TraitTableau show="block" width={801} height={1} top={12.8 * props.tabNote.length + 20} left={0} backgroundColor="#979797" />
-      <TextNote>
-        {tabAllNote}
-      </TextNote>
-    </ContentTab>
-  );
-};
-ShowTabNote.propTypes = {
-  tabNote: PropTypes.arrayOf(PropTypes.string).isRequired,
-  y: PropTypes.number.isRequired,
-};
-
-
 class PDF extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
-
-  // componentWillMount() {
-  // }
-
   // Function to class the product with the same ID (need because they have the same picture)
   classMoveis = () => {
     // Tab will be return with good class of the product of quotation
@@ -146,10 +50,6 @@ class PDF extends Component {
       if (IDAlreadyClass.find(
         ID => ID === product.id_product,
       ) === undefined) {
-        // console.log('');
-        // console.log('element with ID product not class:');
-        // console.log(productsWithSameID);
-        // console.log(product.id_product);
         // Add the ID to the list of ID already class
         IDAlreadyClass.push(product.id_product);
         // console.log(IDAlreadyClass);
@@ -166,21 +66,8 @@ class PDF extends Component {
         } else {
           ReturnProductClass.push(product);
         }
-      } else {
-        // If element doesn't have another product with the same ID add to the return tab
-        // console.log('');
-        // console.log('');
-        // console.log(`element already with ID product already class : ${product.id_product}`);
       }
-      // console.log('');
-      // console.log('at the end for each');
-      // console.log(ReturnProductClass);
     });
-    // console.log('');
-    // console.log('');
-    // console.log('RETURN VALUE');
-    // console.log(ReturnProductClass);
-    // console.log(productsWithSameID);
     return ReturnProductClass;
   }
 
@@ -353,6 +240,7 @@ class PDF extends Component {
       table.push(
         <Page key={-1} size="A4" orientation="landscape" style={styles.page}>
           <ShowTabNote y={20} tabNote={tabNotasReturn} />
+          <LogoCircleCustom src={LogCremmeCircle} />
         </Page>,
       );
     }
@@ -558,54 +446,6 @@ const FondGris = styled.View`
   background-color: #ffffff;
   opacity:
 `;
-const TraitTableau = styled.View`
-  position: absolute;
-  top: ${props => props.top};
-  left: ${props => props.left};
-  z-index: 15;
-  width: ${props => props.width};
-  height: ${props => props.height};
-  background-color: ${props => props.backgroundColor};
-  display: ${props => props.show}
-`;
-
-const ContentTab = styled.View`
-  position: absolute;
-  top: ${props => props.y};
-  left: ${props => props.x};
-  width: ${props => props.width};
-  height: ${props => props.height};
-`;
-const TextTab = styled.View`
-  position: relative;
-  z-index: 20;
-  left: 20px;
-  width: ${props => props.width};
-  top: ${props => props.height};
-  height: ${props => props.height};
-  text-align: center;
-  fontSize: 9px;
-  line-height: 1.5px;
-`;
-const ImageOrcaCustom = styled.Image`
-  position: absolute;
-  z-index: 20;
-  top: ${props => props.top};
-  left: 30px;
-  width: 100px;
-  height: 67px;
-  object-fit: cover;
-  object-position: 50%, 50%;
-`;
-const TextNote = styled.View`
-  position: relative;
-  font-size: 9px;
-  line-height: 1.5px;
-  margin-top: 10px
-  margin-left: 10px;
-  color: '#979797';
-`;
-
 // ----------------- Last page : Contato -----------------
 const TitreContato = styled.Text`
   margin-top: 65px;

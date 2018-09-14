@@ -5,6 +5,7 @@ import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
+import logoRetour from '../../../../../../assets/SVG/light/Icones-03.svg';
 
 const CATEGORY_LIST_ADMIN = ['nao-publicado'];
 
@@ -125,7 +126,7 @@ class CategoryList extends Component {
                   </SubCategory>
                 ))}
             </SubCategories>)
-          : <h3 className="sub_category_title">{objetSubCategory.name}</h3>
+          : <div style={{ display: 'flex' }}><LogoRetour onClick={() => this.selectMainCategory(mainCategory)} src={logoRetour} alt="" /><h3 className="sub_category_title">{objetSubCategory.name}</h3></div>
         }
       </ProductsBlock>
     );
@@ -279,4 +280,10 @@ const Loader = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+`;
+const LogoRetour = styled.img`
+  height: 20px;
+  width: 20px;
+  margin-right: 5px;
+  cursor: pointer;
 `;
