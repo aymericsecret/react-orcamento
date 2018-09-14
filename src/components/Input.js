@@ -69,6 +69,7 @@ Input.defaultProps = {
   selectList: [],
   defaultValue: '',
   labelFirst: false,
+  mandatory: false,
 };
 export default Input;
 
