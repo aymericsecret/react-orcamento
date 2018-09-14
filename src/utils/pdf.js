@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Omnes',
     color: '#979797',
   },
+  bold: {
+    fontFamily: 'OmnesBold',
+  },
+  medium: {
+    fontFamily: 'OmnesMedium',
+  },
 });
 
 
@@ -78,19 +84,17 @@ const Tab = props => (
 );
 Tab.propTypes = {
   text1: PropTypes.string.isRequired,
-  text2: PropTypes.string.isRequired, 
+  text2: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   show: PropTypes.string,
   showUnderBorder: PropTypes.string,
-  boldText: PropTypes.string,
 };
 Tab.defaultProps = {
   show: undefined,
   showUnderBorder: undefined,
-  boldText: '9px',
 };
 
 const ShowTabNote = (props) => {
@@ -244,7 +248,7 @@ class PDF extends Component {
             }
             // Total price & quantity
             const precoTotal = product.quantity * product.price;
-            let showPrecoPrice = `Preço total : ${precoTotal} (${product.quantity} * ${product.price})`;
+            let showPrecoPrice = `Quantity : ${product.quantity}\nPreço total : ${precoTotal}`;
             if (product.quantity === null || product.quantity <= 1) {
               showPrecoPrice = '';
             }
@@ -392,7 +396,7 @@ class PDF extends Component {
   MyDocument = () => (
     <Document shallow onRender={this.props.render}>
       <Page size="A4" orientation="landscape" style={styles.page}>
-        <Titre>orçamento</Titre>
+        <Titre style={styles.bold}>orçamento</Titre>
         <ImageCustom src="http://cremme.com.br/wp-content/uploads/2017/09/cremme-mesas-botane_2-e1532970266702.jpg" />
         <Rectangle />
         <Trait />
@@ -413,11 +417,11 @@ class PDF extends Component {
       {this.AllPage()}
       {/* Last Page Contato PDF */}
       <Page size="A4" orientation="landscape" style={styles.page}>
-        <TitreSup> > </TitreSup>
-        <TitreContato>contato</TitreContato>
+        <TitreSup style={styles.medium}> > </TitreSup>
+        <TitreContato style={styles.medium}>contato</TitreContato>
         <TraitHaut />
-        <TitreMerci>- Merci -</TitreMerci>
-        <ContentContato>
+        <TitreMerci style={styles.medium}>- merci -</TitreMerci>
+        <ContentContato style={styles.medium}>
           <Text>hadrien.lelong@cremme.com.br</Text>
           <Text2>pierre.colnet@cremme.com.br</Text2>
           <Text>Alameda Gabriel Monteiro da Silva, 384</Text>
@@ -427,12 +431,12 @@ class PDF extends Component {
           <Text>www.cremme.com.br</Text>
         </ContentContato>
         <Trait />
-        <Adresse>
+        <Adresse style={styles.text}>
           <Text>Alameda Gabriel Monteiro da Silva,</Text>
           <Text>384</Text>
         </Adresse>
         <LogoCircleCustom src={LogCremmeCircle} />
-        <Contact>
+        <Contact style={styles.text}>
           <Text>www.cremme.com.br</Text>
           <Text>contat@cremme.com.br</Text>
           <Text>11 3064 2590</Text>
@@ -583,10 +587,6 @@ const TextTab = styled.View`
   fontSize: 9px;
   line-height: 1.5px;
 `;
-const PoliceBold = styled.View`
-  fontSize: ${props => props.boldText};
-  // font-family: 'Omnes';
-`;
 const ImageOrcaCustom = styled.Image`
   position: absolute;
   z-index: 20;
@@ -603,6 +603,7 @@ const TextNote = styled.View`
   line-height: 1.5px;
   margin-top: 10px
   margin-left: 10px;
+  color: '#979797';
 `;
 
 // ----------------- Last page : Contato -----------------
@@ -610,14 +611,14 @@ const TitreContato = styled.Text`
   margin-top: 65px;
   margin-left: 160px;
   margin-bottom: 20px;
-  fontSize: 23px;
+  font-size: 23px;
   color: #979797;
 `;
 const TitreSup = styled.Text`
   position: absolute;
-  top: 45px;
-  left: 225px;
-  fontsize: 35px;
+  top: 35px;
+  left: 232px;
+  font-size: 35px;
   color: #2cb3df;
 `;
 
@@ -636,15 +637,15 @@ const TitreMerci = styled.Text`
   z-index: 15px;
   top: 190px;
   text-align: center;
-  fontSize: 60px;
-  color: #979797;
+  font-size: 60px;
+  color: #636463;
 `;
 const ContentContato = styled.View`
   position: absolute;
   z-index: 15px;
-  top: 270px;
+  top: 280px;
   text-align: center;
-  fontSize: 14px;
+  font-size: 14px;
   line-height: 1.1px;
   color: #979797;
 `;
