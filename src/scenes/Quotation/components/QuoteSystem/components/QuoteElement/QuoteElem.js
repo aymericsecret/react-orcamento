@@ -104,7 +104,7 @@ class QuoteElem extends Component {
 
   getPriceFromCombination = (price = null) => {
     let newPrice = {};
-    if (price === null) {
+    if (price === null || price === undefined) {
       newPrice = this.product.acf.variations.find((el) => {
         if (this.isPricePerMeterSquare) {
           return el.material.toLowerCase() === this.state.material.toLowerCase();
@@ -118,6 +118,9 @@ class QuoteElem extends Component {
       };
     }
 
+    if (newPrice === undefined) {
+      newPrice = this.state.price;
+    }
     newPrice = this.isPricePerMeterSquare ? newPrice.price * this.state.size_x * this.state.size_y : newPrice.price;
     const newTotalPrice = newPrice * this.state.quantity;
 

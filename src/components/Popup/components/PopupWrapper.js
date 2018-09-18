@@ -18,12 +18,11 @@ class PopupWrapper extends Component {
 
   render() {
     return (
-      <StyledWrapper className="popup_wrapper">
+      <StyledWrapper id="popup_wrapper_needLittle_PopUp" className="popup_wrapper">
         <h3>{this.props.title}</h3>
         <StyledToggle><Toggle toggle={this.closePopup}><img src={closeIcon} alt="" /></Toggle></StyledToggle>
         {this.props.children}
       </StyledWrapper>
-
     );
   }
 }
@@ -61,17 +60,23 @@ const StyledWrapper = styled.div`
   max-width: 700px;
   height: auto;
   max-height: 700px;
-  background: #EDEDED;
+  background: #ededed;
   z-index: 650;
   padding: 20px;
-  box-shadow: 0px 3px 20px -3px rgba(0,0,0,.6);
+  box-shadow: 0px 3px 20px -3px rgba(0, 0, 0, 0.6);
 
   @media only screen and (max-width: 567px) {
-     width: calc(100% - 40px);
+    width: calc(100% - 40px);
   }
   h3 {
     line-height: 27px;
     margin: 0 0 20px 0;
-    font-family: 'Omnes';
+    font-family: "Omnes";
+  }
+  &.littlePopUp {
+    height: 240px;
+    @media only screen and (min-width: 567px) {
+      height: 200px;
+    }
   }
 `;

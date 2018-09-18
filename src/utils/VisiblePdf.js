@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getNotes } from './actions';
+import { getOptions } from './actions';
 import PDF from './pdf';
 
 const mapStateToProps = state => ({
   allProducts: state.app.products,
   products: state.quotation.quotation.products,
-  notas: state.pdf.tabNotas,
+  notas: state.pdf.options.notas,
+  infoContact: state.pdf.options,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getNotes,
+  getOptions,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PDF);

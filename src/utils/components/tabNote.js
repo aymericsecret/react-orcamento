@@ -9,9 +9,14 @@ import idGenerator from 'react-id-generator';
 // Create a tab with the note of Cremme
 const ShowTabNote = (props) => {
   const tabAllNote = [];
-  props.tabNote.forEach((note) => {
-    tabAllNote.push(<Text key={`note_${idGenerator()}`}>{note}</Text>);
-  });
+  if (props.tabNote !== undefined) {
+    props.tabNote.forEach((note) => {
+      tabAllNote.push(<Text key={`note_${idGenerator()}`}>{note}</Text>);
+    });
+  } else {
+    return '';
+  }
+
   return (
     // <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
     <ContentTab x={20} y={props.y} width={801} height={12.8 * props.tabNote.length + 20}>

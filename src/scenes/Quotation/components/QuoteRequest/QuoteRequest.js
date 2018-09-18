@@ -46,12 +46,17 @@ export default class QuoteRequest extends Component {
       isSending: true,
     });
 
-    // fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
-    fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
+    fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
     }).then(response => response.json())
       .then((data) => {
+        const PopUpWwrapper = document.getElementById('popup_wrapper_needLittle_PopUp');
+        if (PopUpWwrapper.classList.contains('littlePopUp')) {
+          PopUpWwrapper.classList.remove('littlePopUp');
+        } else {
+          PopUpWwrapper.classList.add('littlePopUp');
+        }
         console.log('response', data);
         switch (data.status) {
           case 200:

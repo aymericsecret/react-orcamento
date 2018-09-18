@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
+import windowDimensions from 'react-window-dimensions';
 import ContentLoader from 'react-content-loader';
 
-export default class Product extends Component {
+class Product extends Component {
   constructor(props) {
     super(props);
     this.state = { imageStatus: 'loading' };
@@ -16,6 +17,18 @@ export default class Product extends Component {
 
   handleImageErrored = () => {
     this.setState({ imageStatus: 'failed to load' });
+  }
+
+  hideSearchInputInMobile = () => {
+    // Only in mobile
+    if (this.props.width <= 576) {
+      // Get ProductBlock component of ProductSearch
+      const searchIcon = document.getElementById('id_logo_search');
+      // If the inputSearch is active hide at click on a product
+      if (searchIcon.classList.contains('active')) {
+        searchIcon.classList.remove('active');
+      }
+    }
   }
 
   render() {
@@ -38,6 +51,7 @@ export default class Product extends Component {
           onClick={() => {
             this.props.addProductToQuotation(this.props.product);
             this.props.toggleSide({ type: 'add_product' });
+            this.hideSearchInputInMobile();
           }}
         >
           <RatioCustom ratio={16 / 9}>
@@ -68,6 +82,9 @@ export default class Product extends Component {
   }
 }
 
+
+export default windowDimensions()(Product);
+
 Product.propTypes = {
   product: PropTypes.shape({
     id: PropTypes.number,
@@ -76,6 +93,7 @@ Product.propTypes = {
   }).isRequired,
   addProductToQuotation: PropTypes.func.isRequired,
   toggleSide: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 const ProductBlock = styled.div`

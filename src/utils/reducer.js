@@ -1,19 +1,19 @@
 import {
-  INIT_APP_NOTES,
+  INIT_APP_OPTIONS,
 } from './actions';
 
 const initialState = {
-  tabNotas: [],
+  options: {},
 };
 
 
 export default function (state = initialState, action) {
   const { type, data } = action;
   switch (type) {
-    case INIT_APP_NOTES: {
+    case INIT_APP_OPTIONS: {
       return {
         ...state,
-        tabNotas: data,
+        options: data,
       };
     }
     default:
