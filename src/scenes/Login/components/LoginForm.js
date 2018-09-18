@@ -134,6 +134,7 @@ const StyledButton = styled.button`
     font-family: 'OmnesMedium';
     font-size: 14px;
     line-height: 25px;
-    color: #EDEDED;
+    color: #ffffff;
     cursor: pointer;
+    -webkit-font-smoothing: antialiased;
 `;
