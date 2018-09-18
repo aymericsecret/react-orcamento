@@ -1,4 +1,4 @@
-import { getNotes } from '../../utils/actions';
+import { getOptions } from '../../utils/actions';
 
 export const INIT_APP = 'INIT_APP';
 export const INIT_APP_CATEGORIES = 'INIT_APP_CATEGORIES';
@@ -61,6 +61,6 @@ export function initApp() {
     });
     return getCategories(dispatch)
       .then(catID => getProducts(dispatch, catID, 1))
-      .then(() => getNotes(dispatch));
+      .then(() => getOptions(dispatch));
   };
 }

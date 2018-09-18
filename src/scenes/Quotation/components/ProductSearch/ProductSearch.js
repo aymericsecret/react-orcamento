@@ -51,7 +51,7 @@ class ProductSearch extends Component {
 
   render() {
     return (
-      <ProductsBlock onClick={this.extendSearchBar} className={this.props.search.searchToggle ? 'active' : ''}>
+      <ProductsBlock id="id_logo_search" onClick={this.extendSearchBar} className={this.props.search.searchToggle ? 'active' : ''}>
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <IconSearchDiv>
           <img

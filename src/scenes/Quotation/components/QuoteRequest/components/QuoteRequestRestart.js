@@ -28,7 +28,7 @@ QuoteRequestRestart.propTypes = {
 };
 
 const StyledRestart = styled.div`
-  transition: opacity .3s ease-out .4s;
+  transition: opacity 0.3s ease-out 0.4s;
   position: absolute;
   top: 80px;
   left: 20px;
@@ -39,8 +39,9 @@ const StyledRestart = styled.div`
   }
   button {
     margin-right: 20px;
-    @media only screen and max-width(567px) {
-      margin-bottom: 10px;
+    @media only screen and (max-width: 567px) {
+      width: 100%;
+      margin-bottom: 20px;
     }
   }
 `;

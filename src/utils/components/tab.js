@@ -32,11 +32,9 @@ const Tab = (props) => {
   });
   return (
     <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-      <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
       <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor="#979797" />
-      <TraitTableau show={props.show} width={props.width} height={1} top={0} left={0} backgroundColor="#979797" />
       <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
-      <TextTab width={props.width - 40} height={props.height / 3}>
+      <TextTab width={props.width - 40} height={props.height / 3 - 2}>
         <Text style={styles.h3}>{props.text1}</Text>
         <Text style={styles.text}>{props.text2}</Text>
       </TextTab>
@@ -53,11 +51,9 @@ Tab.propTypes = {
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  show: PropTypes.string,
   showUnderBorder: PropTypes.string,
 };
 Tab.defaultProps = {
-  show: undefined,
   showUnderBorder: undefined,
 };
 

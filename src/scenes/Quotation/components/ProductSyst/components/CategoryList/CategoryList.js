@@ -93,7 +93,6 @@ class CategoryList extends Component {
                 </LinkCustom>
                 )
               )
-
             ),
             )}
           </Categories>

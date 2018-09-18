@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ContentLoader from 'react-content-loader';
+import idGenerator from 'react-id-generator';
 import VisibleProduct from './components/VisibleProduct';
 
 const ProductList = (props) => {
@@ -21,7 +22,7 @@ const ProductList = (props) => {
     && categories.children[mainCategory].children[subCategory] !== undefined) {
     return (
       <ProductsBlock>{
-        [...Array(categories.children[mainCategory].children[subCategory].count)].map(() => <div className="flex50">{MyLoaderImg()}</div>)
+        [...Array(categories.children[mainCategory].children[subCategory].count)].map(() => <div key={idGenerator()} className="flex50">{MyLoaderImg()}</div>)
         }
       </ProductsBlock>
     );

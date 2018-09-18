@@ -1,20 +1,19 @@
 
-export const INIT_APP_NOTES = 'INIT_APP_NOTES';
+export const INIT_APP_OPTIONS = 'INIT_APP_OPTIONS';
 
-
-export function getNotes(dispatch) {
-  let tabNotasWTF = [];
-  const tabNotas = ['test'];
+export function getOptions(dispatch) {
+  // let tabNotasWTF = [];
+  // const tabNotas = ['test'];
   return fetch('http://cremme.com.br/wp-json/acf/v3/options/orcamento-informacoes')
     .then(res => res.json())
-    .then((notas) => {
-      tabNotasWTF = notas.acf[''];
-      tabNotasWTF.forEach(nota => (tabNotas.push(nota.nota)));
-      console.log(tabNotas);
+    .then((options) => {
+      // console.log(options.acf);
+      // tabNotasWTF = notas.acf['notas'];
+      // tabNotasWTF.forEach(nota => (tabNotas.push(nota.nota)));
       dispatch({
-        type: 'INIT_APP_NOTES',
-        data: tabNotas,
+        type: 'INIT_APP_OPTIONS',
+        data: options.acf,
       });
-      return tabNotas;
+      return options.acf;
     });
 }

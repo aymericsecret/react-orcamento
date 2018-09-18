@@ -62,6 +62,13 @@ class QuoteSystem extends Component {
     return (
       <QuoteBlock>
         <QuoteElemsContainer ref={this.quoteElemsRef}>
+          {this.props.quotation.products.length === 0
+            && (
+            <NoElementAdd>
+              <div>Nenhum item foi adicionado à cotação.</div>
+              <div>Por favor adicione</div>
+            </NoElementAdd>
+            )}
           {quotation.products.map((elem, index) => (
             <QuoteElemDrag
               id={elem.id}
@@ -100,6 +107,12 @@ QuoteSystem.propTypes = {
   resetQuotation: PropTypes.func.isRequired,
 };
 
+const NoElementAdd = styled.div`
+  margin-top: 20px;
+  div {
+    font-family: 'Omnes';
+  }
+`;
 const QuoteBlock = styled.div`
   position: relative;
   
@@ -126,5 +139,9 @@ const QuoteRequest = styled.div`
   margin-top: 20px;
   button {
     margin-right: 20px;
+    @media only screen and (max-width: 375px) {
+      margin-bottom: 20px;
+      width: 100%;
+    }
   }
 `;

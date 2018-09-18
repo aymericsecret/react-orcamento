@@ -97,7 +97,13 @@ class PDF extends Component {
     // Note at the end of the orçamento
     let showNote = false;
     let yShowNote = 0;
-    const tabNotasReturn = this.props.notas;
+    const tabNotas = this.props.notas;
+    let tabNotasReturn = [];
+    if (tabNotas !== false) {
+      tabNotas.forEach(nota => tabNotasReturn.push(nota.nota));
+    } else {
+      tabNotasReturn = undefined;
+    }
     const returnShowNote = (y) => {
       showNote = true;
       yShowNote = y;
@@ -106,8 +112,8 @@ class PDF extends Component {
     for (let i = 0; i < (allProductsClass.length / numberLigne); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
-          <FondGris />
-          <BigTab x={20} y={20} width={802} height={13} text={['foto', 'tipologia', '', 'L x P x A (cm)', 'acabamento', 'preço unitario', '']} />
+          <BigTab x={20} y={20} width={802} height={13} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', '']} />
+          <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor="#979797" />
           {productBy4[i].map((product, key) => {
             const foundProduct = this.props.allProducts.find(
               oneProduct => oneProduct.id === product.id_product,
@@ -127,6 +133,7 @@ class PDF extends Component {
             if (product.material === null) {
               materialProduct = '';
             }
+
             // Check if product.price is defined or not
             let priceProduct = `R$                 ${product.price}`;
             if (product.price === null) {
@@ -215,7 +222,8 @@ class PDF extends Component {
             // console.log(`${87 * numberLigne - keyToUsePlus * 87} > ${20 + 12.8 * tabNotasReturn.length}`);
             // console.log((87 * numberLigne - keyToUsePlus * 87) > (20 + 12.8 * tabNotasReturn.length));
             // Is on the last page
-            if (((i + 1) >= (allProductsClass.length / numberLigne)) && (productBy4[i].length === key + 1)) {
+            if (((i + 1) >= (allProductsClass.length / numberLigne))
+            && (productBy4[i].length === key + 1) && (tabNotasReturn !== undefined)) {
               // console.log('is on the last page');
               // Have enouth place to show the note
               if ((87 * numberLigne - keyToUsePlus * 87) > (20 + 12.8 * tabNotasReturn.length)) {
@@ -224,11 +232,11 @@ class PDF extends Component {
               }
             }
             // The line of one product in the orçamento
-            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', sizeProduct, materialProduct, priceProduct, showPrecoPrice]} />;
+            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', '', sizeProduct, '', materialProduct, priceProduct, showPrecoPrice]} />;
           })
           }
           {/* Adding note at the end of the orçamento (if have enouth place) */
-          showNote
+            (showNote && (tabNotasReturn !== undefined))
             && <ShowTabNote y={yShowNote} tabNote={tabNotasReturn} />
           }
           <LogoCircleCustom src={LogCremmeCircle} />
@@ -236,7 +244,7 @@ class PDF extends Component {
       );
     }
     // If the note doesn't have enouth place to be show on the page with last product : Create a new page with the note
-    if (!showNote) {
+    if (!showNote && (tabNotasReturn !== undefined)) {
       table.push(
         <Page key={-1} size="A4" orientation="landscape" style={styles.page}>
           <ShowTabNote y={20} tabNote={tabNotasReturn} />
@@ -280,23 +288,24 @@ class PDF extends Component {
     return table;
   }
 
+
   // Create Document Component (the PDF)
   MyDocument = () => (
     <Document shallow onRender={this.props.render}>
       <Page size="A4" orientation="landscape" style={styles.page}>
         <Titre style={styles.bold}>orçamento</Titre>
-        <ImageCustom src="http://cremme.com.br/wp-content/uploads/2017/09/cremme-mesas-botane_2-e1532970266702.jpg" />
+        <ImageCustom src={this.props.infoContact.foto.url} />
         <Rectangle />
         <Trait />
         <Adresse>
-          <Text>Alameda Gabriel Monteiro da Silva,</Text>
-          <Text>384</Text>
+          <Text>{this.props.infoContact.adresse1}</Text>
+          <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
         <LogoCircleCustom src={LogCremmeCircle} />
         <Contact>
-          <Text>www.cremme.com.br</Text>
-          <Text>contat@cremme.com.br</Text>
-          <Text>11 3064 2590</Text>
+          <Text>{this.props.infoContact.web_site}</Text>
+          <Text>{this.props.infoContact.mail_contato_cremme}</Text>
+          <Text>{this.props.infoContact.telefone_fixo}</Text>
         </Contact>
       </Page>
       {/* PDF part */}
@@ -305,29 +314,29 @@ class PDF extends Component {
       {this.AllPage()}
       {/* Last Page Contato PDF */}
       <Page size="A4" orientation="landscape" style={styles.page}>
-        <TitreSup style={styles.medium}> > </TitreSup>
+        <TitreSup style={styles.medium}> {'>'} </TitreSup>
         <TitreContato style={styles.medium}>contato</TitreContato>
         <TraitHaut />
         <TitreMerci style={styles.medium}>- merci -</TitreMerci>
         <ContentContato style={styles.medium}>
-          <Text>hadrien.lelong@cremme.com.br</Text>
-          <Text2>pierre.colnet@cremme.com.br</Text2>
-          <Text>Alameda Gabriel Monteiro da Silva, 384</Text>
-          <Text2>Jardim Paulistano - São Paulo</Text2>
-          <Text>+55 11 2539-3034</Text>
-          <Text2>+55 11 2538-3776</Text2>
-          <Text>www.cremme.com.br</Text>
+          <Text>{this.props.infoContact.mail_1}</Text>
+          <Text2>{this.props.infoContact.mail_2}</Text2>
+          <Text>{this.props.infoContact.adresse1}</Text>
+          <Text2>{this.props.infoContact.adresse2}</Text2>
+          <Text>{this.props.infoContact.telefone_1}</Text>
+          <Text2>{this.props.infoContact.telefone_2}</Text2>
+          <Text>{this.props.infoContact.web_site}</Text>
         </ContentContato>
         <Trait />
         <Adresse style={styles.text}>
-          <Text>Alameda Gabriel Monteiro da Silva,</Text>
-          <Text>384</Text>
+          <Text>{this.props.infoContact.adresse1}</Text>
+          <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
         <LogoCircleCustom src={LogCremmeCircle} />
         <Contact style={styles.text}>
-          <Text>www.cremme.com.br</Text>
-          <Text>contat@cremme.com.br</Text>
-          <Text>11 3064 2590</Text>
+          <Text>{this.props.infoContact.web_site}</Text>
+          <Text>{this.props.infoContact.mail_contato_cremme}</Text>
+          <Text>{this.props.infoContact.telefone_fixo}</Text>
         </Contact>
       </Page>
     </Document>
@@ -352,7 +361,21 @@ PDF.propTypes = {
   allProducts: PropTypes.arrayOf(PropTypes.object).isRequired,
   products: PropTypes.arrayOf(PropTypes.object).isRequired,
   render: PropTypes.func.isRequired,
-  notas: PropTypes.arrayOf(PropTypes.string).isRequired,
+  notas: PropTypes.arrayOf(PropTypes.object).isRequired,
+  infoContact: PropTypes.shape({
+    mail_1: PropTypes.string,
+    mail_2: PropTypes.string,
+    adresse1: PropTypes.string,
+    adresse2: PropTypes.string,
+    telefone_1: PropTypes.string,
+    telefone_2: PropTypes.string,
+    web_site: PropTypes.string,
+    mail_contato_cremme: PropTypes.string,
+    telefone_fixo: PropTypes.string,
+    foto: PropTypes.shape({
+      url: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 // ----------------- Page 1 of the PDF -----------------
@@ -422,6 +445,16 @@ const Contact = styled.View`
   line-height: 1.5px;
   color: #979797;
 `;
+const TraitTableau = styled.View`
+  position: absolute;
+  top: ${props => props.top};
+  left: ${props => props.left};
+  z-index: 15;
+  width: ${props => props.width};
+  height: ${props => props.height};
+  background-color: ${props => props.backgroundColor};
+  display: ${props => props.show};
+`;
 
 // ----------------- Page PDF of the back office  -----------------
 const ImageAllPage = styled.Image`
@@ -435,17 +468,6 @@ const ImageAllPage = styled.Image`
   object-position: 50% 50%;
 `;
 
-// ----------------- Page Tableau of the orçamento -----------------
-const FondGris = styled.View`
-  position: absolute;
-  z-index: -1;
-  top: 20px;
-  left: 20px;
-  width: 802px;
-  height: 440px
-  background-color: #ffffff;
-  opacity:
-`;
 // ----------------- Last page : Contato -----------------
 const TitreContato = styled.Text`
   margin-top: 65px;
