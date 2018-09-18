@@ -32,12 +32,21 @@ export default class QuoteRequest extends Component {
   }
 
   processRequest = (urlPDF) => {
-    console.log(urlPDF);
-
     const emailParams = {
       request_name: this.props.quoteRequest.name,
       request_email: this.props.quoteRequest.email,
       request_message: this.props.quoteRequest.message,
+      request_list_emails: this.props.quoteRequest.list_emails,
+      request_infos: {
+        phone: this.props.quoteRequest.phone,
+        occupation: this.props.quoteRequest.occupation,
+        occupation_outros: this.props.quoteRequest.occupation_outros,
+        type: this.props.quoteRequest.type,
+        type_outros: this.props.quoteRequest.type_outros,
+        deadline: this.props.quoteRequest.deadline,
+        architect: this.props.quoteRequest.architect,
+        cep: this.props.quoteRequest.cep,
+      },
       request_permission: this.props.isAdmin,
       request_file: urlPDF,
     };
