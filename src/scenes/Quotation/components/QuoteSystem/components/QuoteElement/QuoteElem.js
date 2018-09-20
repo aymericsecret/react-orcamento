@@ -367,8 +367,8 @@ class QuoteElem extends Component {
     } = this.props;
 
     const coverImg = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
-      ? this.state.product.acf.header.cover.sizes.thumbnail
-      : this.state.product.acf.packshot.sizes.thumbnail;
+      ? this.state.product.acf.header.cover.sizes.medium
+      : this.state.product.acf.packshot.sizes.medium;
     const coverAlt = (this.state.product.acf.packshot === undefined || this.state.product.acf.packshot === false)
       ? this.state.product.acf.header.cover.alt
       : this.state.product.acf.packshot.alt;
@@ -394,6 +394,9 @@ class QuoteElem extends Component {
               <Input type="input" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
               {(this.state.size !== null && this.sizeList.length > 1) && (
                 <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
+              )}
+              {this.state.size !== null && this.sizeList.length <= 1 && (
+                <Input type="text" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} disabled />
               )}
               {this.state.size_x !== null && (
                 <Input type="input" domain="product" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
