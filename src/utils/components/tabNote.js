@@ -3,15 +3,22 @@ import PropTypes from 'prop-types';
 import styled from '@react-pdf/styled-components';
 import {
   Text,
+  StyleSheet,
 } from '@react-pdf/renderer';
 import idGenerator from 'react-id-generator';
 
 // Create a tab with the note of Cremme
 const ShowTabNote = (props) => {
+  const styles = StyleSheet.create({
+    text: {
+      fontFamily: 'Omnes',
+      color: '#979797',
+    },
+  });
   const tabAllNote = [];
   if (props.tabNote !== undefined) {
     props.tabNote.forEach((note) => {
-      tabAllNote.push(<Text key={`note_${idGenerator()}`}>{note}</Text>);
+      tabAllNote.push(<Text style={styles.text} key={`note_${idGenerator()}`}>{note}</Text>);
     });
   } else {
     return '';

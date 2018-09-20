@@ -77,6 +77,7 @@ const StyledWrapper = styled.div`
   }
   &.littlePopUp {
     height: 240px;
+    overflow: hidden;
     @media only screen and (min-width: 567px) {
       height: 200px;
     }

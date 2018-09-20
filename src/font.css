@@ -9,6 +9,17 @@
     font-weight: bold;
     text-rendering: optimizeLegibility;
 }
+/* Webfont: Omnes-Semibold */@font-face {
+    font-family: 'OmnesSemibold';
+    src: url('./assets/fonts/Omnes-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Semibold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Semibold.svg#Omnes-Bold') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
 
 /* Webfont: Omnes-Light */@font-face {
     font-family: 'OmnesLight';

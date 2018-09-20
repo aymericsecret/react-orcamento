@@ -392,8 +392,7 @@ class QuoteElem extends Component {
           <QuoteBoxContentForm>
             <div>
               <Input type="input" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
-
-              {this.state.size !== null && (
+              {(this.state.size !== null && this.sizeList.length > 1) && (
                 <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
               )}
               {this.state.size_x !== null && (
