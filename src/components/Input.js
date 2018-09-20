@@ -13,16 +13,16 @@ const Input = props => (
       <span>{props.label}{props.mandatory && '*'}</span>
     )}
     {props.type === 'email' && (
-      <input type="email" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} style={{ border: props.value !== '' && !re.test(props.value) ? '1px solid red' : '' }} />
+      <input type="email" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} style={{ border: props.value !== '' && !re.test(props.value) ? '1px solid red' : '' }} disabled={props.disabled} />
     )}
     {props.type === 'text' && (
-      <input type="text" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
+      <input type="text" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
     )}
     {props.type === 'number' && (
-      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
+      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
     )}
     {props.type === 'input' && (
-      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} />
+      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
     )}
     {props.type === 'textarea' && (
       <textarea id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue}>
@@ -63,6 +63,7 @@ Input.propTypes = {
   updateValue: PropTypes.func.isRequired,
   labelFirst: PropTypes.bool,
   mandatory: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 Input.defaultProps = {
@@ -70,6 +71,7 @@ Input.defaultProps = {
   defaultValue: '',
   labelFirst: false,
   mandatory: false,
+  disabled: false,
 };
 export default Input;
 

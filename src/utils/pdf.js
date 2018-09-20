@@ -118,12 +118,36 @@ class PDF extends Component {
       showNote = true;
       yShowNote = y;
     };
+
+    const headerContent = [{
+      title_1: 'foto',
+      title_2: '',
+    }, {
+      title_1: 'tipologia',
+      title_2: '',
+    }, {
+      title_1: 'L x P x A (cm)',
+      title_2: '',
+    }, {
+      title_1: 'acabamento',
+      title_2: '',
+    }, {
+      title_1: 'preço unitario',
+      title_2: '',
+    }, {
+      title_1: 'quantidade',
+      title_2: '',
+    }, {
+      title_1: 'valor total',
+      title_2: '',
+    },
+    ];
     // Create all the page of the orçamento
     for (let i = 0; i < (allProductsClass.length / numberLigne); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
           <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor="#979797" />
-          <BigTab x={20} y={20} width={802} height={16} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', 'quantidade', 'valor total']} />
+          <BigTab x={20} y={20} width={802} height={16} content={headerContent} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', 'quantidade', 'valor total']} />
           {productBy4[i].map((product, key) => {
             const foundProduct = this.props.allProducts.find(
               oneProduct => oneProduct.id === product.id_product,
@@ -247,8 +271,31 @@ class PDF extends Component {
                 returnShowNote(keyToUsePlus * 87 + 20 + 13);
               }
             }
+            const rowContent = [{
+              title_1: '',
+              title_2: '',
+            }, {
+              title_1: foundProduct.title.rendered,
+              title_2: '',
+            }, {
+              title_1: '',
+              title_2: sizeProduct,
+            }, {
+              title_1: '',
+              title_2: materialProduct,
+            }, {
+              title_1: '',
+              title_2: priceProduct,
+            }, {
+              title_1: '',
+              title_2: quantidade,
+            }, {
+              title_1: '',
+              title_2: valorTotal,
+            },
+            ];
             // The line of one product in the orçamento
-            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, '', '', sizeProduct, '', materialProduct, priceProduct, quantidade, valorTotal]} />;
+            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} content={rowContent} text={['', foundProduct.title.rendered, '', '', sizeProduct, '', materialProduct, priceProduct, quantidade, valorTotal]} />;
           })
           }
           {/* Adding note at the end of the orçamento (if have enouth place) */

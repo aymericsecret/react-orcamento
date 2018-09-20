@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
@@ -427,7 +427,7 @@ const SortableItem = SortableElement(({ value, nbr, updateInput }) => (
 const SortableList = SortableContainer(({
   items, updateInput, addToListEmails, removeToListEmails,
 }) => (
-  <Fragment>
+  <div>
     {items.length > 0 && items.map((value, index) => (
       // eslint-disable-next-line
       <EmailElem key={`item-${index}`}>
@@ -438,7 +438,7 @@ const SortableList = SortableContainer(({
         )}
       </EmailElem>
     ))}
-  </Fragment>
+  </div>
 ));
 SortableList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.string).isRequired,

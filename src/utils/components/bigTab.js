@@ -18,13 +18,13 @@ const BigTab = (props) => {
   return (
     <ContentTab x={props.x} y={props.y} width={0} height={0}>
       <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
-      <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={widthC1} height={props.height} text1={props.text[0]} text2="" />
-      <Tab showUnderBorder="block" show="block" x={widthC1} y={0} width={widthC2} height={props.height} boldText="11px" text1={props.text[1]} text2="" />
-      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2} y={0} width={widthC3} height={props.height} text1={props.text[3]} text2={props.text[4]} />
-      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3} y={0} width={widthC4} height={props.height} text1={props.text[5]} text2={props.text[6]} />
-      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4} y={0} width={widthC5} height={props.height} text1={props.text[7]} text2="" />
-      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4 + widthC5} y={0} width={widthC6} height={props.height} text1={props.text[8]} text2="" />
-      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4 + widthC5 + widthC6} y={0} width={widthC7} height={props.height} text1={props.text[9]} text2="" />
+      <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={widthC1} height={props.height} text1={props.content[0].title_1} text2={props.content[0].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1} y={0} width={widthC2} height={props.height} boldText="11px" text1={props.content[1].title_1} text2={props.content[1].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2} y={0} width={widthC3} height={props.height} text1={props.content[2].title_1} text2={props.content[2].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3} y={0} width={widthC4} height={props.height} text1={props.content[3].title_1} text2={props.content[3].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4} y={0} width={widthC5} height={props.height} text1={props.content[4].title_1} text2={props.content[4].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4 + widthC5} y={0} width={widthC6} height={props.height} text1={props.content[5].title_1} text2={props.content[5].title_2} />
+      <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2 + widthC3 + widthC4 + widthC5 + widthC6} y={0} width={widthC7} height={props.height} text1={props.content[6].title_1} text2={props.content[6].title_2} />
       {(props.src !== undefined)
         && <ImageOrcaCustom top={props.positionYimg} y={props.y} src={props.src} />
       }
@@ -38,6 +38,7 @@ BigTab.propTypes = {
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  content: PropTypes.arrayOf(PropTypes.object).isRequired,
   text: PropTypes.arrayOf(PropTypes.string).isRequired,
   src: PropTypes.string,
   showImg: PropTypes.string,
