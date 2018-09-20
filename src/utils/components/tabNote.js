@@ -57,7 +57,7 @@ const TextNote = styled.View`
   position: relative;
   font-size: 9px;
   line-height: 1.5px;
-  margin-top: 10px
+  margin-top: 10px;
   margin-left: 10px;
   color: '#979797';
 `;

@@ -18,6 +18,7 @@ const BigTab = (props) => {
   return (
     <ContentTab x={props.x} y={props.y} width={0} height={0}>
       <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
+      {/* eslint-disable-next-line */}
       <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={widthC1} height={props.height} text1={props.content[0].title_1} text2={props.content[0].title_2} />
       <Tab showUnderBorder="block" show="block" x={widthC1} y={0} width={widthC2} height={props.height} boldText="11px" text1={props.content[1].title_1} text2={props.content[1].title_2} />
       <Tab showUnderBorder="block" show="block" x={widthC1 + widthC2} y={0} width={widthC3} height={props.height} text1={props.content[2].title_1} text2={props.content[2].title_2} />
@@ -39,7 +40,6 @@ BigTab.propTypes = {
   y: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
   content: PropTypes.arrayOf(PropTypes.object).isRequired,
-  text: PropTypes.arrayOf(PropTypes.string).isRequired,
   src: PropTypes.string,
   showImg: PropTypes.string,
   showUnderBorder: PropTypes.string,

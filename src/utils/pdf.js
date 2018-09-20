@@ -169,7 +169,7 @@ class PDF extends Component {
             }
 
             // Check if product.price is defined or not
-            let priceProduct = `R$                 ${product.price.toLocaleString('pt-BR')}`;
+            let priceProduct = `R$                 ${product.price !== null ? product.price.toLocaleString('pt-BR') : 'N/A'}`;
             if (product.price === null) {
               priceProduct = '';
               // priceProduct = foundProduct.acf.variations[0].price;
@@ -182,7 +182,7 @@ class PDF extends Component {
             }
 
             // Total price & quantity
-            let valorTotal = `R$                 ${(product.quantity * product.price).toLocaleString('pt-BR')}`;
+            let valorTotal = `R$                 ${product.price !== null && product.quantity !== null ? (product.quantity * product.price).toLocaleString('pt-BR') : 'N/A'}`;
             if (product.quantity === null) {
               valorTotal = '';
             }
