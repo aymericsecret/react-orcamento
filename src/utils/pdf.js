@@ -17,6 +17,7 @@ import ShowTabNote from './components/tabNote';
 Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Regular.ttf', { family: 'Omnes' });
 Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Medium.ttf', { family: 'OmnesMedium' });
 Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Bold.ttf', { family: 'OmnesBold' });
+Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Semibold.ttf', { family: 'OmnesSemibold' });
 
 // Create styles
 const styles = StyleSheet.create({
@@ -29,6 +30,15 @@ const styles = StyleSheet.create({
   },
   medium: {
     fontFamily: 'OmnesMedium',
+  },
+  semiBold: {
+    fontFamily: 'OmnesSemibold',
+  },
+  text: {
+    fontFamily: 'Omnes',
+  },
+  textRight: {
+    textAlign: 'right',
   },
 });
 
@@ -112,8 +122,8 @@ class PDF extends Component {
     for (let i = 0; i < (allProductsClass.length / numberLigne); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
-          <BigTab x={20} y={20} width={802} height={13} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', '']} />
           <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor="#979797" />
+          <BigTab x={20} y={20} width={802} height={16} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', 'quantidade', 'valor total']} />
           {productBy4[i].map((product, key) => {
             const foundProduct = this.props.allProducts.find(
               oneProduct => oneProduct.id === product.id_product,
@@ -135,22 +145,28 @@ class PDF extends Component {
             }
 
             // Check if product.price is defined or not
-            let priceProduct = `R$                 ${product.price}`;
+            let priceProduct = `R$                 ${product.price.toLocaleString('pt-BR')}`;
             if (product.price === null) {
               priceProduct = '';
               // priceProduct = foundProduct.acf.variations[0].price;
             }
+
+            // Quantidade
+            let quantidade = `${product.quantity}`;
+            if (product.quantity === null) {
+              quantidade = '';
+            }
+
             // Total price & quantity
-            const precoTotal = product.quantity * product.price;
-            let showPrecoPrice = `Quantity : ${product.quantity}\nPreço total : ${precoTotal}`;
-            if (product.quantity === null || product.quantity <= 1) {
-              showPrecoPrice = '';
+            let valorTotal = `R$                 ${(product.quantity * product.price).toLocaleString('pt-BR')}`;
+            if (product.quantity === null) {
+              valorTotal = '';
             }
             // Value of src image of product
-            let srcImageProduct = foundProduct.acf.header.cover.url;
+            let srcImageProduct = foundProduct.acf.header.cover.sizes.thumbnail;
             // console.log(typeof foundProduct.acf.packshot === 'object');
             if (typeof foundProduct.acf.packshot === 'object') {
-              srcImageProduct = foundProduct.acf.packshot.url;
+              srcImageProduct = foundProduct.acf.packshot.sizes.thumbnail;
               // console.log(foundProduct.acf.packshot);
             }
             // Var if the img of product need to me show
@@ -232,12 +248,12 @@ class PDF extends Component {
               }
             }
             // The line of one product in the orçamento
-            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, 'Encosto parcial direito', '', sizeProduct, '', materialProduct, priceProduct, showPrecoPrice]} />;
+            return <BigTab key={product.id} x={20} y={33 + key * 87} width={802} height={87} positionYimg={positionYimg} showUnderBorder={showUnderBorder} showImg={valueShowImg} src={srcImageProduct} text={['', foundProduct.title.rendered, '', '', sizeProduct, '', materialProduct, priceProduct, quantidade, valorTotal]} />;
           })
           }
           {/* Adding note at the end of the orçamento (if have enouth place) */
             (showNote && (tabNotasReturn !== undefined))
-            && <ShowTabNote y={yShowNote} tabNote={tabNotasReturn} />
+            && <ShowTabNote style={styles.text} y={yShowNote} tabNote={tabNotasReturn} />
           }
           <LogoCircleCustom src={LogCremmeCircle} />
         </Page>,
@@ -247,7 +263,7 @@ class PDF extends Component {
     if (!showNote && (tabNotasReturn !== undefined)) {
       table.push(
         <Page key={-1} size="A4" orientation="landscape" style={styles.page}>
-          <ShowTabNote y={20} tabNote={tabNotasReturn} />
+          <ShowTabNote style={styles.text} y={20} tabNote={tabNotasReturn} />
           <LogoCircleCustom src={LogCremmeCircle} />
         </Page>,
       );
@@ -293,19 +309,19 @@ class PDF extends Component {
   MyDocument = () => (
     <Document shallow onRender={this.props.render}>
       <Page size="A4" orientation="landscape" style={styles.page}>
-        <Titre style={styles.bold}>orçamento</Titre>
+        <Titre style={styles.semiBold}>orçamento</Titre>
         <ImageCustom src={this.props.infoContact.foto.url} />
         <Rectangle />
         <Trait />
-        <Adresse>
+        <Adresse style={styles.medium}>
           <Text>{this.props.infoContact.adresse1}</Text>
           <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
         <LogoCircleCustom src={LogCremmeCircle} />
-        <Contact>
-          <Text>{this.props.infoContact.web_site}</Text>
-          <Text>{this.props.infoContact.mail_contato_cremme}</Text>
-          <Text>{this.props.infoContact.telefone_fixo}</Text>
+        <Contact style={styles.medium}>
+          <Text style={styles.textRight}>{this.props.infoContact.web_site}</Text>
+          <Text style={styles.textRight}>{this.props.infoContact.mail_contato_cremme}</Text>
+          <Text style={styles.textRight}>{this.props.infoContact.telefone_fixo}</Text>
         </Contact>
       </Page>
       {/* PDF part */}
@@ -314,10 +330,10 @@ class PDF extends Component {
       {this.AllPage()}
       {/* Last Page Contato PDF */}
       <Page size="A4" orientation="landscape" style={styles.page}>
-        <TitreSup style={styles.medium}> {'>'} </TitreSup>
-        <TitreContato style={styles.medium}>contato</TitreContato>
+        <TitreSup style={styles.semiBold}> {'>'} </TitreSup>
+        <TitreContato style={styles.semiBold}>contato</TitreContato>
         <TraitHaut />
-        <TitreMerci style={styles.medium}>- merci -</TitreMerci>
+        <TitreMerci style={styles.semiBold}>- merci -</TitreMerci>
         <ContentContato style={styles.medium}>
           <Text>{this.props.infoContact.mail_1}</Text>
           <Text2>{this.props.infoContact.mail_2}</Text2>
@@ -328,15 +344,15 @@ class PDF extends Component {
           <Text>{this.props.infoContact.web_site}</Text>
         </ContentContato>
         <Trait />
-        <Adresse style={styles.text}>
+        <Adresse style={styles.medium}>
           <Text>{this.props.infoContact.adresse1}</Text>
           <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
         <LogoCircleCustom src={LogCremmeCircle} />
-        <Contact style={styles.text}>
-          <Text>{this.props.infoContact.web_site}</Text>
-          <Text>{this.props.infoContact.mail_contato_cremme}</Text>
-          <Text>{this.props.infoContact.telefone_fixo}</Text>
+        <Contact style={styles.medium}>
+          <Text style={styles.textRight}>{this.props.infoContact.web_site}</Text>
+          <Text style={styles.textRight}>{this.props.infoContact.mail_contato_cremme}</Text>
+          <Text style={styles.textRight}>{this.props.infoContact.telefone_fixo}</Text>
         </Contact>
       </Page>
     </Document>
@@ -380,17 +396,17 @@ PDF.propTypes = {
 
 // ----------------- Page 1 of the PDF -----------------
 const Titre = styled.Text`
-  margin-top: 50px;
-  margin-left: 35px;
+  margin-top: 90px;
+  margin-left: 50px;
   margin-bottom: 20px;
-  font-size: 23px;
+  font-size: 30px;
   color: #979797;
 `;
 
 const ImageCustom = styled.Image`
   position: absolute;
   z-index: 5;
-  top: 100px;
+  top: 142px;
   left: 0;
   object-fit: cover;
   object-position: 50% 50%;
@@ -400,17 +416,17 @@ const ImageCustom = styled.Image`
 const Rectangle = styled.View`
   position: absolute;
   z-index: 10;
-  top: 477px;
+  top: 454px;
   left: 0px
   width: 842px;
-  height: 118px;
+  height: 73px;
   background-color: #ffffff;
 `;
 
 const Trait = styled.View`
   position: absolute;
   z-index: 15;
-  top: 507px;
+  bottom: 88px;
   left: 35px;
   width: 772px;
   height: 1px;
@@ -420,10 +436,10 @@ const Trait = styled.View`
 const Adresse = styled.View`
   position: absolute;
   z-index: 15px;
-  bottom: 20px;
+  top: 515px;
   left: 35px;
-  fontSize: 8px;
-  line-height: 1.5px;
+  font-size: 10px;
+  
   color: #979797;
 `;
 
@@ -439,11 +455,12 @@ const LogoCircleCustom = styled.Image`
 const Contact = styled.View`
   position: absolute;
   z-index: 15px;
-  bottom: 20px;
+  top: 515px;
   right: 35px;
-  fontSize: 8px;
-  line-height: 1.5px;
+  font-size: 10px;
+  
   color: #979797;
+  width: 100%;
 `;
 const TraitTableau = styled.View`
   position: absolute;
@@ -470,17 +487,17 @@ const ImageAllPage = styled.Image`
 
 // ----------------- Last page : Contato -----------------
 const TitreContato = styled.Text`
-  margin-top: 65px;
+  margin-top: 60px;
   margin-left: 160px;
   margin-bottom: 20px;
-  font-size: 23px;
+  font-size: 30px;
   color: #979797;
 `;
 const TitreSup = styled.Text`
   position: absolute;
-  top: 35px;
-  left: 232px;
-  font-size: 35px;
+  top: 42px;
+  left: 253px;
+  font-size: 30px;
   color: #2cb3df;
 `;
 
@@ -497,7 +514,7 @@ const TraitHaut = styled.View`
 const TitreMerci = styled.Text`
   position: absolute;
   z-index: 15px;
-  top: 190px;
+  top: 150px;
   text-align: center;
   font-size: 60px;
   color: #636463;
@@ -505,7 +522,7 @@ const TitreMerci = styled.Text`
 const ContentContato = styled.View`
   position: absolute;
   z-index: 15px;
-  top: 280px;
+  top: 242px;
   text-align: center;
   font-size: 14px;
   line-height: 1.1px;

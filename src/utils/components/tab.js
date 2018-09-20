@@ -34,9 +34,11 @@ const Tab = (props) => {
     <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
       <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor="#979797" />
       <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
-      <TextTab width={props.width - 40} height={props.height / 3 - 2}>
-        <Text style={styles.h3}>{props.text1}</Text>
-        <Text style={styles.text}>{props.text2}</Text>
+      <TextTab width={props.width - 20} height={props.height / 3 + 1.2}>
+        <TextMiniTab>
+          <Text style={styles.h3}>{props.text1}</Text>
+          <Text style={styles.text}>{props.text2}</Text>
+        </TextMiniTab>
       </TextTab>
     </ContentTab>
   );
@@ -78,11 +80,19 @@ const ContentTab = styled.View`
 const TextTab = styled.View`
   position: relative;
   z-index: 20;
-  left: 20px;
+  left: 10px;
   width: ${props => props.width};
   top: ${props => props.height};
   height: ${props => props.height};
   text-align: center;
   font-size: 9px;
   line-height: 1.5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 0;
+`;
+const TextMiniTab = styled.View`
+  display: flex;
+  flex-direction: column;
 `;

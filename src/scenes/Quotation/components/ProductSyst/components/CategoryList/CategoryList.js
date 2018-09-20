@@ -237,6 +237,7 @@ const SubCategories = styled.div`
   column-gap: 50px;
   button {
     width: 100%;
+    height: 100%;
     border: none;
     padding: 0;
     background-color: #ffffff;
