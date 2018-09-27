@@ -391,12 +391,12 @@ class QuoteElem extends Component {
           </RatioCustom>
           <QuoteBoxContentForm>
             <div>
-              <Input type="input" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} />
+              <Input type="number" domain="product" id={quoteItem.id} label="Quantidade" idType="quantity" value={this.state.quantity} updateValue={this.updateInput} min={1} />
               {(this.state.size !== null && this.sizeList.length > 1) && (
-                <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
+                <Input type="select" domain="product" id={quoteItem.id} label="Tamanhos LxPxA(cm)" idType="size" value={this.state.size} updateValue={this.updateSelect} selectList={this.sizeList} />
               )}
               {this.state.size !== null && this.sizeList.length <= 1 && (
-                <Input type="text" domain="product" id={quoteItem.id} label="Tamanhos" idType="size" value={this.state.size} updateValue={this.updateSelect} disabled />
+                <Input type="text" domain="product" id={quoteItem.id} label="Tamanhos LxPxA(cm)" idType="size" value={this.state.size} updateValue={this.updateSelect} disabled />
               )}
               {this.state.size_x !== null && (
                 <Input type="input" domain="product" id={quoteItem.id} label="Largura" idType="size_x" value={this.state.size_x} updateValue={this.updateInput} />
@@ -413,8 +413,8 @@ class QuoteElem extends Component {
             <div>
               {this.userPermission === 1 && this.state.price !== null && (
                 <div>
-                  <Input type="input" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} />
-                  <Input type="input" domain="product" id={quoteItem.id} label="Preço total" idType="total_price" value={this.state.total_price} updateValue={this.updateInput} />
+                  <Input type="number" domain="product" id={quoteItem.id} label="Preço unitario" idType="price" value={this.state.price} updateValue={this.updateInput} min={0} />
+                  <Input type="number" domain="product" id={quoteItem.id} label="Preço total" idType="total_price" value={this.state.total_price} updateValue={this.updateInput} min={0} />
                   {/* <div>
                     <div className="total_price">Preço total</div>
                     <div>{this.state.total_price}</div>
@@ -500,6 +500,7 @@ const RatioCustom = styled(Ratio)`
   width: 100%;
   padding-right: 0;
   padding-bottom: 20px;
+  padding-top: 15px;
   img {
     width: 100%;
     height: 100%;

@@ -16,11 +16,11 @@ const Tab = (props) => {
       backgroundColor: '#ffffff',
     },
     h3: {
-      fontFamily: 'OmnesSemibold',
-      color: '#979797',
+      fontFamily: 'OmnesMedium',
+      color: '#828282',
     },
     text: {
-      fontFamily: 'OmnesMedium',
+      fontFamily: 'Omnes',
       color: '#979797',
     },
     bold: {

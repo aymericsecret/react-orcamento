@@ -10,15 +10,18 @@ import QuoteRequestRestart from './components/QuoteRequestRestart';
 export default class QuoteRequest extends Component {
   state = {
     isSending: false,
-    sendingMessage: 'Sending request...',
+    sendingMessage: 'Enviando solicitação...',
     isSent: false,
     hasError: false,
   }
 
   componentDidMount = () => {
-    const { initQuoteRequest, isCreated, quoteRequest } = this.props;
+    const {
+      initQuoteRequest, isCreated, quoteRequest, orcaOptions, setQuoteRequestDefaultMessage,
+    } = this.props;
 
-    // console.log(isCreated);
+    console.log(orcaOptions.default_message);
+    setQuoteRequestDefaultMessage(orcaOptions.default_message);
     if (!isCreated) {
       // console.log('ON INIT');
       initQuoteRequest();
@@ -32,6 +35,17 @@ export default class QuoteRequest extends Component {
   }
 
   processRequest = (urlPDF) => {
+    const productsNotes = [];
+    this.props.quotation.products.forEach((p, key) => {
+      if (p.note !== '') {
+        productsNotes.push({
+          key: key + 1,
+          title: this.props.products.find(el => el.id === p.id_product).title.rendered,
+          note: p.note,
+        });
+      }
+    });
+
     const emailParams = {
       request_name: this.props.quoteRequest.name,
       request_email: this.props.quoteRequest.email,
@@ -49,13 +63,16 @@ export default class QuoteRequest extends Component {
       },
       request_permission: this.props.isAdmin,
       request_file: urlPDF,
+      request_products_notes: productsNotes,
     };
+
 
     this.setState({
       isSending: true,
     });
 
     fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    // fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
     }).then(response => response.json())
@@ -77,7 +94,7 @@ export default class QuoteRequest extends Component {
             break;
           case 304:
             this.setState({
-              sendingMessage: 'An error has occured',
+              sendingMessage: 'Ocorreu um erro, por favor tenta novamente mais tarde',
               hasError: true,
             });
             break;
@@ -105,6 +122,8 @@ export default class QuoteRequest extends Component {
   }
 
   render() {
+    console.log(this.props.orcaOptions);
+
     return (
       <Popup isOpen={this.props.isOpen} toggle={this.toggleRestart} title="Pedido do orçamento">
         <QuoteRequestForm
@@ -139,6 +158,14 @@ QuoteRequest.propTypes = {
   saveQuoteRequest: PropTypes.func.isRequired,
   initQuoteRequest: PropTypes.func.isRequired,
   resetQuotation: PropTypes.func.isRequired,
+  setQuoteRequestDefaultMessage: PropTypes.func.isRequired,
+  orcaOptions: PropTypes.shape({
+    default_message: PropTypes.string,
+  }).isRequired,
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  quotation: PropTypes.shape({
+    products: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
 };
 
 const StyledLoader = styled.div`

@@ -36,9 +36,9 @@ class QuoteRequestForm extends Component {
       email: '',
       list_emails: [],
       phone: '',
-      occupation: 'residencial',
+      occupation: 'arquitecto/designer',
       occupation_outros: '',
-      type: 'arquitecto/designer',
+      type: 'residencial',
       type_outros: '',
       deadline: 'pronta entrega',
       architect: '',
@@ -53,8 +53,9 @@ class QuoteRequestForm extends Component {
 
   componentWillMount = () => {
     const newState = this.props.quoteRequest;
+    if (newState.occupation === '') newState.occupation = 'arquitecto/designer';
     if (newState.deadline === '') newState.deadline = '1 - 2 meses';
-    if (newState.type === '') newState.type = 'arquitecto/designer';
+    if (newState.type === '') newState.type = 'residencial';
     this.setState({
       request: this.props.quoteRequest,
     });
@@ -113,7 +114,7 @@ class QuoteRequestForm extends Component {
   }
 
   updateInput = (e) => {
-    console.log(this.state);
+    // console.log(this.state);
 
     const newValue = e.target.value;
     const { request } = this.state;
@@ -130,13 +131,16 @@ class QuoteRequestForm extends Component {
           }
           case 'list_emails': {
             const id = e.target.id.split('_')[4];
-            console.log(id);
+            // console.log(id);
 
             request.list_emails[id] = newValue;
             break;
           }
           case 'phone': {
-            request.phone = newValue;
+            const regex = /^[0-9]+$/;
+            if (newValue.match(regex) !== null || newValue.length === 0) {
+              request.phone = newValue;
+            }
             break;
           }
           case 'architect': {
@@ -152,7 +156,10 @@ class QuoteRequestForm extends Component {
             break;
           }
           case 'cep': {
-            request.cep = newValue;
+            const regex = /^[0-9]+$/;
+            if (newValue.match(regex) !== null || newValue.length === 0) {
+              request.cep = newValue;
+            }
             break;
           }
           case 'message': {
@@ -212,18 +219,26 @@ class QuoteRequestForm extends Component {
     const a = document.createElement('a');
     document.body.appendChild(a);
     a.style = 'display: none';
-    console.log('ok');
+    // console.log('ok');
     a.href = this.state.url;
-    console.log(this.state.url);
-    const name = this.state.request.name.toLowerCase().replace(' ', '');
-    a.download = `cremme_orcamento_${name}.pdf`;
+    // console.log(this.state.url);
+    const d = new Date();
+    const m = d.getMonth() < 10 ? (`0${d.getMonth()}`) : d.getMonth();
+    const date = `${d.getFullYear()}${m}${d.getDate()}`;
+    console.log(date);
+
+    const name = this.state.request.name.replace(/\w+/g, string => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase());
+    // const name = this.state.request.name.toLowerCase().replace(' ', '');
+    a.download = `${date}_OrcamentoCremme_${name}.pdf`;
     a.click();
     window.URL.revokeObjectURL(this.state.url);
   };
 
   isFormFilled = () => {
+    console.log(this.state.request);
+
     // eslint-disable-next-line
-    const re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;;
+    const re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
     return this.state.request.name !== ''
     && this.state.request.email !== ''
     && re.test(this.state.request.email)
@@ -286,7 +301,7 @@ class QuoteRequestForm extends Component {
         )}
 
         <Input
-          type="number"
+          type="text"
           domain="popup_quotation"
           id="phone"
           label="Celular/Telefone"
@@ -374,7 +389,7 @@ class QuoteRequestForm extends Component {
         />
 
         <Input
-          type="number"
+          type="text"
           domain="popup_quotation"
           id="cep"
           label="CEP"

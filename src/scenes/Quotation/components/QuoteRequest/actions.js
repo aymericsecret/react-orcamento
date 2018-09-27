@@ -9,9 +9,10 @@ export function saveQuoteRequest(quoteRequest) {
   });
 }
 
-export function setQuoteRequestDefaultMessage(dispatch) {
-  return dispatch({
+export function setQuoteRequestDefaultMessage(message) {
+  return dispatch => dispatch({
     type: 'SET_DEFAULT_REQUEST_MESSAGE',
+    data: message,
   });
 }
 

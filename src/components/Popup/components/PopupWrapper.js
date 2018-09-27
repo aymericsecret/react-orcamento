@@ -56,19 +56,29 @@ const StyledWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  
   width: 100%;
-  max-width: 700px;
-  height: auto;
-  max-height: 700px;
+  
+  height: 100%;
+  
+
   background: #ededed;
   z-index: 650;
   padding: 20px;
   box-shadow: 0px 3px 20px -3px rgba(0,0,0,.6);
   overflow-y: scroll;
 
-  @media only screen and (max-width: 567px) {
-    width: calc(100% - 40px);
-    max-height: calc(100vh - 40px);
+  @media only screen and (min-width: 569px) {
+    width: 100%;
+    max-width: 90%;
+    height: auto;
+    max-height: 90%;
+  }
+  @media only screen and (min-width: 768px) {
+    max-width: 700px;
+  }
+  @media only screen and (min-height: 740px) {
+    max-height: 700px;
   }
   h3 {
     line-height: 27px;

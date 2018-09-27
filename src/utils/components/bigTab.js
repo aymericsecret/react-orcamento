@@ -6,7 +6,7 @@ import {
 
 import Tab from './tab';
 
-// Line of tab with 5 columns
+// Line of tab with 7 columns
 const BigTab = (props) => {
   const widthC1 = 125;
   const widthC2 = 125;

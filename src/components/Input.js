@@ -9,9 +9,9 @@ const re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|
 const Input = props => (
   // eslint-disable-next-line jsx-a11y/label-has-for
   <StyledLabel htmlFor={`${props.domain}_${props.id}_${props.idType}`}>
-    {props.labelFirst && (
-      <span>{props.label}{props.mandatory && '*'}</span>
-    )}
+    {/* {props.labelFirst && ( */}
+    <span>{props.label}{props.mandatory && '*'}</span>
+    {/* )} */}
     {props.type === 'email' && (
       <input type="email" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} style={{ border: props.value !== '' && !re.test(props.value) ? '1px solid red' : '' }} disabled={props.disabled} />
     )}
@@ -19,7 +19,7 @@ const Input = props => (
       <input type="text" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
     )}
     {props.type === 'number' && (
-      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
+      <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} min={props.min} disabled={props.disabled} />
     )}
     {props.type === 'input' && (
       <input type="number" id={`${props.domain}_${props.id}_${props.idType}`} data-type={props.idType} key={`${props.domain}_${props.id}_${props.idType}`} value={props.value} onChange={props.updateValue} onBlur={props.updateValue} disabled={props.disabled} />
@@ -36,9 +36,9 @@ const Input = props => (
         ))}
       </select>
     )}
-    {!props.labelFirst && (
+    {/* {!props.labelFirst && (
     <span>{props.label}{props.mandatory && '*'}</span>
-    )}
+    )} */}
   </StyledLabel>
 );
 
@@ -61,7 +61,8 @@ Input.propTypes = {
   ]),
   selectList: PropTypes.arrayOf(PropTypes.string),
   updateValue: PropTypes.func.isRequired,
-  labelFirst: PropTypes.bool,
+  // labelFirst: PropTypes.bool,
+  min: PropTypes.number,
   mandatory: PropTypes.bool,
   disabled: PropTypes.bool,
 };
@@ -69,13 +70,15 @@ Input.propTypes = {
 Input.defaultProps = {
   selectList: [],
   defaultValue: '',
-  labelFirst: false,
+  // labelFirst: false,
   mandatory: false,
   disabled: false,
+  min: 0,
 };
 export default Input;
 
 const StyledLabel = styled.label`
+  max-width: 100%;
   font-family: 'OmnesLight';
   font-size: 12px;
   line-height: 16px;

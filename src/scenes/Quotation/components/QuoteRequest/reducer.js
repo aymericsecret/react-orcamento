@@ -23,7 +23,7 @@ const initialState = {
   isCreated: false,
 };
 
-const defaultMessage = 'Je suis un content par défaut';
+// const defaultMessage = 'Je suis un content par défaut';
 
 export default function (state = initialState, action) {
   const { type, data } = action;
@@ -40,7 +40,7 @@ export default function (state = initialState, action) {
         ...state,
         request: {
           ...state.request,
-          defaultMessage,
+          defaultMessage: data,
         },
       };
     }

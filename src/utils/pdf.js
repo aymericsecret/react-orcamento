@@ -142,25 +142,28 @@ class PDF extends Component {
       title_2: '',
     },
     ];
+    // const counterRepeatImage = 0;
+    const showSameProductsTogether = false;
     // Create all the page of the orçamento
     for (let i = 0; i < (allProductsClass.length / numberLigne); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
           <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor="#979797" />
           <BigTab x={20} y={20} width={802} height={16} content={headerContent} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', 'quantidade', 'valor total']} />
+          {/* eslint-disable-next-line */}
           {productBy4[i].map((product, key) => {
             const foundProduct = this.props.allProducts.find(
               oneProduct => oneProduct.id === product.id_product,
             );
             // Check if product.size is defined or not
-            let sizeProduct = `${product.size} (cm)`;
+            let sizeProduct = `${product.size}`;
             // console.log(foundProduct.acf.layout);
             if (product.size === null) {
               sizeProduct = '';
             }
             // Case of canapé composé
             if (foundProduct.acf.msquare === true) {
-              sizeProduct = `${product.size_x} X ${product.size_y} (cm)`;
+              sizeProduct = `${product.size_x} X ${product.size_y}`;
             }
             // Check if product.material is defined or not
             let materialProduct = product.material;
@@ -227,16 +230,21 @@ class PDF extends Component {
             if (productBy4[iToUsePlus][keyToUsePlus] !== undefined) {
               if (product.id_product === productBy4[iToUsePlus][keyToUsePlus].id_product) {
                 // console.log(`same ID on next product : ${product.id_product}`);
-                valueShowImg = 'none';
-                showUnderBorder = 'none';
+                if (showSameProductsTogether) {
+                  valueShowImg = 'none';
+                  showUnderBorder = 'none';
+                }
               }
             }
             // When Image the tab of product with same ID (before) is hide
             if (productBy4[iToUseLess][keyToUseLess] !== undefined) {
               if (product.id_product === productBy4[iToUseLess][keyToUseLess].id_product) {
-                // console.log(`same ID on next product : ${product.id_product}`);
-                valueShowImg = 'none';
-                srcImageProduct = undefined;
+                if (showSameProductsTogether) {
+                  valueShowImg = 'none';
+                  srcImageProduct = undefined;
+                }
+                // counterRepeatImage += 1;
+                // console.log(`same ID on next product : ${product.id_product} - ${counterRepeatImage}`);
                 // TODO: Trying to put img at the middle of the bloc of products with same ID
                 // let iToCountNumberOfProductWithSameID = iToUseLess;
                 // let keyToCountNumberOfProductWithSameID = keyToUseLess;
@@ -250,13 +258,14 @@ class PDF extends Component {
                 //     keyToCountNumberOfProductWithSameID = 3;
                 //     iToCountNumberOfProductWithSameID -= 1;
                 //   }
-                // }
+                // })
                 // positionYimg = -((87 * numberOfProductWithSameID) / 2 + 10);
               }
             }
             // show the border under the last product
             if (isLastElement) {
               showUnderBorder = 'block';
+              // counterRepeatImage = 0;
             }
             // test
             // console.log(`${87 * numberLigne - keyToUsePlus * 87} > ${20 + 12.8 * tabNotasReturn.length}`);
