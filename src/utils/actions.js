@@ -1,10 +1,11 @@
+import config from './config';
 
 export const INIT_APP_OPTIONS = 'INIT_APP_OPTIONS';
 
 export function getOptions(dispatch) {
   // let tabNotasWTF = [];
   // const tabNotas = ['test'];
-  return fetch('http://cremme.com.br/wp-json/acf/v3/options/orcamento-informacoes')
+  return fetch(`${config.dataUrl}/wp-json/acf/v3/options/orcamento-informacoes`)
     .then(res => res.json())
     .then((options) => {
       // console.log(options.acf);

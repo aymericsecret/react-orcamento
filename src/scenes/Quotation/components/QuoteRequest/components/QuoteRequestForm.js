@@ -9,7 +9,7 @@ class QuoteRequestForm extends Component {
   constructor(props) {
     super(props);
     this.occupationList = [
-      'arquitecto/designer',
+      'arquiteto/designer',
       'cliente',
       'comprador',
       'outros',
@@ -36,7 +36,7 @@ class QuoteRequestForm extends Component {
       email: '',
       list_emails: [],
       phone: '',
-      occupation: 'arquitecto/designer',
+      occupation: 'arquiteto/designer',
       occupation_outros: '',
       type: 'residencial',
       type_outros: '',
@@ -53,7 +53,7 @@ class QuoteRequestForm extends Component {
 
   componentWillMount = () => {
     const newState = this.props.quoteRequest;
-    if (newState.occupation === '') newState.occupation = 'arquitecto/designer';
+    if (newState.occupation === '') newState.occupation = 'arquiteto/designer';
     if (newState.deadline === '') newState.deadline = '1 - 2 meses';
     if (newState.type === '') newState.type = 'residencial';
     this.setState({

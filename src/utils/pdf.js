@@ -9,15 +9,16 @@ import {
   Font,
 } from '@react-pdf/renderer';
 
+import config from './config';
 import LogCremmeCircle from '../assets/logo_circle_cremme.png';
 
 import BigTab from './components/bigTab';
 import ShowTabNote from './components/tabNote';
 
-Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Regular.ttf', { family: 'Omnes' });
-Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Medium.ttf', { family: 'OmnesMedium' });
-Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Bold.ttf', { family: 'OmnesBold' });
-Font.register('http://cremme.com.br/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Semibold.ttf', { family: 'OmnesSemibold' });
+Font.register(`${config.dataUrl}/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Regular.ttf`, { family: 'Omnes' });
+Font.register(`${config.dataUrl}/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Medium.ttf`, { family: 'OmnesMedium' });
+Font.register(`${config.dataUrl}/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Bold.ttf`, { family: 'OmnesBold' });
+Font.register(`${config.dataUrl}/wp-content/themes/rsw-cremme/assets/fonts/Omnes-Semibold.ttf`, { family: 'OmnesSemibold' });
 
 // Create styles
 const styles = StyleSheet.create({

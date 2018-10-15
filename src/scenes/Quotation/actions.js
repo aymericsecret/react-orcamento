@@ -1,5 +1,7 @@
 import { getOptions } from '../../utils/actions';
 
+import config from '../../utils/config';
+
 export const INIT_APP = 'INIT_APP';
 export const INIT_APP_CATEGORIES = 'INIT_APP_CATEGORIES';
 export const RESET_APP_PRODUCTS = 'RESET_APP_PRODUCTS';
@@ -12,7 +14,7 @@ const productsPerPage = 25;
 let productsTotal = null;
 
 export function getCategories(dispatch) {
-  return fetch('http://cremme.com.br/wp-json/orcamento/v1/categories')
+  return fetch(`${config.dataUrl}/wp-json/orcamento/v1/categories`)
     .then(res => res.json())
     .then((categoryList) => {
       dispatch({
@@ -27,7 +29,7 @@ export function getCategories(dispatch) {
 }
 
 export function getProducts(dispatch, idCategory, page) {
-  return fetch(`http://cremme.com.br/wp-json/wp/v2/posts?categories=${idCategory}&per_page=${productsPerPage}&page=${page}`)
+  return fetch(`${config.dataUrl}/wp-json/wp/v2/posts?categories=${idCategory}&per_page=${productsPerPage}&page=${page}`)
     .then((res) => {
       if (productsTotal === null) {
         // Getting page number from WP API Headers

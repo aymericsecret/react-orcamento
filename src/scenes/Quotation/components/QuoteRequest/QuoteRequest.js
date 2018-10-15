@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 import ReactLoading from 'react-loading';
+
+import config from '../../../../utils/config';
+
 import Popup from '../../../../components/Popup/Popup';
 import QuoteRequestForm from './components/QuoteRequestForm';
 import QuoteRequestRestart from './components/QuoteRequestRestart';
@@ -71,7 +73,7 @@ export default class QuoteRequest extends Component {
       isSending: true,
     });
 
-    fetch('http://cremme.com.br/wp-json/orcamento/v1/request', {
+    fetch(`${config.dataUrl}/wp-json/orcamento/v1/request`, {
     // fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
