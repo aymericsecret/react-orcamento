@@ -73,7 +73,7 @@ export default class QuoteRequest extends Component {
       isSending: true,
     });
 
-    fetch(`${config.dataUrl}/wp-json/orcamento/v1/request`, {
+    fetch(`${config.emailUrl}/wp-json/orcamento/v1/request`, {
     // fetch('http://localhost/cremme/wp-json/orcamento/v1/request', {
       method: 'post',
       body: JSON.stringify(emailParams),
@@ -110,6 +110,8 @@ export default class QuoteRequest extends Component {
     this.setState({
       isSending: false,
       isSent: false,
+      hasError: false,
+      sendingMessage: 'Enviando solicitação...',
     });
     this.props.resetQuotation();
     this.props.togglePopup();
@@ -119,6 +121,8 @@ export default class QuoteRequest extends Component {
     this.setState({
       isSending: false,
       isSent: false,
+      hasError: false,
+      sendingMessage: 'Enviando solicitação...',
     });
     this.props.togglePopup();
   }
