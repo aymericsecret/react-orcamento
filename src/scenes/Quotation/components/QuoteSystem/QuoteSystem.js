@@ -9,6 +9,7 @@ import { DragDropContext } from 'react-dnd';
 import QuoteElemDrag from './components/QuoteElement/QuoteElemDrag';
 import Toggle from '../../../../components/Toggle/Toggle';
 import VisibleQuoteRequest from '../QuoteRequest/VisibleQuoteRequest';
+import config from '../../../../utils/config';
 
 
 class QuoteSystem extends Component {
@@ -110,7 +111,7 @@ QuoteSystem.propTypes = {
 const NoElementAdd = styled.div`
   margin-top: 20px;
   div {
-    font-family: 'Omnes';
+    font-family: ${config.fonts.regular};
   }
 `;
 const QuoteBlock = styled.div`

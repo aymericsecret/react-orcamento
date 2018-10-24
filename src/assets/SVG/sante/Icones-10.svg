@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Icones-08</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Icones-10" transform="translate(0.000000, 4.000000)" stroke="#2A7861">
+            <polyline id="Shape" points="19.75 12.8 23.95 8.5 19.75 4.3"></polyline>
+            <path d="M14.85,8.5 L24,8.5" id="01401a3c-d8c9-4e23-8560-5e881680426d"></path>
+            <path d="M15.85,4.4 C14.0053561,1.30932268 10.3238197,-0.168938544 6.85400066,0.787802441 C3.38418164,1.74454343 0.980502202,4.90069488 0.980502202,8.5 C0.980502202,12.0993051 3.38418164,15.2554566 6.85400066,16.2121976 C10.3238197,17.1689385 14.0053561,15.6906773 15.85,12.6" id="Shape"></path>
+        </g>
+    </g>
+</svg>

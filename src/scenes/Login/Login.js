@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import {
   Link,
 } from 'react-router-dom';
-import logo from '../../assets/logo_cremme_grey.svg';
 import VisibleLoginForm from './components/VisibleLoginForm';
+import config from '../../utils/config';
+
+const { logo } = config;
 
 const Admin = props => (
 
@@ -48,13 +50,11 @@ const LoginBox = styled.div`
   padding: 20px;
   height: auto !important;
   background: #FFFFFF;
-  .App-header {
-    width: 100%;
-    a {
-      img {
-        display: block;
-        margin: auto;
-      }
+  a {
+    img {
+      display: block;
+      width: 100%;
+      max-width: 140px;
     }
   }
 `;

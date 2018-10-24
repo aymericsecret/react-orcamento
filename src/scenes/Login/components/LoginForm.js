@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Input from './components/Input';
+import config from '../../../utils/config';
 
 // const user = {
 //   login: 'a',
@@ -129,12 +130,12 @@ const InputWrapper = styled.div`
 const StyledButton = styled.button`
     height: 25px;
     padding: 0 20px;
-    background: #3c3c3c;
+    background: ${config.fontColor};
     border: none;
-    font-family: 'OmnesMedium';
+    font-family: ${config.fonts.medium};
     font-size: 14px;
     line-height: 25px;
-    color: #ffffff;
+    color: #ffffff !important;
     cursor: pointer;
     -webkit-font-smoothing: antialiased;
 `;

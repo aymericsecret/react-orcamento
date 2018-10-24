@@ -227,6 +227,7 @@ class QuoteRequestForm extends Component {
     const date = `${d.getFullYear()}${m}${d.getDate()}`;
     console.log(date);
 
+    // eslint-disable-next-line
     const name = this.state.request.name.replace(/\w+/g, string => string.charAt(0).toUpperCase() + string.slice(1).toLowerCase());
     // const name = this.state.request.name.toLowerCase().replace(' ', '');
     a.download = `${date}_OrcamentoCremme_${name}.pdf`;
