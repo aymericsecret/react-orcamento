@@ -17,6 +17,7 @@ import thunk from 'redux-thunk';
 import VisibleQuotation from './scenes/Quotation/VisibleQuotation';
 import Login from './scenes/Login/Login';
 import rootReducer from './rootReducer';
+import config from './utils/config';
 
 const middleware = [thunk];
 
@@ -54,4 +55,10 @@ const AppLayout = styled.div`
   margin: auto;
   background: #FFFFFF;
   overflow-x: hidden;
+  h1, h2, h3, h4, h5, h6, * {
+    color: ${config.fontColor};
+  }
+  button, a.button {
+    font-family: ${config.fonts.regular};
+  }
 `;

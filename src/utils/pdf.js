@@ -10,15 +10,19 @@ import {
 } from '@react-pdf/renderer';
 
 import config from './config';
-import LogCremmeCircle from '../assets/logo_circle_cremme.png';
 
 import BigTab from './components/bigTab';
 import ShowTabNote from './components/tabNote';
 
-Font.register(`${config.fontPath}/Omnes-Regular.ttf`, { family: 'Omnes' });
-Font.register(`${config.fontPath}/Omnes-Medium.ttf`, { family: 'OmnesMedium' });
-Font.register(`${config.fontPath}/Omnes-Bold.ttf`, { family: 'OmnesBold' });
-Font.register(`${config.fontPath}/Omnes-Semibold.ttf`, { family: 'OmnesSemibold' });
+if (config.project === 'cremme') {
+  Font.register(`${config.fontPath}/Omnes-Regular.ttf`, { family: 'fontLight' });
+  Font.register(`${config.fontPath}/Omnes-Medium.ttf`, { family: 'fontRegular' });
+  Font.register(`${config.fontPath}/Omnes-Semibold.ttf`, { family: 'fontBold' });
+} else if (config.project === 'sante') {
+  Font.register(`${config.fontPath}/PxGrotesk-Light.ttf`, { family: 'fontLight' });
+  Font.register(`${config.fontPath}/PxGroteskRegular.ttf`, { family: 'fontRegular' });
+  Font.register(`${config.fontPath}/PxGrotesk-Bold.ttf`, { family: 'fontBold' });
+}
 
 // Create styles
 const styles = StyleSheet.create({
@@ -26,17 +30,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#ffffff',
   },
-  bold: {
-    fontFamily: 'OmnesBold',
-  },
   medium: {
-    fontFamily: 'OmnesMedium',
+    fontFamily: 'fontRegular',
   },
   semiBold: {
-    fontFamily: 'OmnesSemibold',
+    fontFamily: 'fontBold',
   },
   text: {
-    fontFamily: 'Omnes',
+    fontFamily: 'fontLight',
   },
   textRight: {
     textAlign: 'right',
@@ -149,7 +150,7 @@ class PDF extends Component {
     for (let i = 0; i < (allProductsClass.length / numberLigne); i += 1) {
       table.push(
         <Page key={i} size="A4" orientation="landscape" style={styles.page}>
-          <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor="#979797" />
+          <TraitTableau show="block" width={802} height={1} top={20} left={20} backgroundColor={config.fontColorDark} />
           <BigTab x={20} y={20} width={802} height={16} content={headerContent} text={['foto', 'tipologia', '', 'L x P x A (cm)', '', 'acabamento', '', 'preço unitario', 'quantidade', 'valor total']} />
           {/* eslint-disable-next-line */}
           {productBy4[i].map((product, key) => {
@@ -312,7 +313,7 @@ class PDF extends Component {
             (showNote && (tabNotasReturn !== undefined))
             && <ShowTabNote style={styles.text} y={yShowNote} tabNote={tabNotasReturn} />
           }
-          <LogoCircleCustom src={LogCremmeCircle} />
+          <LogoCircleCustom src={config.logoSmall} />
         </Page>,
       );
     }
@@ -321,7 +322,7 @@ class PDF extends Component {
       table.push(
         <Page key={-1} size="A4" orientation="landscape" style={styles.page}>
           <ShowTabNote style={styles.text} y={20} tabNote={tabNotasReturn} />
-          <LogoCircleCustom src={LogCremmeCircle} />
+          <LogoCircleCustom src={config.logoSmall} />
         </Page>,
       );
     }
@@ -374,7 +375,7 @@ class PDF extends Component {
           <Text>{this.props.infoContact.adresse1}</Text>
           <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
-        <LogoCircleCustom src={LogCremmeCircle} />
+        <LogoCircleCustom src={config.logoSmall} />
         <Contact style={styles.medium}>
           <Text style={styles.textRight}>{this.props.infoContact.web_site}</Text>
           <Text style={styles.textRight}>{this.props.infoContact.mail_contato_cremme}</Text>
@@ -382,7 +383,6 @@ class PDF extends Component {
         </Contact>
       </Page>
       {/* PDF part */}
-      {this.pagePDF()}
       {/* Orçamento PDF */}
       {this.AllPage()}
       {/* Last Page Contato PDF */}
@@ -405,7 +405,7 @@ class PDF extends Component {
           <Text>{this.props.infoContact.adresse1}</Text>
           <Text>{this.props.infoContact.adresse2}</Text>
         </Adresse>
-        <LogoCircleCustom src={LogCremmeCircle} />
+        <LogoCircleCustom src={config.logoSmall} />
         <Contact style={styles.medium}>
           <Text style={styles.textRight}>{this.props.infoContact.web_site}</Text>
           <Text style={styles.textRight}>{this.props.infoContact.mail_contato_cremme}</Text>
@@ -457,7 +457,7 @@ const Titre = styled.Text`
   margin-left: 50px;
   margin-bottom: 20px;
   font-size: 30px;
-  color: #979797;
+  color: ${config.fontColorDark};
 `;
 
 const ImageCustom = styled.Image`
@@ -487,7 +487,7 @@ const Trait = styled.View`
   left: 35px;
   width: 772px;
   height: 1px;
-  background-color: #979797;
+  background-color: ${config.fontColorDark};
 `;
 
 const Adresse = styled.View`
@@ -497,7 +497,7 @@ const Adresse = styled.View`
   left: 35px;
   font-size: 10px;
   
-  color: #979797;
+  color: ${config.fontColorDark};
 `;
 
 const LogoCircleCustom = styled.Image`
@@ -516,7 +516,7 @@ const Contact = styled.View`
   right: 35px;
   font-size: 10px;
   
-  color: #979797;
+  color: ${config.fontColorDark};
   width: 100%;
 `;
 const TraitTableau = styled.View`
@@ -548,15 +548,16 @@ const TitreContato = styled.Text`
   margin-left: 160px;
   margin-bottom: 20px;
   font-size: 30px;
-  color: #979797;
+  color: ${config.fontColorDark};
 `;
 const TitreSup = styled.Text`
   position: absolute;
   top: 42px;
   left: 253px;
   font-size: 30px;
-  color: #2cb3df;
+  color: ${config.fontColorSpecial};
 `;
+  // color: #2cb3df;
 
 const TraitHaut = styled.View`
   position: absolute;
@@ -565,7 +566,7 @@ const TraitHaut = styled.View`
   left: 35px;
   width: 772px;
   height: 1px;
-  background-color: #979797;
+  background-color: ${config.fontColorDark};
 `;
 
 const TitreMerci = styled.Text`
@@ -574,8 +575,10 @@ const TitreMerci = styled.Text`
   top: 150px;
   text-align: center;
   font-size: 60px;
-  color: #636463;
+  color: ${config.fontColorDark};
 `;
+  // color: #636463;
+
 const ContentContato = styled.View`
   position: absolute;
   z-index: 15px;
@@ -583,7 +586,7 @@ const ContentContato = styled.View`
   text-align: center;
   font-size: 14px;
   line-height: 1.1px;
-  color: #979797;
+  color: ${config.fontColorDark};
 `;
 const Text2 = styled.Text`
   margin-bottom: 15px;

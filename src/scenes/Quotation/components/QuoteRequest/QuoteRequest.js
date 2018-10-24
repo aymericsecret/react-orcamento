@@ -147,7 +147,7 @@ export default class QuoteRequest extends Component {
         {this.state.isSending && (
           <StyledLoader>
             <h3>{this.state.sendingMessage}</h3>
-            {!this.state.hasError ? <ReactLoading type="bubbles" color="#3C3C3C" height={40} width={40} /> : <button type="button" onClick={this.toggleRestart}>Fechar</button>}
+            {!this.state.hasError ? <ReactLoading type="bubbles" color={config.fontColor} height={40} width={40} /> : <button type="button" onClick={this.toggleRestart}>Fechar</button>}
           </StyledLoader>
         )}
       </Popup>

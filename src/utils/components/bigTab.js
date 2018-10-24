@@ -5,6 +5,7 @@ import {
 } from '@react-pdf/renderer';
 
 import Tab from './tab';
+import config from '../config';
 
 // Line of tab with 7 columns
 const BigTab = (props) => {
@@ -17,7 +18,7 @@ const BigTab = (props) => {
   const widthC7 = 83;
   return (
     <ContentTab x={props.x} y={props.y} width={0} height={0}>
-      <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor="#979797" />
+      <TraitTableau show="block" width={1} height={props.height} top={0} left={0} backgroundColor={config.fontColorDark} />
       {/* eslint-disable-next-line */}
       <Tab showUnderBorder={props.showUnderBorder} show={props.showImg} x={0} y={0} width={widthC1} height={props.height} text1={props.content[0].title_1} text2={props.content[0].title_2} />
       <Tab showUnderBorder="block" show="block" x={widthC1} y={0} width={widthC2} height={props.height} boldText="11px" text1={props.content[1].title_1} text2={props.content[1].title_2} />

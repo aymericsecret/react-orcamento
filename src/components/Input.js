@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import idGenerator from 'react-id-generator';
 import styled from 'styled-components';
+import config from '../utils/config';
 
 // eslint-disable-next-line
 const re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
@@ -79,7 +80,7 @@ export default Input;
 
 const StyledLabel = styled.label`
   max-width: 100%;
-  font-family: 'OmnesLight';
+  font-family: ${config.fonts.light};
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.8px;
@@ -88,12 +89,14 @@ const StyledLabel = styled.label`
     border: none;
     border-radius: 2px;
     padding-left: 5px;
-    color: #3C3C3C;
 
-    font-family: 'Omnes';
+    font-family: ${config.fonts.regular};
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 0.8px;
+    ::-webkit-input-placeholder, ::-moz-placeholder, :-ms-input-placeholder, :-moz-placeholder {
+      color: ${config.fontColor};
+    }
     &:focus {
       border-color: rgba(60, 60, 60, 1);
     }

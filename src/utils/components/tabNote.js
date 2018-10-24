@@ -6,13 +6,14 @@ import {
   StyleSheet,
 } from '@react-pdf/renderer';
 import idGenerator from 'react-id-generator';
+import config from '../config';
 
 // Create a tab with the note of Cremme
 const ShowTabNote = (props) => {
   const styles = StyleSheet.create({
     text: {
-      fontFamily: 'Omnes',
-      color: '#979797',
+      fontFamily: 'fontLight',
+      color: config.fontColorDark,
     },
   });
   const tabAllNote = [];
@@ -27,10 +28,10 @@ const ShowTabNote = (props) => {
   return (
     // <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
     <ContentTab x={20} y={props.y} width={801} height={12.8 * props.tabNote.length + 20}>
-      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={0} backgroundColor="#979797" />
-      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={801} backgroundColor="#979797" />
-      <TraitTableau show="block" width={801} height={1} top={0} left={0} backgroundColor="#979797" />
-      <TraitTableau show="block" width={801} height={1} top={12.8 * props.tabNote.length + 20} left={0} backgroundColor="#979797" />
+      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={0} backgroundColor={config.fontColorDark} />
+      <TraitTableau show="block" width={1} height={12.8 * props.tabNote.length + 20} top={0} left={801} backgroundColor={config.fontColorDark} />
+      <TraitTableau show="block" width={801} height={1} top={0} left={0} backgroundColor={config.fontColorDark} />
+      <TraitTableau show="block" width={801} height={1} top={12.8 * props.tabNote.length + 20} left={0} backgroundColor={config.fontColorDark} />
       <TextNote>
         {tabAllNote}
       </TextNote>
@@ -59,7 +60,7 @@ const TextNote = styled.View`
   line-height: 1.5px;
   margin-top: 10px;
   margin-left: 10px;
-  color: '#979797';
+  color: ${config.fontColorDark};
 `;
 const TraitTableau = styled.View`
   position: absolute;
