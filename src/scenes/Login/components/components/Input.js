@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import config from '../../../../utils/config';
 
 const Input = props => (
   <StyledLabel htmlFor={`login_${props.id}`}>
@@ -35,13 +36,29 @@ const StyledLabel = styled.label`
   span {
     display: block;
     width: 100px;
-    font-family: "OmnesMedium";
+    font-family: ${config.fonts.medium};
     font-size: 16px;
   }
   input {
     width: calc(100% - 80px);
     height: 25px;
-    font-family: "Omnes";
+    font-family: ${config.fonts.regular};
     font-size: 14px;
+    
+  }
+  input::placeholder {
+    color: ${config.fontColor} !important;
+  }
+  input::-webkit-input-placeholder {
+    color: ${config.fontColor} !important;
+  }
+  input::-moz-placeholder {
+    color: ${config.fontColor} !important;
+  }
+  input:-ms-input-placeholder {
+    color: ${config.fontColor} !important;
+  }
+  input:-moz-placeholder {
+    color: ${config.fontColor} !important;
   }
 `;

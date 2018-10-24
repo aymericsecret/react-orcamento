@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Ratio from 'react-ratio';
 import windowDimensions from 'react-window-dimensions';
 import ContentLoader from 'react-content-loader';
+import config from '../../../../../../../utils/config';
 
 class Product extends Component {
   constructor(props) {
@@ -125,13 +126,12 @@ const ProductBlock = styled.div`
     transform: scale(1.05);
   }
   h4 {
-    font-family: OmnesLight;
+    font-family: ${config.fonts.light};
     font-size: 17px;
     line-height: 23px;
 
     opacity: .95;
     letter-spacing: 0.8px;
-    color: #3c3c3c;
     margin: 0;
     @media only screen and (min-width: 1024px) {
       font-size: 22px;

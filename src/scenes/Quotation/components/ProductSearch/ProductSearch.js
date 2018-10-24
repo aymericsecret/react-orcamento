@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import windowDimensions from 'react-window-dimensions';
 import SearchInput, { createFilter } from 'react-search-input';
-import iconSearch from '../../../../assets/SVG/light/Icones-08.svg';
+import config from '../../../../utils/config';
+
+const { search } = config.icons;
 
 const KEYS_TO_FILTERS = ['title.rendered', 'subject', 'dest.name', 'cat_names'];
 
@@ -55,7 +57,7 @@ class ProductSearch extends Component {
         <SearchInput className="search-input" onChange={this.searchUpdated} />
         <IconSearchDiv>
           <img
-            src={iconSearch}
+            src={search}
             className="icons_search openingGridMenu img_icon"
             alt=""
           />
@@ -117,9 +119,24 @@ const ProductsBlock = styled.div`
       min-height: 21px;
       width: 100%;
       border: none;
-      border-bottom: 1px solid #3C3C3C !important;
+      border-bottom: 1px solid ${config.fontColor} !important;
       font-size: 16px;
-      font-family: 'Omnes';
+      font-family: ${config.fonts.regular};
+    }
+    input::placeholder {
+      color: ${config.fontColor} !important;
+    }
+    input::-webkit-input-placeholder {
+      color: ${config.fontColor} !important;
+    }
+    input::-moz-placeholder {
+      color: ${config.fontColor} !important;
+    }
+    input:-ms-input-placeholder {
+      color: ${config.fontColor} !important;
+    }
+    input:-moz-placeholder {
+      color: ${config.fontColor} !important;
     }
     @media only screen and (max-width: 567px) {
       position: fixed;

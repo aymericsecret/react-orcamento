@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Ratio from 'react-ratio';
-import iconClose from '../../../../../../assets/SVG/light/Icones-02.svg';
-import Input from '../../../../../../components/Input';
 
+import Input from '../../../../../../components/Input';
+import config from '../../../../../../utils/config';
+
+const { close } = config.icons;
 class QuoteElem extends Component {
   constructor(props) {
     super(props);
@@ -380,7 +382,7 @@ class QuoteElem extends Component {
           {/* eslint-disable-next-line react/no-danger */}
           <h3>{index + 1}. <span dangerouslySetInnerHTML={{ __html: this.state.product.title.rendered }} /></h3>
           { !isMobile && children }
-          <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={iconClose} alt="" className="img_icon" /></button>
+          <button type="button" onClick={() => removeItem(quoteItem.id)}><img src={close} alt="" className="img_icon" /></button>
         </QuoteBoxHeader>
         <QuoteBoxContent>
           <RatioCustom ratio={16 / 9}>
@@ -475,7 +477,7 @@ const QuoteBoxHeader = styled.div`
     font-size: 15px;
     line-height: 18px;
     letter-spacing: 0px;
-    font-family: 'OmnesMedium';
+    font-family: ${config.fonts.medium};
   }
   button {
     width: 20px;
@@ -529,7 +531,7 @@ const QuoteBoxContentForm = styled.div`
       display: block;
       margin-bottom: 10px;
 
-      font-family: 'Omnes';
+      font-family: ${config.fonts.regular};
       font-size: 12px;
       line-height: 16px;
       letter-spacing: 0.8px;

@@ -5,7 +5,9 @@ import Ratio from 'react-ratio';
 import ContentLoader from 'react-content-loader';
 import LinkCustom from '../../../../../../components/LinkCustom';
 import defaultPicture from '../../../../../../assets/defaultPicture.jpg';
-import logoRetour from '../../../../../../assets/SVG/light/Icones-03.svg';
+import config from '../../../../../../utils/config';
+
+const { back } = config.icons;
 
 const CATEGORY_LIST_ADMIN = ['nao-publicado'];
 
@@ -125,7 +127,7 @@ class CategoryList extends Component {
                   </SubCategory>
                 ))}
             </SubCategories>)
-          : <div style={{ display: 'flex' }}><LogoRetour onClick={() => this.selectMainCategory(mainCategory)} src={logoRetour} alt="" /><h3 className="sub_category_title">{objetSubCategory.name}</h3></div>
+          : <div style={{ display: 'flex' }}><LogoRetour onClick={() => this.selectMainCategory(mainCategory)} src={back} alt="" /><h3 className="sub_category_title">{objetSubCategory.name}</h3></div>
         }
       </ProductsBlock>
     );
@@ -152,7 +154,7 @@ const ProductsBlock = styled.div`
   margin-bottom: 50px;
   padding: 0 20px 0 20px;
   h3.sub_category_title {
-    font-family: "OmnesMedium";
+    font-family: ${config.fonts.medium};
   }
 `;
 
@@ -189,7 +191,7 @@ const Categories = styled.div`
     }
   }
   h3 {
-    font-family: "OmnesLight";
+    font-family: ${config.fonts.light};
     background: linear-gradient(#000000, #000000);
     background-position: 0px 100%;
     background-size: 0 1px;
@@ -201,7 +203,6 @@ const Categories = styled.div`
     font-size: 25px;
     line-height: 28px;
     letter-spacing: 1px;
-    color: #3c3c3c;
     letter-spacing: 0;
     text-transform: lowercase;
     &:hover {
@@ -210,7 +211,7 @@ const Categories = styled.div`
     }
   }
   h3.active {
-    font-family: "OmnesMedium";
+    font-family: ${config.fonts.medium};
   }
   .categoryName{
     
@@ -259,11 +260,10 @@ const SubCategories = styled.div`
     transform: scale(1.05);
   }
   h4 {
-    font-family: OmnesLight;
+    font-family: ${config.fonts.light};
     font-size: 17px;
     line-height: 23px;
     letter-spacing: 0.7px;
-    color: #3c3c3c;
     margin: 0;
     @media only screen and (min-width: 1024px) {
       font-size: 22px;

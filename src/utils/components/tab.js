@@ -5,6 +5,7 @@ import {
   Text,
   StyleSheet,
 } from '@react-pdf/renderer';
+import config from '../config';
 
 
 // Tab with border and text
@@ -16,24 +17,22 @@ const Tab = (props) => {
       backgroundColor: '#ffffff',
     },
     h3: {
-      fontFamily: 'OmnesMedium',
-      color: '#828282',
+      fontFamily: 'fontRegular',
+      color: config.fontColorDark,
+      // color: '#828282',
     },
     text: {
-      fontFamily: 'Omnes',
-      color: '#979797',
-    },
-    bold: {
-      fontFamily: 'OmnesBold',
+      fontFamily: 'fontLight',
+      color: config.fontColorDark,
     },
     medium: {
-      fontFamily: 'OmnesMedium',
+      fontFamily: 'fontRegular',
     },
   });
   return (
     <ContentTab x={props.x} y={props.y} width={props.width} height={props.height}>
-      <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor="#979797" />
-      <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor="#979797" />
+      <TraitTableau show="block" width={1} height={props.height} top={0} left={props.width} backgroundColor={config.fontColorDark} />
+      <TraitTableau show={props.showUnderBorder} width={props.width} height={1} top={props.height} left={0} backgroundColor={config.fontColorDark} />
       <TextTab width={props.width - 20} height={props.height / 3 + 1.2}>
         <TextMiniTab>
           <Text style={styles.h3}>{props.text1}</Text>

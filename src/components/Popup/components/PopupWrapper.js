@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Toggle from '../../Toggle/Toggle';
-import closeIcon from '../../../assets/SVG/light/Icones-02.svg';
+import config from '../../../utils/config';
 // import Input from '../../Input';
+
+const { close } = config;
 
 class PopupWrapper extends Component {
   handleClickOutside = () => {
@@ -20,7 +22,7 @@ class PopupWrapper extends Component {
     return (
       <StyledWrapper id="popup_wrapper_needLittle_PopUp" className="popup_wrapper">
         <h3>{this.props.title}</h3>
-        <StyledToggle><Toggle toggle={this.closePopup}><img src={closeIcon} alt="" /></Toggle></StyledToggle>
+        <StyledToggle><Toggle toggle={this.closePopup}><img src={close} alt="" /></Toggle></StyledToggle>
         {this.props.children}
       </StyledWrapper>
     );
@@ -83,7 +85,7 @@ const StyledWrapper = styled.div`
   h3 {
     line-height: 27px;
     margin: 0 0 20px 0;
-    font-family: "Omnes";
+    font-family: ${config.fonts.regular};
   }
   &.littlePopUp {
     height: 240px;
