@@ -1,21 +1,86 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import ProductsList from './components/ProductList/ProductList';
-import QuoteSystem from './components/QuoteSystem/QuoteSystem';
+import VisibleQuoteSystem from './components/QuoteSystem/VisibleQuoteSystem';
+import ProductSyst from './components/ProductSyst/ProductSyst';
+import LoadingScreen from '../../components/LoadingScreen';
+import Menu from '../../components/VisibleMenu';
+
 
 class Quotation extends Component {
-  state = {
-    test: [],
+  constructor(props) {
+    super(props);
+    this.quoteSystemsRef = React.createRef();
+    this.shouldScroll = false;
   }
 
+  state = {
+    showProducts: true,
+  }
+
+  componentDidMount = () => {
+    const { initApp, app } = this.props;
+    const oneHour = 60 * 60 * 1000;
+    // console.log(new Date() - new Date(app.appLoadedAt));
+    if (!app.appLoaded
+      || app.categories === {}
+      || app.products.length === 0
+      || new Date() - new Date(app.appLoadedAt) > oneHour) {
+      initApp();
+    }
+  }
+
+
+  updateElemNode = (node) => {
+    if (this.shouldScroll) {
+      this.shouldScroll = false;
+      // eslint-disable-next-line react/no-find-dom-node
+      const container = ReactDOM.findDOMNode(this.quoteSystemsRef.current);
+      container.scrollTo(0, node.scrollHeight);
+    }
+  }
+
+  toggle = (args) => {
+    if (args && args.forceProductSide) {
+      if (!this.state.showProducts) {
+        // Force toggling to ProductSystem side
+        this.shouldScroll = true;
+        this.setState(prevState => ({
+          showProducts: !prevState.showProducts,
+        }));
+      }
+    } else {
+      this.setState(prevState => ({
+        showProducts: !prevState.showProducts,
+      }));
+      if (args && args.type !== undefined) {
+        // Allow scroll to bottom when QuoteSystem height has been changed (updateElemNode)
+        this.shouldScroll = true;
+      }
+    }
+  }
+
+
   render() {
-    console.log(this.state.test);
+    const { app, session, initApp } = this.props;
 
     return (
-      <React.Fragment>
-        <QuoteSystem update={this.props.updateCart} />
-        <ProductsList update={this.props.updateProducts} products={this.props.products} />
-      </React.Fragment>
+      <StyledQuotation>
+        {app.appCategoriesLoaded ? (
+          <QuotationWrapper>
+            <Menu session={session} initApp={initApp} toggleSide={this.toggle}>Orçamento</Menu>
+
+            <QuotationGrid className={this.state.showProducts ? 'product-list' : ''}>
+
+              <VisibleQuoteSystem updateElemNode={this.updateElemNode} ref={this.quoteSystemsRef} />
+              <ProductSyst toggleSide={this.toggle} />
+            </QuotationGrid>
+          </QuotationWrapper>
+        ) : (
+          <LoadingScreen />
+        )}
+      </StyledQuotation>
     );
   }
 }
@@ -23,7 +88,40 @@ class Quotation extends Component {
 export default Quotation;
 
 Quotation.propTypes = {
-  updateCart: PropTypes.func.isRequired,
-  updateProducts: PropTypes.func.isRequired,
-  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+  session: PropTypes.shape().isRequired,
+  app: PropTypes.shape({
+    appLoadedAt: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.any,
+    ]),
+    appLoaded: PropTypes.bool,
+    products: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  initApp: PropTypes.func.isRequired,
 };
+
+const StyledQuotation = styled.div`
+  height: 100%;
+`;
+const QuotationWrapper = styled.div`
+  height: 100%;
+`;
+const QuotationGrid = styled.div`
+  position: relative;
+  display: flex;
+  width: 200%;
+  height: 100%;
+  overflow-x: hidden;
+  transition: transform .3s ease-out;
+  padding-top: 65px;
+  &.product-list {
+    transform: translateX(-50%);
+  }
+  @media only screen and (min-width: 576px) {
+    width: 100%;
+    padding-top: 65px;
+    &.product-list {
+      transform: none;
+    }
+  }
+`;

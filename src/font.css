@@ -1,0 +1,58 @@
+/* Webfont: Omnes-Bold */@font-face {
+    font-family: 'OmnesBold';
+    src: url('./assets/fonts/Omnes-Bold.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Bold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Bold.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Bold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Bold.svg#Omnes-Bold') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+/* Webfont: Omnes-Semibold */@font-face {
+    font-family: 'OmnesSemibold';
+    src: url('./assets/fonts/Omnes-Semibold.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Semibold.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Semibold.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Semibold.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Semibold.svg#Omnes-Bold') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: bold;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: Omnes-Light */@font-face {
+    font-family: 'OmnesLight';
+    src: url('./assets/fonts/Omnes-Light.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Light.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Light.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Light.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Light.svg#Omnes-Light') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: Omnes-Medium */@font-face {
+    font-family: 'OmnesMedium';
+    src: url('./assets/fonts/Omnes-Medium.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Medium.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Medium.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Medium.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Medium.svg#Omnes-Medium') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+/* Webfont: Omnes-Regular */@font-face {
+    font-family: 'Omnes';
+    src: url('./assets/fonts/Omnes-Regular.eot'); /* IE9 Compat Modes */
+    src: url('./assets/fonts/Omnes-Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('./assets/fonts/Omnes-Regular.woff') format('woff'), /* Modern Browsers */
+         url('./assets/fonts/Omnes-Regular.ttf') format('truetype'), /* Safari, Android, iOS */
+         url('./assets/fonts/Omnes-Regular.svg#Omnes-Regular') format('svg'); /* Legacy iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}

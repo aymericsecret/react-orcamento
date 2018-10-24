@@ -3,53 +3,55 @@ import {
   BrowserRouter as Router,
   Route,
   Switch,
-  Link,
 } from 'react-router-dom';
-import logo from './assets/logo_cremme_grey.svg';
+import styled from 'styled-components';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import { applyMiddleware, createStore } from 'redux';
+import { save, load } from 'redux-localstorage-simple';
+import { Provider } from 'react-redux';
+
 import './App.css';
-import Quotation from './scenes/Quotation/Quotation';
+import './font.css';
+// import logger from 'redux-logger';
+import thunk from 'redux-thunk';
+import VisibleQuotation from './scenes/Quotation/VisibleQuotation';
 import Login from './scenes/Login/Login';
+import rootReducer from './rootReducer';
 
+const middleware = [thunk];
+
+const store = createStore(
+  rootReducer,
+  load(),
+  composeWithDevTools(applyMiddleware(...middleware, save())), // middleware
+);
+
+// eslint-disable-next-line react/prefer-stateless-function
 class App extends Component {
-  state = {
-    products: [],
-    cart: [],
-  }
-
-  updateProducts = (products) => {
-    this.setState({
-      products,
-    });
-    console.log(this.state.products);
-  };
-
-  updateCart = (cart) => {
-    this.setState({
-      cart,
-    });
-    console.log(this.state.cart);
-  };
-
   render() {
     return (
-      <Router>
-        <div className="App">
-          <header className="App-header">
-            <Link to="/">
-              <img src={logo} className="App-logo" alt="logo" />
-            </Link>
-            <Link to="/login">
-              <h6>Admin</h6>
-            </Link>
-          </header>
-          <Switch>
-            <Route exact path="/" render={() => (<Quotation updateProducts={this.updateProducts} updateCart={this.updateCart} products={this.state.products} />)} />
-            <Route path="/login" component={Login} />
-          </Switch>
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <AppLayout className="App">
+            <Switch>
+              <Route exact path="/" render={() => (<VisibleQuotation />)} />
+              <Route path="/login" component={Login} />
+              <Route path="/logout" component={() => (<Login isLogout />)} />
+            </Switch>
+          </AppLayout>
+        </Router>
+      </Provider>
     );
   }
 }
 
 export default App;
+
+const AppLayout = styled.div`
+  height: 100vh;
+  width: 100vw;
+  max-width: 1200px;
+  margin: auto;
+  background: #FFFFFF;
+  overflow-x: hidden;
+`;
