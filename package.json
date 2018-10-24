@@ -4,9 +4,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@react-pdf/node": "^0.7.6",
-    "@react-pdf/renderer": "^1.0.0-alpha.15",
-    "@react-pdf/styled-components": "^1.2.0",
     "blob-stream": "^0.1.3",
     "pdfkit": "^0.8.3",
     "prop-types": "^15.6.2",
@@ -33,9 +30,7 @@
     "redux-localstorage-simple": "^2.1.3",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^3.4.2",
-    "yarn": "^1.9.4",
-    "yoga-layout": "github:naminho/yoga-layout-windows"
+    "styled-components": "^3.4.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -44,6 +39,9 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@react-pdf/node": "^0.7.6",
+    "@react-pdf/renderer": "^1.0.0-alpha.15",
+    "@react-pdf/styled-components": "^1.2.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
